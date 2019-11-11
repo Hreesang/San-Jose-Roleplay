@@ -1,5 +1,6 @@
 # San-Jose-Roleplay
-This gamemode is originally from Chrillzen and optimized by Hreesang
+This gamemode is originally from Chrillzen and optimized by Hreesang.
+(Original Thread: https://forum.sa-mp.com/showthread.php?t=573694)
 
 [![sampctl](https://shields.southcla.ws/badge/sampctl-San--Jose--Roleplay-2f2f2f.svg?style=for-the-badge)](https://github.com/Hreesang/San-Jose-Roleplay)
 
