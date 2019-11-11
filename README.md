@@ -1,4 +1,5 @@
 # San-Jose-Roleplay
+This gamemode is originally from Chrillzen and optimized by Hreesang
 
 [![sampctl](https://shields.southcla.ws/badge/sampctl-San--Jose--Roleplay-2f2f2f.svg?style=for-the-badge)](https://github.com/Hreesang/San-Jose-Roleplay)
 
@@ -92,3 +93,19 @@ CMD:admincommands(playerid, params[])
 **Notes:**
 
 There are some houses and businesses already, but you'll have to create the remaining ones with /createbiz and /createhouse! Check line 11668 for the different types that exist. (If you have edited the gamemode, it's at the createbiz command.
+
+## Setup
+
+### 1. Dependencies
+
+Ensure you have ALL the dependencies listed in the master script (the one you compile from!) each #include line has a link to the release page.
+
+### 2. Compile!
+
+If you set up all the dependencies correctly, there should be *no* errors or warnings at all unless mentioned in the commit message.
+
+### 3. Set up plugins in your `server.cfg` file.
+
+```
+plugins sscanf streamer
+```
