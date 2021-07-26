@@ -199,8 +199,6 @@
 #define ShowErrorDialog(%1,%2) ShowPlayerDialog(%1, COLOR_LIGHTRED, DIALOG_STYLE_MSGBOX, "ERROR",%2, "OK", "")
 #define COLOR_ADVERTISEMENT 0xFF2BD500
 
-#define SCM SendClientMessage
-
 #define SECONDS 10
 #define TAZE_MS 400
 #define IsNotCop(%0) ((GetPlayerSkin(%0) < 280 && GetPlayerSkin(%0) > 288))
@@ -3277,28 +3275,28 @@ CMD:chill(playerid, params[])
 
 CMD:walkstyle(playerid, params[])
 {
-	if(PlayerInfo[playerid][pDonator] < 1) return SCM(playerid, COLOR_LIGHTRED, "You are not a donator.");
+	if(PlayerInfo[playerid][pDonator] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a donator.");
 	
     if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /walkstyle [1-4]");
     if(!strcmp(params, "1", true))
     {
 		PlayerInfo[playerid][pWalkStyle] = 1;
-		SCM(playerid, COLOR_WHITE, "Congratulations! You have set your new walkstyle!");
+		SendClientMessage(playerid, COLOR_WHITE, "Congratulations! You have set your new walkstyle!");
     }
     else if(!strcmp(params, "2", true))
     {
         PlayerInfo[playerid][pWalkStyle] = 2;
-        SCM(playerid, COLOR_WHITE, "Congratulations! You have set your new walkstyle!");
+        SendClientMessage(playerid, COLOR_WHITE, "Congratulations! You have set your new walkstyle!");
     }
     else if(!strcmp(params, "3", true))
     {
         PlayerInfo[playerid][pWalkStyle] = 3;
-        SCM(playerid, COLOR_WHITE, "Congratulations! You have set your new walkstyle!");
+        SendClientMessage(playerid, COLOR_WHITE, "Congratulations! You have set your new walkstyle!");
     }
     else if(!strcmp(params, "4", true))
     {
         PlayerInfo[playerid][pWalkStyle] = 4;
-        SCM(playerid, COLOR_WHITE, "Congratulations! You have set your new walkstyle!");
+        SendClientMessage(playerid, COLOR_WHITE, "Congratulations! You have set your new walkstyle!");
     }
     return 1;
 }
@@ -3563,7 +3561,7 @@ CMD:carr(playerid, params[])
     if(sscanf(params, "i", model)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /carr [modelid]");
     GetPlayerPos(playerid, X, Y, Z);
     
-    if(model < 400 || model > 611) return SCM(playerid, COLOR_LIGHTRED, "id's 400-600.");
+    if(model < 400 || model > 611) return SendClientMessage(playerid, COLOR_LIGHTRED, "id's 400-600.");
     
     CreateVehicle(model, X+1, Y+1, Z+1, 0.0, 0, 0, 9999);
 	return 1;
@@ -3772,7 +3770,7 @@ CMD:tazer(playerid, params[])
 {
 	new sendername[MAX_PLAYER_NAME];
 	GetPlayerName(playerid, sendername, sizeof(sendername));
-	if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+	if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 	if(Tazer[playerid] == 0)
 	{
 		GivePlayerWeapon(playerid, 23, 100);
@@ -3792,7 +3790,7 @@ CMD:tazer(playerid, params[])
 //=========================VEHICLE COMMANDS=========================
 CMD:fix(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not driving a vehicle!");
 	new vehicleid = GetPlayerVehicleID(playerid);
 	RepairVehicle(vehicleid);
@@ -3801,7 +3799,7 @@ CMD:fix(playerid, params[])
 
 CMD:flip(playerid, params[])
 {
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not driving a vehicle!");
 	new vehicleid = GetPlayerVehicleID(playerid);
 	new Float:angle;
@@ -3812,7 +3810,7 @@ CMD:flip(playerid, params[])
 
 CMD:tow(playerid, params[])
 {
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not driving a vehicle!");
 	new vehicleid = GetPlayerVehicleID(playerid);
 	if(IsTrailerAttachedToVehicle(vehicleid))
@@ -3867,7 +3865,7 @@ CMD:vehicle(playerid, params[])
 
 CMD:alock(playerid, params[])
 {
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	new vehicleid;
 	if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 	{
@@ -3953,7 +3951,7 @@ CMD:v(playerid, params[])
 			if(!PlayerToVehicle(playerid, vehicleid, 3.5)) vehicleid = 0;
 	 	}
 		if(!vehicleid) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to a vehicle.");
-  		if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER) return SCM(playerid, COLOR_LIGHTRED, "You are already in a vehicle.");
+  		if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already in a vehicle.");
 		GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
   		if(doors == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle is already unlocked.");
   		if(breaking[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already breaking in.");
@@ -3980,7 +3978,7 @@ CMD:v(playerid, params[])
 	 	}
 	 	
 	 	GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
-		if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SCM(playerid, COLOR_LIGHTRED, "You need to be in a vehicle.");
+		if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be in a vehicle.");
 		if(hotwiring[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already hotwiring.");
 		if(toolkit[playerid] > 0)
 		{
@@ -4000,7 +3998,7 @@ CMD:v(playerid, params[])
 		if(!vehicleid || IsBicycle(vehicleid) || IsPlayerInAnyVehicle(playerid))
 			return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to a vehicle!");
 		new id = GetVehicleID(vehicleid);
-  		if(boot == 0) return SCM(playerid, COLOR_LIGHTRED, "The trunk is closed.");
+  		if(boot == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "The trunk is closed.");
 		SetPVarInt(playerid, "DialogValue1", id);
 		ShowDialog(playerid, DIALOG_TRUNK);
 		return 1;
@@ -4235,11 +4233,11 @@ CMD:v(playerid, params[])
 			SendClientMessage(playerid, COLOR_WHITE, "You have successfully spawned your vehicle.");
 			SetPlayerCheckpoint(playerid, VehiclePos[vehicleid][0], VehiclePos[vehicleid][1], VehiclePos[vehicleid][2], 5.0);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "That vehicle is already spawned.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "That vehicle is already spawned.");
     }
    	else if(!strcmp(params, "buy", true, 3))
  	{
- 	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, 331.8448, 1288.8008, 452.9749)) return SCM(playerid, COLOR_LIGHTRED, "You need to be inside the dealership.");
+ 	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, 331.8448, 1288.8008, 452.9749)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be inside the dealership.");
  	    new info[3000];
 		strcat(info, "BMX "COL_GREEN"($1000)\nBike "COL_GREEN"($1000)\nFaggio "COL_GREEN"($1500)", sizeof(info));
 		strcat(info, "\nSadler "COL_GREEN"($3000)\nDinghy "COL_GREEN"($3000)\nFreeway "COL_GREEN"($3500)", sizeof(info));
@@ -4276,7 +4274,7 @@ CMD:v(playerid, params[])
     }
    	else if(!strcmp(params, "register", true, 8))
  	{
- 	    if(!IsPlayerInRangeOfPoint(playerid, 20.0, 2127.4885, -1136.8491, 25.4748)) return SCM(playerid, COLOR_LIGHTRED, "You need to be near the dealership.");
+ 	    if(!IsPlayerInRangeOfPoint(playerid, 20.0, 2127.4885, -1136.8491, 25.4748)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be near the dealership.");
  	    if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 		{
 			new vehicleid;
@@ -4305,7 +4303,7 @@ CMD:v(playerid, params[])
 				INI_WriteInt(File, "Plate1", PlayerInfo[playerid][pPlate1]);
 				INI_Close(File);
 
-				SCM(playerid, -1, "HINT: You have to /v park your vehicle one time for your number plate to show.");
+				SendClientMessage(playerid, -1, "HINT: You have to /v park your vehicle one time for your number plate to show.");
 				return 1;
 			}
 			else if(PlayerInfo[playerid][pPlate2] == 0)
@@ -4318,7 +4316,7 @@ CMD:v(playerid, params[])
 				INI_WriteInt(File, "Plate2", PlayerInfo[playerid][pPlate2]);
 				INI_Close(File);
 
-				SCM(playerid, -1, "HINT: You have to /v park your vehicle one time for your number plate to show.");
+				SendClientMessage(playerid, -1, "HINT: You have to /v park your vehicle one time for your number plate to show.");
 				return 1;
 			}
 			else if(PlayerInfo[playerid][pPlate3] == 0)
@@ -4330,11 +4328,11 @@ CMD:v(playerid, params[])
 				INI_WriteInt(File, "Plate3", PlayerInfo[playerid][pPlate3]);
 				INI_Close(File);
 
-				SCM(playerid, -1, "HINT: You have to /v park your vehicle one time for your number plate to show.");
+				SendClientMessage(playerid, -1, "HINT: You have to /v park your vehicle one time for your number plate to show.");
 				return 1;
 			}
 		}
-		else return SCM(playerid, COLOR_LIGHTRED, "You need to be in a vehicle.");
+		else return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be in a vehicle.");
     }
    	else if(!strcmp(params, "sell", true, 4))
  	{
@@ -4437,7 +4435,7 @@ CMD:refuel(playerid, params[])
 
 CMD:rtc(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not in a vehicle.");
 	SetVehicleToRespawn(GetPlayerVehicleID(playerid));
 	SendClientMessage(playerid, COLOR_WHITE, "Vehicle respawned.");
@@ -4481,7 +4479,7 @@ CMD:vgivekeys(playerid, params[])
 
 CMD:setfuel(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not in a vehicle.");
 	new amount, msg[128];
 	if(sscanf(params, "d", amount)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /setfuel [amount]");
@@ -4494,7 +4492,7 @@ CMD:setfuel(playerid, params[])
 
 CMD:editv(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 	{
 		new id = GetVehicleID(GetPlayerVehicleID(playerid));
@@ -4513,7 +4511,7 @@ CMD:editv(playerid, params[])
 
 CMD:adddealership(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(!IsPlayerSpawned(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't use this command now.");
 	for(new i=1; i < MAX_DEALERSHIPS; i++)
 	{
@@ -4535,7 +4533,7 @@ CMD:adddealership(playerid, params[])
 
 CMD:deletedealership(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	new dealerid, msg[128];
 	if(sscanf(params, "d", dealerid)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /deletedealership [dealerid]");
 	if(!IsValidDealership(dealerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid dealerid.");
@@ -4558,7 +4556,7 @@ CMD:deletedealership(playerid, params[])
 
 CMD:movedealership(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	new dealerid, msg[128];
 	if(sscanf(params, "d", dealerid)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /movedealership [dealerid]");
 	if(!IsValidDealership(dealerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid dealerid.");
@@ -4572,7 +4570,7 @@ CMD:movedealership(playerid, params[])
 
 CMD:gotodealership(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	new dealerid, msg[128];
 	if(sscanf(params, "d", dealerid)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /gotodealership [dealerid]");
 	if(!IsValidDealership(dealerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid dealerid");
@@ -4584,7 +4582,7 @@ CMD:gotodealership(playerid, params[])
 
 CMD:addfuelstation(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(!IsPlayerSpawned(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't use this command now.");
 	for(new i=1; i < MAX_FUEL_STATIONS; i++)
 	{
@@ -4606,7 +4604,7 @@ CMD:addfuelstation(playerid, params[])
 
 CMD:deletefuelstation(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	new stationid, msg[128];
 	if(sscanf(params, "d", stationid)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /deletefuelstation [stationid]");
 	if(!IsValidFuelStation(stationid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid stationid.");
@@ -4620,7 +4618,7 @@ CMD:deletefuelstation(playerid, params[])
 
 CMD:movefuelstation(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	new stationid, msg[128];
 	if(sscanf(params, "d", stationid)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /movefuelstation [stationid]");
 	if(!IsValidFuelStation(stationid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid stationid.");
@@ -4634,7 +4632,7 @@ CMD:movefuelstation(playerid, params[])
 
 CMD:gotofuelstation(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	new stationid, msg[128];
 	if(sscanf(params, "d", stationid)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /gotofuelstation [stationid]");
 	if(!IsValidFuelStation(stationid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid stationid.");
@@ -4738,7 +4736,7 @@ CMD:pickupgun(playerid, params[])
 
 CMD:emptyregister(playerid, params[])
 {
-	if(robbing[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You are not robbing the store.");
+	if(robbing[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not robbing the store.");
 	if(IsPlayerInRangeOfPoint(playerid, 5.0, -23.7449, -55.6180, 1003.5469))
  	{
  	    if(RobstoreCP[playerid] == 1)
@@ -4747,7 +4745,7 @@ CMD:emptyregister(playerid, params[])
 			TimerRob1[playerid] = SetTimerEx("timerrob1", 1000, 1, "i", playerid);
 		 	TogglePlayerControllable(playerid, 0);
 		}
-		else return SCM(playerid, COLOR_LIGHTRED, "You're not at the right position.");
+		else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not at the right position.");
 	}
 	else if(IsPlayerInRangeOfPoint(playerid, 5.0, -31.0378, -29.0264, 1003.5573))
  	{
@@ -4757,7 +4755,7 @@ CMD:emptyregister(playerid, params[])
 			TimerRob2[playerid] = SetTimerEx("timerrob2", 1000, 1, "i", playerid);
 		 	TogglePlayerControllable(playerid, 0);
 		}
-		else return SCM(playerid, COLOR_LIGHTRED, "You're not at the right position.");
+		else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not at the right position.");
 	}
 	else if(IsPlayerInRangeOfPoint(playerid, 5.0, -28.0267, -89.9484, 1003.5469))
  	{
@@ -4767,7 +4765,7 @@ CMD:emptyregister(playerid, params[])
 			TimerRob3[playerid] = SetTimerEx("timerrob3", 1000, 1, "i", playerid);
 		 	TogglePlayerControllable(playerid, 0);
 		}
-		else return SCM(playerid, COLOR_LIGHTRED, "You're not at the right position.");
+		else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not at the right position.");
 	}
 	return 1;
 }
@@ -4775,18 +4773,18 @@ CMD:emptyregister(playerid, params[])
 /* CMD:robstore(playerid, params[])
 {
 	new string[144];
-	if(robbing[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You are already robbing the store.");
+	if(robbing[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already robbing the store.");
 	if(IsPlayerInRangeOfPoint(playerid, 10.0, -23.7449, -55.6180, 1003.5469) ||
 	IsPlayerInRangeOfPoint(playerid, 10.0, -31.0378, -29.0264, 1003.5573) || IsPlayerInRangeOfPoint(playerid, 10.0, -28.0267, -89.9484, 1003.5469))
 	{
 	 	if(IsPlayerInRangeOfPoint(playerid, 5.0, -23.7449, -55.6180, 1003.5469))
 	 	{
-			if(StoresRobbed[0] != 0) return SCM(playerid, COLOR_LIGHTRED, "This store was robbed recently.");
+			if(StoresRobbed[0] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "This store was robbed recently.");
 			{
 				new weaponid = GetPlayerWeapon(playerid);
 				if(weaponid == 0)
 				{
-					SCM(playerid, COLOR_LIGHTRED, "You don't have a weapon in your hand.");
+					SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have a weapon in your hand.");
 					return 1;
 				}
 				for(new i = 0; i < MAX_PLAYERS; i++)
@@ -4799,7 +4797,7 @@ CMD:emptyregister(playerid, params[])
 					 		SetPlayerCheckpoint(playerid, -22.5778, -57.3718, 1003.5469, 1.0);
 					 		RobstoreCP[playerid] = 1;
 					 		SetTimer( "RobbedStore1", 18000000, true );
-			 				SCM(playerid, -1, "Get behind the counter and open the cash register.");
+			 				SendClientMessage(playerid, -1, "Get behind the counter and open the cash register.");
 				 			robbing[playerid] = true;
   						    if(GetPlayerVirtualWorld(playerid) == 6)
   						    {
@@ -4850,19 +4848,19 @@ CMD:emptyregister(playerid, params[])
 				    			return 1;
 							}
 						}
-						else return SCM(playerid, COLOR_LIGHTRED, "There is no police officers on duty online.");
+						else return SendClientMessage(playerid, COLOR_LIGHTRED, "There is no police officers on duty online.");
 					}
 				}
 			}
 		}
 		else if(IsPlayerInRangeOfPoint(playerid, 5.0, -31.0378, -29.0264, 1003.5573))
 	 	{
-			if(StoresRobbed[1] != 0) return SCM(playerid, COLOR_LIGHTRED, "This store was robbed recently.");
+			if(StoresRobbed[1] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "This store was robbed recently.");
 			{
 			    new weaponid = GetPlayerWeapon(playerid);
 				if(weaponid == 0)
 				{
-					SCM(playerid, COLOR_LIGHTRED, "You don't have a weapon in your hand.");
+					SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have a weapon in your hand.");
 					return 1;
 				}
 				for(new i = 0; i < MAX_PLAYERS; i++)
@@ -4875,7 +4873,7 @@ CMD:emptyregister(playerid, params[])
 					 		SetPlayerCheckpoint(playerid, -29.7149, -30.6263, 1003.5573, 1.0);
 					 		RobstoreCP[playerid] = 2;
 					 		SetTimer( "RobbedStore2", 18000000, true );
-			 				SCM(playerid, -1, "Get behind the counter and open the cash register.");
+			 				SendClientMessage(playerid, -1, "Get behind the counter and open the cash register.");
 				 			robbing[playerid] = true;
 				    		if(GetPlayerVirtualWorld(playerid) == 6)
   						    {
@@ -4926,19 +4924,19 @@ CMD:emptyregister(playerid, params[])
 				    			return 1;
 							}
 	    				}
-						else return SCM(playerid, COLOR_LIGHTRED, "There is no police officers on duty online.");
+						else return SendClientMessage(playerid, COLOR_LIGHTRED, "There is no police officers on duty online.");
 					}
 				}
 			}
 		}
 		else if(IsPlayerInRangeOfPoint(playerid, 5.0, -28.0267, -89.9484, 1003.5469))
 	 	{
-			if(StoresRobbed[2] != 0) return SCM(playerid, COLOR_LIGHTRED, "This store was robbed recently.");
+			if(StoresRobbed[2] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "This store was robbed recently.");
 			{
    				new weaponid = GetPlayerWeapon(playerid);
 				if(weaponid == 0)
 				{
-					SCM(playerid, COLOR_LIGHTRED, "You don't have a weapon in your hand.");
+					SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have a weapon in your hand.");
 					return 1;
 				}
 				for(new i = 0; i < MAX_PLAYERS; i++)
@@ -4951,7 +4949,7 @@ CMD:emptyregister(playerid, params[])
 					 		SetPlayerCheckpoint(playerid, -26.9472, -91.6197, 1003.5469, 1.0);
 					 		RobstoreCP[playerid] = 3;
 					 		SetTimer( "RobbedStore3", 18000000, true );
-			 				SCM(playerid, -1, "Get behind the counter and open the cash register.");
+			 				SendClientMessage(playerid, -1, "Get behind the counter and open the cash register.");
 				 			robbing[playerid] = true;
 				    		if(GetPlayerVirtualWorld(playerid) == 6)
   						    {
@@ -5002,22 +5000,22 @@ CMD:emptyregister(playerid, params[])
 				    			return 1;
 							}
     					}
-						else return SCM(playerid, COLOR_LIGHTRED, "There is no police officers on duty online.");
+						else return SendClientMessage(playerid, COLOR_LIGHTRED, "There is no police officers on duty online.");
 					}
 				}
 			}
 		}
 	}
-	else return SCM(playerid, COLOR_LIGHTRED, "You are not in a store which you can rob.");
+	else return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not in a store which you can rob.");
 	return 1;
 }*/
 
 CMD:dropphone(playerid, params[])
 {
-	if(PlayerInfo[playerid][pPhone] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not have a phone.");
+	if(PlayerInfo[playerid][pPhone] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a phone.");
 	PlayerInfo[playerid][pNumber] = 0;
 	PlayerInfo[playerid][pPhone] = 0;
-	SCM(playerid, COLOR_WHITE, "You threw your phone on the ground.");
+	SendClientMessage(playerid, COLOR_WHITE, "You threw your phone on the ground.");
 	return 1;
 }
 
@@ -5032,7 +5030,7 @@ CMD:call(playerid, params[])
 		return 1;
 	}
 	
-	if(PlayerInfo[playerid][pPhone] == 0) return SCM(playerid, COLOR_LIGHTRED, "You don't have a phone.");
+	if(PlayerInfo[playerid][pPhone] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have a phone.");
 	format(string, sizeof(string), "* %s takes out their phone.", GetName(playerid));
 	ProxDetector(30.0, playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 	
@@ -5127,7 +5125,7 @@ CMD:hangup(playerid, params[])
 CMD:sms(playerid, params[])
 {
     new string[126], smstext[126], tnum;
-    if(PlayerInfo[playerid][pPhone] == 0) return SCM(playerid, COLOR_LIGHTRED, "You don't have a phone.");
+    if(PlayerInfo[playerid][pPhone] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have a phone.");
     if(sscanf(params, "is[126]", tnum, smstext)) SendClientMessage(playerid, COLOR_LIGHTRED, "USAGE: {FFFFFF} /sms [number] [input]");
     else
 	{
@@ -5277,8 +5275,8 @@ CMD:greet(playerid, params[])
     new id, greeetnumber, string[64], Float:X, Float:Y, Float:Z;
     GetPlayerPos(id, X, Y, Z);
 
-    if(sscanf(params, "ud", id, greeetnumber)) return SCM(playerid, COLOR_GREY, "[Usage:] /greet [playerid/partofname] [greet (0-6)].");
-    if(playerid == id) return SCM(playerid, COLOR_LIGHTRED, "You can't greet yourself.");
+    if(sscanf(params, "ud", id, greeetnumber)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /greet [playerid/partofname] [greet (0-6)].");
+    if(playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't greet yourself.");
 
     if(IsPlayerInRangeOfPoint(playerid, 7.0, X, Y, Z))
 	{
@@ -5289,13 +5287,13 @@ CMD:greet(playerid, params[])
 		greetInvited[id] = true;
 		greetNumber[id] = greeetnumber;
   		Player_Greet[id] = playerid;
-	} else return SCM(playerid, COLOR_LIGHTRED, "You're not close enough.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close enough.");
   	return 1;
 }
 
 CMD:acceptgreet(playerid, params[])
 {
-    if(greetInvited[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You're not invited to greet anyone.");
+    if(greetInvited[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not invited to greet anyone.");
     if(greetNumber[playerid] == 1)
     {
     	ApplyPlayerAnimation(playerid, "GANGS", "HNDSHKAA", 4.0, 0, 0, 0, 0, 0, 1);
@@ -5338,26 +5336,26 @@ CMD:acceptgreet(playerid, params[])
 CMD:createnote(playerid, params[])
 {
 	new note[128], command[28];
-	if(sscanf(params, "s[28]s[128]", command, note)) return SCM(playerid, COLOR_GREY, "[Usage:] /createnote [slot] [message]");
+	if(sscanf(params, "s[28]s[128]", command, note)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /createnote [slot] [message]");
 	if(!strcmp(command, "1", true))
     {
         PlayerInfo[playerid][pNote1] = note;
-        SCM(playerid, COLOR_WHITE, "You have successfully written your note.");
+        SendClientMessage(playerid, COLOR_WHITE, "You have successfully written your note.");
     }
     else if(!strcmp(command, "2", true))
     {
         PlayerInfo[playerid][pNote2] = note;
-        SCM(playerid, COLOR_WHITE, "You have successfully written your note.");
+        SendClientMessage(playerid, COLOR_WHITE, "You have successfully written your note.");
     }
     else if(!strcmp(command, "3", true))
     {
         PlayerInfo[playerid][pNote3] = note;
-        SCM(playerid, COLOR_WHITE, "You have successfully written your note.");
+        SendClientMessage(playerid, COLOR_WHITE, "You have successfully written your note.");
     }
     else if(!strcmp(command, "4", true))
     {
         PlayerInfo[playerid][pNote4] = note;
-        SCM(playerid, COLOR_WHITE, "You have successfully written your note.");
+        SendClientMessage(playerid, COLOR_WHITE, "You have successfully written your note.");
     }
 	return 1;
 }
@@ -5365,26 +5363,26 @@ CMD:createnote(playerid, params[])
 CMD:deletenote(playerid, params[])
 {
 	new command[28];
-	if(sscanf(params, "s[28]", command)) return SCM(playerid, COLOR_GREY, "[Usage:] /deletenote [slot]");
+	if(sscanf(params, "s[28]", command)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /deletenote [slot]");
 	if(!strcmp(command, "1", true))
     {
         PlayerInfo[playerid][pNote1] = 0;
-        SCM(playerid, COLOR_WHITE, "You have successfully deleted your note.");
+        SendClientMessage(playerid, COLOR_WHITE, "You have successfully deleted your note.");
     }
     else if(!strcmp(command, "2", true))
     {
         PlayerInfo[playerid][pNote2] = 0;
-        SCM(playerid, COLOR_WHITE, "You have successfully deleted your note.");
+        SendClientMessage(playerid, COLOR_WHITE, "You have successfully deleted your note.");
     }
     else if(!strcmp(command, "3", true))
     {
         PlayerInfo[playerid][pNote3] = 0;
-        SCM(playerid, COLOR_WHITE, "You have successfully deleted your note.");
+        SendClientMessage(playerid, COLOR_WHITE, "You have successfully deleted your note.");
     }
     else if(!strcmp(command, "4", true))
     {
         PlayerInfo[playerid][pNote4] = 0;
-        SCM(playerid, COLOR_WHITE, "You have successfully deleted your note.");
+        SendClientMessage(playerid, COLOR_WHITE, "You have successfully deleted your note.");
     }
 	return 1;
 }
@@ -5402,7 +5400,7 @@ COMMAND:stopbus(playerid, params[])
 	else if(IsPlayerInVehicle(playerid, southbus))
 	{
 		ProxDetector(20.0, playerid, "[South Suburban Route:] STOPPING at the next bus stop!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
-	} else return SCM(playerid, COLOR_LIGHTRED, "You are not in a bus.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not in a bus.");
 	return 1;
 }
 
@@ -5437,7 +5435,7 @@ CMD:notes(playerid, params[])
 CMD:readnote(playerid, params[])
 {
 	new command[28], string[128];
-	if(sscanf(params, "s[28]s[128]", command)) return SCM(playerid, COLOR_GREY, "[Usage:] /createnote [slot]");
+	if(sscanf(params, "s[28]s[128]", command)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /createnote [slot]");
 	if(!strcmp(command, "1", true))
     {
   		format(string, sizeof(string), "Note 1: %s", PlayerInfo[playerid][pNote1]);
@@ -5465,9 +5463,9 @@ CMD:fish(playerid, params[])
 {
 	if(IsPlayerInRangeOfPoint(playerid, 15.0, 388.1848, -2088.7964, 7.8359))
 	{
-	        if(WormAttached[playerid] < 1) return SCM(playerid, COLOR_LIGHTRED, "You need to have a worm attached to the fishing rod to fish.");
-	        if(Equipped[playerid] == 0) return SCM(playerid, COLOR_LIGHTRED, "You need to have your fishing rod equipped.");
-	        if(Fishing[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You are already fishing.");
+	        if(WormAttached[playerid] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to have a worm attached to the fishing rod to fish.");
+	        if(Equipped[playerid] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to have your fishing rod equipped.");
+	        if(Fishing[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already fishing.");
 	        PlayerActionMessage(playerid, 20.0, "begins to fish with his fishing rod.");
   			fish[playerid] = 30; //change it with the timer time
     		TimerFish[playerid] = SetTimerEx("timerFish", 1000, 1, "i", playerid);
@@ -5477,7 +5475,7 @@ CMD:fish(playerid, params[])
 	    	Fishing[playerid] = true;
 	    	wormattached2[playerid] = 0;
 	}
-	else return SCM(playerid, COLOR_LIGHTRED, "You can't fish here.");
+	else return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't fish here.");
   	return 1;
 }
 
@@ -5485,23 +5483,23 @@ CMD:work(playerid, params[])
 {
 	if(PlayerInfo[playerid][pJob] == 1)
 	{
-	    if(WorkingJunk[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You are already working. /stopworking in order to stop working.");
-	    if(!IsPlayerInRangeOfPoint(playerid, 30.0, -1863.3596, -1623.5951, 21.9313)) return SCM(playerid, COLOR_LIGHTRED, "You need to be your workplace in order to work.");
-	    SCM(playerid, -1, "Get inside one of the tugs and begin to collect junk.");
+	    if(WorkingJunk[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already working. /stopworking in order to stop working.");
+	    if(!IsPlayerInRangeOfPoint(playerid, 30.0, -1863.3596, -1623.5951, 21.9313)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be your workplace in order to work.");
+	    SendClientMessage(playerid, -1, "Get inside one of the tugs and begin to collect junk.");
         WorkingJunk[playerid] = true;
 	}
 	else if(PlayerInfo[playerid][pJob] == 2)
 	{
-	    if(WorkingLumber[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You are already working. /stopworking in order to stop working.");
-	    if(!IsPlayerInRangeOfPoint(playerid, 30.0, -2006.9303, -2400.5645, 34.9708)) return SCM(playerid, COLOR_LIGHTRED, "You need to be your workplace in order to work.");
-	    SCM(playerid, -1, "Get inside one of the walton's.");
+	    if(WorkingLumber[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already working. /stopworking in order to stop working.");
+	    if(!IsPlayerInRangeOfPoint(playerid, 30.0, -2006.9303, -2400.5645, 34.9708)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be your workplace in order to work.");
+	    SendClientMessage(playerid, -1, "Get inside one of the walton's.");
         WorkingLumber[playerid] = true;
 	}
 	else if(PlayerInfo[playerid][pJob] == 3)
 	{
-	    if(WorkingShop[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You are already working. /stopworking in order to stop working.");
-	    if(!IsPlayerInRangeOfPoint(playerid, 30.0, -30.2784, -57.0121, 1003.5469)) return SCM(playerid, COLOR_LIGHTRED, "You need to be your workplace in order to work.");
-	    SCM(playerid, -1, "Fill the shelfs with products.");
+	    if(WorkingShop[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already working. /stopworking in order to stop working.");
+	    if(!IsPlayerInRangeOfPoint(playerid, 30.0, -30.2784, -57.0121, 1003.5469)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be your workplace in order to work.");
+	    SendClientMessage(playerid, -1, "Fill the shelfs with products.");
         WorkingShop[playerid] = true;
         SetPlayerCheckpoint(playerid, -27.2096, -53.1585, 1003.5469, 1.0);
         ShopCP[playerid] = 1;
@@ -5512,11 +5510,11 @@ CMD:work(playerid, params[])
 CMD:place(playerid, params[])
 {
 	new string[128];
-	if(Producting[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You are already doing this.");
-	if(WorkingShop[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You are not working.");
+	if(Producting[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already doing this.");
+	if(WorkingShop[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not working.");
 	if(ShopCP[playerid] == 1)
 	{
-		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -27.2096, -53.1585, 1003.5469)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
+		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -27.2096, -53.1585, 1003.5469)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
 		TogglePlayerControllable(playerid, 0);
 		shopwork[playerid] = 10; //change it with the timer time
 		TimerShop[playerid] = SetTimerEx("timershop", 1000, 1, "i", playerid);
@@ -5527,7 +5525,7 @@ CMD:place(playerid, params[])
 	}
 	else if(ShopCP[playerid] == 2)
 	{
-		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -28.4407, -49.2976, 1003.5469)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
+		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -28.4407, -49.2976, 1003.5469)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
 		TogglePlayerControllable(playerid, 0);
 		shopwork[playerid] = 10; //change it with the timer time
 		TimerShop[playerid] = SetTimerEx("timershop", 1000, 1, "i", playerid);
@@ -5538,7 +5536,7 @@ CMD:place(playerid, params[])
 	}
 	else if(ShopCP[playerid] == 3)
 	{
-		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -36.5776, -49.9914, 1003.5469)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
+		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -36.5776, -49.9914, 1003.5469)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
 		TogglePlayerControllable(playerid, 0);
 		shopwork[playerid] = 10; //change it with the timer time
 		TimerShop[playerid] = SetTimerEx("timershop", 1000, 1, "i", playerid);
@@ -5549,7 +5547,7 @@ CMD:place(playerid, params[])
 	}
 	else if(ShopCP[playerid] == 4)
 	{
-		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -36.5628, -55.4194, 1003.5469)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
+		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -36.5628, -55.4194, 1003.5469)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
 		TogglePlayerControllable(playerid, 0);
 		shopwork[playerid] = 10; //change it with the timer time
 		TimerShop[playerid] = SetTimerEx("timershop", 1000, 1, "i", playerid);
@@ -5560,7 +5558,7 @@ CMD:place(playerid, params[])
 	}
 	else if(ShopCP[playerid] == 5)
 	{
-		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -31.2107, -53.2609, 1003.5469)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
+		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -31.2107, -53.2609, 1003.5469)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
 		TogglePlayerControllable(playerid, 0);
 		shopwork[playerid] = 10; //change it with the timer time
 		TimerShop[playerid] = SetTimerEx("timershop", 1000, 1, "i", playerid);
@@ -5571,7 +5569,7 @@ CMD:place(playerid, params[])
 	}
 	else if(ShopCP[playerid] == 6)
 	{
-		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -22.7139, -49.3138, 1003.5469)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
+		if(!IsPlayerInRangeOfPoint(playerid, 2.0, -22.7139, -49.3138, 1003.5469)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right shelf.");
 		TogglePlayerControllable(playerid, 0);
 		shopwork[playerid] = 10; //change it with the timer time
 		TimerShop[playerid] = SetTimerEx("timershop", 1000, 1, "i", playerid);
@@ -5585,11 +5583,11 @@ CMD:place(playerid, params[])
 
 CMD:chop(playerid, params[])
 {
-	if(WorkingLumber[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You are not working.");
-	if(Chopping[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You are already cutting down a tree.");
+	if(WorkingLumber[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not working.");
+	if(Chopping[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already cutting down a tree.");
  	if(LumberCP[playerid] == 1)
  	{
-	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2219.23193, -2165.13379, 41.66151)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
+	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2219.23193, -2165.13379, 41.66151)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
 		TogglePlayerControllable(playerid, 0);
 		ApplyPlayerAnimation(playerid, "CHAINSAW", "WEAPON_csaw", 4.0, 1, 0, 0, 0, 0, 1);
 		GivePlayerWeapon(playerid, 9, 1);
@@ -5600,7 +5598,7 @@ CMD:chop(playerid, params[])
 	}
  	else if(LumberCP[playerid] == 2)
  	{
-	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2215.63647, -2154.07959, 43.49667)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
+	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2215.63647, -2154.07959, 43.49667)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
 		TogglePlayerControllable(playerid, 0);
 		ApplyPlayerAnimation(playerid, "CHAINSAW", "WEAPON_csaw", 4.0, 1, 0, 0, 0, 0, 1);
 		chop[playerid] = 10; //change it with the timer time
@@ -5610,7 +5608,7 @@ CMD:chop(playerid, params[])
 	}
  	else if(LumberCP[playerid] == 3)
  	{
-	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2209.71729, -2142.16846, 45.55535)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
+	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2209.71729, -2142.16846, 45.55535)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
 		TogglePlayerControllable(playerid, 0);
 		ApplyPlayerAnimation(playerid, "CHAINSAW", "WEAPON_csaw", 4.0, 1, 0, 0, 0, 0, 1);
 		chop[playerid] = 10; //change it with the timer time
@@ -5620,7 +5618,7 @@ CMD:chop(playerid, params[])
 	}
  	else if(LumberCP[playerid] == 4)
  	{
-	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2197.78564, -2154.36914, 45.55535)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
+	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2197.78564, -2154.36914, 45.55535)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
 		TogglePlayerControllable(playerid, 0);
 		ApplyPlayerAnimation(playerid, "CHAINSAW", "WEAPON_csaw", 4.0, 1, 0, 0, 0, 0, 1);
 		chop[playerid] = 10; //change it with the timer time
@@ -5630,7 +5628,7 @@ CMD:chop(playerid, params[])
 	}
 	else if(LumberCP[playerid] == 5)
  	{
-	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2192.93359, -2141.94360, 47.62198)) return SCM(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
+	    if(!IsPlayerInRangeOfPoint(playerid, 5.0, -2192.93359, -2141.94360, 47.62198)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not at the right tree.");
 		TogglePlayerControllable(playerid, 0);
 		ApplyPlayerAnimation(playerid, "CHAINSAW", "WEAPON_csaw", 4.0, 1, 0, 0, 0, 0, 1);
 		chop[playerid] = 10; //change it with the timer time
@@ -5658,7 +5656,7 @@ CMD:stopworking(playerid, params[])
 {
 	if(PlayerInfo[playerid][pJob] == 1)
 	{
-	    if(WorkingJunk[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You are not working.");
+	    if(WorkingJunk[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not working.");
 	    WorkingJunk[playerid] = false;
 	    JunkCP[playerid] = 0;
     	for(new i=0; i<5; i++)
@@ -5668,33 +5666,33 @@ CMD:stopworking(playerid, params[])
 				new vehicle;
 				vehicle = GetPlayerVehicleID(playerid);
 				SetVehicleToRespawn(vehicle);
-				SCM(playerid, COLOR_WHITE, "You have stopped working and your job-vehicle has respawned.");
+				SendClientMessage(playerid, COLOR_WHITE, "You have stopped working and your job-vehicle has respawned.");
 				TogglePlayerControllable(playerid, 1);
 			}
 		}
 	}
 	if(PlayerInfo[playerid][pJob] == 2)
 	{
-	    if(WorkingLumber[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You are not working.");
+	    if(WorkingLumber[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not working.");
 	    WorkingLumber[playerid] = false;
 	    LumberCP[playerid] = 0;
 		TogglePlayerControllable(playerid, 1);
-		SCM(playerid, COLOR_LIGHTRED, "You have stopped working.");
+		SendClientMessage(playerid, COLOR_LIGHTRED, "You have stopped working.");
 		DisablePlayerCheckpoint(playerid);
 	}
 	if(PlayerInfo[playerid][pJob] == 3)
 	{
-	    if(WorkingShop[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You are not working.");
+	    if(WorkingShop[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not working.");
 	    WorkingShop[playerid] = false;
 	    ShopCP[playerid] = 0;
-	    SCM(playerid, COLOR_LIGHTRED, "You have stopped working.");
+	    SendClientMessage(playerid, COLOR_LIGHTRED, "You have stopped working.");
 	    DisablePlayerCheckpoint(playerid);
 	}
 	if(PlayerInfo[playerid][pJob] == 11)
 	{
 	    PizzaCP1[playerid] = 0;
 	    PizzaCP2[playerid] = 0;
-	    SCM(playerid, COLOR_LIGHTRED, "You have stopped working.");
+	    SendClientMessage(playerid, COLOR_LIGHTRED, "You have stopped working.");
 	    DisablePlayerCheckpoint(playerid);
 	    LeftPizzaBoy[playerid] = 0;
 	}
@@ -5703,61 +5701,61 @@ CMD:stopworking(playerid, params[])
 
 CMD:takejob(playerid, params[])
 {
-	if(PlayerInfo[playerid][pJob] > 0) return SCM(playerid, COLOR_LIGHTRED, "You already have a job. /quitjob.");
+	if(PlayerInfo[playerid][pJob] > 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You already have a job. /quitjob.");
     if(IsPlayerInRangeOfPoint(playerid, 7.0, -1863.3596, -1623.5951, 21.9313))
     {
-        if(PlayerInfo[playerid][pWelfare] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
-        if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You need to be eighteen years old to have this job.");
+        if(PlayerInfo[playerid][pWelfare] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
+        if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be eighteen years old to have this job.");
 		PlayerInfo[playerid][pJob] = 1;
-		SCM(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a junk collector.");
+		SendClientMessage(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a junk collector.");
 	}
 	else if(IsPlayerInRangeOfPoint(playerid, 7.0, -2006.9303, -2400.5645, 34.9708))
 	{
-	    if(PlayerInfo[playerid][pWelfare] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
-		if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You need to be eighteen years old to have this job.");
+	    if(PlayerInfo[playerid][pWelfare] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
+		if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be eighteen years old to have this job.");
 	    PlayerInfo[playerid][pJob] = 2;
-   		SCM(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a lumberjack.");
+   		SendClientMessage(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a lumberjack.");
 	}
 	else if(IsPlayerInRangeOfPoint(playerid, 7.0, -30.2784, -57.0121, 1003.5469))
 	{
-	    if(PlayerInfo[playerid][pWelfare] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
-		if(PlayerInfo[playerid][pAge] > 18) return SCM(playerid, COLOR_LIGHTRED, "This workplace only accepts workers under the age of eighteen.");
+	    if(PlayerInfo[playerid][pWelfare] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
+		if(PlayerInfo[playerid][pAge] > 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "This workplace only accepts workers under the age of eighteen.");
 	    PlayerInfo[playerid][pJob] = 3;
-	    SCM(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a worker at the 24/7.");
+	    SendClientMessage(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a worker at the 24/7.");
 	}
  	if(IsPlayerInRangeOfPoint(playerid, 7.0, 1771.6489, -1909.2965, 13.5544))
     {
-        if(PlayerInfo[playerid][pWelfare] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
-        if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You need to be eighteen years old to have this job.");
-        if(PlayerInfo[playerid][pPlayingHours] < 2) return SCM(playerid, COLOR_LIGHTRED, "You need to have two hours played in order to get this job.");
+        if(PlayerInfo[playerid][pWelfare] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
+        if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be eighteen years old to have this job.");
+        if(PlayerInfo[playerid][pPlayingHours] < 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to have two hours played in order to get this job.");
 		PlayerInfo[playerid][pJob] = 10;
-		SCM(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a bus driver.");
+		SendClientMessage(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a bus driver.");
 	}
 	if(IsPlayerInRangeOfPoint(playerid, 7.0, 2109.7109, -1789.9832, 13.5547))
     {
-        if(PlayerInfo[playerid][pWelfare] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
+        if(PlayerInfo[playerid][pWelfare] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to quit the welfare program in order to get a job. /quitwelfare");
 		PlayerInfo[playerid][pJob] = 11;
-		SCM(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a pizzaboy.");
+		SendClientMessage(playerid, COLOR_WHITE, "Congratulations on your new job! You are now a pizzaboy.");
 	}
   	return 1;
 }
 
 CMD:quitjob(playerid, params[])
 {
-	if(PlayerInfo[playerid][pJob] == 0) return SCM(playerid, COLOR_LIGHTRED, "You don't have a job.");
+	if(PlayerInfo[playerid][pJob] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have a job.");
 	PlayerInfo[playerid][pJob] = 0;
-	SCM(playerid, COLOR_WHITE, "You have succesfully quit your job.");
+	SendClientMessage(playerid, COLOR_WHITE, "You have succesfully quit your job.");
   	return 1;
 }
 
 CMD:attachworm(playerid, params[])
 {
-	if(PlayerInfo[playerid][pFishingRod] < 1) return SCM(playerid, COLOR_LIGHTRED, "You need to have a fishing rod.");
-	if(attachingw[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You're already attaching a worm to your hook.");
-	if(PlayerInfo[playerid][pWorms] < 1) return SCM(playerid, COLOR_LIGHTRED, "You need to have a worm.");
-	if(Equipped[playerid] == 0) return SCM(playerid, COLOR_LIGHTRED, "You need to have your fishing rod equipped.");
-	if(wormattached2[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have already attached a worm to your hook.");
-	if(Fishing[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You are already fishing. Attach a worm when you're done fishing.");
+	if(PlayerInfo[playerid][pFishingRod] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to have a fishing rod.");
+	if(attachingw[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're already attaching a worm to your hook.");
+	if(PlayerInfo[playerid][pWorms] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to have a worm.");
+	if(Equipped[playerid] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to have your fishing rod equipped.");
+	if(wormattached2[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have already attached a worm to your hook.");
+	if(Fishing[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are already fishing. Attach a worm when you're done fishing.");
 	PlayerActionMessage(playerid, 20.0, "begins to fiddle with the fishing hook.");
 	AttachWorm[playerid] = 5; //change it with the timer time
 	TimerAttachWorm[playerid] = SetTimerEx("timerAttachWorm", 1000, 1, "i", playerid);
@@ -5772,7 +5770,7 @@ CMD:sellfish(playerid, params[])
 {
 	if(IsPlayerInRangeOfPoint(playerid, 7.0, 388.1848, -2088.7964, 7.8359) || IsPlayerInRangeOfPoint(playerid, 7.0, 388.1848, -2088.7964, 7.8359))
 	{
-	    if(PlayerInfo[playerid][pFishes] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any fishes.");
+	    if(PlayerInfo[playerid][pFishes] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any fishes.");
 	    new string[64];
 		new sellfishamount = (PlayerInfo[playerid][pFishes])*(sellfish);
 		GivePlayerMoney(playerid, sellfishamount);
@@ -5789,10 +5787,10 @@ CMD:givegun(playerid, params[])
     playergun = GetPlayerWeapon(playerid);
     playerammo = GetPlayerAmmo(playerid);
 
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /givegun [playerid/partofname].");
-    if(playergun < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have a weapon.");
-    if(playerammo < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any ammo.");
-    if(playerid == id) return SCM(playerid, COLOR_LIGHTRED, "You can't give a weapon to yourself.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /givegun [playerid/partofname].");
+    if(playergun < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a weapon.");
+    if(playerammo < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any ammo.");
+    if(playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give a weapon to yourself.");
 
     GetPlayerPos(id, X, Y, Z);
     if(IsPlayerInRangeOfPoint(playerid, 7.0, X, Y, Z))
@@ -5817,7 +5815,7 @@ CMD:givegun(playerid, params[])
 		format(givegunstring, sizeof(givegunstring), "[%d:%d:%d] %s has given a weapon (%d) to %s.", Hour, Minute, Second, playername, GetPlayerWeapon(playerid), targetname);
 		GiveGunLog(givegunstring);
 		// -------------------------------------------------------
-	} else return SCM(playerid, COLOR_LIGHTRED, "You're not close enough.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close enough.");
   	return 1;
 }
 
@@ -5825,7 +5823,7 @@ CMD:dice(playerid, params[])
 {
 	new
 	dice = 1 + random(6), string[64];
-	if(Dice[playerid] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not have a dice.");
+	if(Dice[playerid] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a dice.");
  	format(string, sizeof(string), "%s rolls a dice that lands on %d.", GetName(playerid), dice);
 	ProxDetector(10.0, playerid, string, COLOR_WHITE, COLOR_WHITE, COLOR_WHITE, COLOR_WHITE, COLOR_WHITE);
   	return 1;
@@ -5852,13 +5850,13 @@ CMD:coin(playerid, params[])
 
 CMD:animlist(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[ANIMATIONS]_______________________________");
-	SCM(playerid, -1, "[ANIMS:] /crack [1-2] /chat /caract /hike /give /pull /face /endchat /show /shoutanim /look /drunk /sit [1-4]");
-	SCM(playerid, -1, "[ANIMS:] /scratch /reload /injured /gsign [1-8] /chill [1-3] /tag [1-3] /camera [1-4]");
-	SCM(playerid, -1, "[ANIMS:] /rap /think /box /tired /stance [1-2] /bar [1-2] /bat [1-3] /lean [1-2] /dance [1-5] /kiss /cpr /vomit");
-	SCM(playerid, -1, "[ANIMS:] /handsup /bomb /getarrested /laugh /lookout /aim /crossarms /car [1-3] /lay [1-3] /what [1-2] /hide");
-	SCM(playerid, -1, "[ANIMS:] /eat /wave [1-3] /chant /slap [1-2] /deal /fucku /taichi /play [1-3] /mourn /cry /searchfiles [1-3] /bball [1-6]");
-	SCM(playerid, -1, "[ANIMS:] /liftup /putdown /pee [1-2] /wank [1-2] /strip [1-4]");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[ANIMATIONS]_______________________________");
+	SendClientMessage(playerid, -1, "[ANIMS:] /crack [1-2] /chat /caract /hike /give /pull /face /endchat /show /shoutanim /look /drunk /sit [1-4]");
+	SendClientMessage(playerid, -1, "[ANIMS:] /scratch /reload /injured /gsign [1-8] /chill [1-3] /tag [1-3] /camera [1-4]");
+	SendClientMessage(playerid, -1, "[ANIMS:] /rap /think /box /tired /stance [1-2] /bar [1-2] /bat [1-3] /lean [1-2] /dance [1-5] /kiss /cpr /vomit");
+	SendClientMessage(playerid, -1, "[ANIMS:] /handsup /bomb /getarrested /laugh /lookout /aim /crossarms /car [1-3] /lay [1-3] /what [1-2] /hide");
+	SendClientMessage(playerid, -1, "[ANIMS:] /eat /wave [1-3] /chant /slap [1-2] /deal /fucku /taichi /play [1-3] /mourn /cry /searchfiles [1-3] /bball [1-6]");
+	SendClientMessage(playerid, -1, "[ANIMS:] /liftup /putdown /pee [1-2] /wank [1-2] /strip [1-4]");
   	return 1;
 }
 
@@ -5871,7 +5869,7 @@ CMD:frisk(playerid, params[])
 	new Player_Weapons[13];
 	new Player_Ammos[13];
 
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /frisk [playerid/partofname].");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /frisk [playerid/partofname].");
    	GetPlayerPos(id, X, Y, Z);
    	if(friskApproved[playerid] == false)
    	{
@@ -5883,13 +5881,13 @@ CMD:frisk(playerid, params[])
 			SendClientMessage(playerid, COLOR_YELLOW, str);
   			format(str, sizeof(str), "%s has requested to frisk you, /acceptfrisk %d.", GetName(playerid), playerid);
 			SendClientMessage(id, COLOR_YELLOW, str);
-		} else return SCM(playerid, COLOR_LIGHTRED, "You're not close to that player.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close to that player.");
 	}
 	else if(friskApproved[playerid] == true)
 	{
-	    if(friskApproved[id] == false) return SCM(playerid, COLOR_LIGHTRED, "That player has not accepted to be frisked.");
+	    if(friskApproved[id] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player has not accepted to be frisked.");
 		format(string, sizeof(string), "____________[%s]____________", GetName(id));
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 	 	GetPlayerPos(id, X, Y, Z);
 	    if(IsPlayerInRangeOfPoint(playerid, 10.0, X, Y, Z))
 		{
@@ -5910,7 +5908,7 @@ CMD:frisk(playerid, params[])
 			SendClientMessage(playerid, -1, string);
    			friskApproved[Player_Frisk[playerid]] = false;
     		friskApproved[playerid] = false;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You're not close to that player.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close to that player.");
 	}
 	return 1;
 }
@@ -5920,9 +5918,9 @@ CMD:acceptfrisk(playerid, params[])
 	new str[256];
 	new id;
 	
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /acceptfrisk [playerid/partofname].");
-	if(friskInvited[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You do not have a pending frisk request.");
-	if(id != Player_Frisk[playerid]) return SCM(playerid, COLOR_LIGHTRED, "That player has not sent you a frisk request.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /acceptfrisk [playerid/partofname].");
+	if(friskInvited[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a pending frisk request.");
+	if(id != Player_Frisk[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player has not sent you a frisk request.");
 
     friskApproved[Player_Frisk[playerid]] = true;
     friskApproved[playerid] = true;
@@ -5941,8 +5939,8 @@ CMD:revokeguns(playerid, params[])
 {
 	new id, str[128];
 
-	if(Duty[playerid] == 0) return SCM(playerid, COLOR_LIGHTRED, "You're not on duty.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /revokeguns [playerid/partofname].");
+	if(Duty[playerid] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not on duty.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /revokeguns [playerid/partofname].");
     RemoveWeapons(id);
     
    	format(str, sizeof(str), "Your weapons have been revoked by %s.", GetName(playerid));
@@ -5954,8 +5952,8 @@ CMD:revokedrugs(playerid, params[])
 {
 	new id, str[128];
 
-	if(Duty[playerid] == 0) return SCM(playerid, COLOR_LIGHTRED, "You're not on duty.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /revokedrugs [playerid/partofname].");
+	if(Duty[playerid] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not on duty.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /revokedrugs [playerid/partofname].");
     RemoveDrugs(id);
     
    	format(str, sizeof(str), "Your narcotica have been revoked by %s.", GetName(playerid));
@@ -5984,17 +5982,17 @@ CMD:buy(playerid, params[])
 		{
 		    ShowPlayerDialog(playerid, DIALOG_MECHANIC_BUY, DIALOG_STYLE_LIST, "Car Parts Shop", "Color ($100)\nRims\nRepair ($100)", "Select", "Cancel");
 		}
-		else return SCM(playerid, COLOR_LIGHTRED, "You are not driving a vehicle.");
+		else return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not driving a vehicle.");
 	}
   	return 1;
 }
 
 CMD:buygun(playerid, params[])
 {
-    if(PlayerInfo[playerid][pGunRights] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not have weapon rights.");
-	if(PlayerInfo[playerid][pAge] < 21) return SCM(playerid, COLOR_LIGHTRED, "You are not twenty one years old.");
-	if(PlayerInfo[playerid][pPlayingHours] < 8) return SCM(playerid, COLOR_LIGHTRED, "You need to play eight hours before you can buy a weapon.");
-	if(PlayerInfo[playerid][pDriverLicense] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have a drivers license.");
+    if(PlayerInfo[playerid][pGunRights] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have weapon rights.");
+	if(PlayerInfo[playerid][pAge] < 21) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not twenty one years old.");
+	if(PlayerInfo[playerid][pPlayingHours] < 8) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to play eight hours before you can buy a weapon.");
+	if(PlayerInfo[playerid][pDriverLicense] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a drivers license.");
     if(IsPlayerInRangeOfPoint(playerid, 20.0, 290.1136, -109.4360, 1001.5156))
     {
 		ShowPlayerDialog(playerid, DIALOG_BUYGUN, DIALOG_STYLE_LIST, "Ammu-Nation", "Knife ($200)\nCountry Rifle ($1000)\nColt 45 ($1400)\nRemington Shotgun ($2400)", "Purchase", "Cancel");
@@ -6005,8 +6003,8 @@ CMD:buygun(playerid, params[])
 CMD:takegunrights(playerid, params[])
 {
 	new id;
-	if(PlayerInfo[playerid][pAdmin] < 2 || PlayerInfo[playerid][pFaction] == 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /takegunrights [playerid/partofname].");
+	if(PlayerInfo[playerid][pAdmin] < 2 || PlayerInfo[playerid][pFaction] == 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /takegunrights [playerid/partofname].");
     PlayerInfo[id][pGunRights] = 0;
     new string[128];
    	format(string, sizeof(string), "%s has revoked your weapon rights.", GetName(playerid));
@@ -6019,8 +6017,8 @@ CMD:takegunrights(playerid, params[])
 CMD:givegunrights(playerid, params[])
 {
 	new id;
-	if(PlayerInfo[playerid][pAdmin] < 2 || PlayerInfo[playerid][pFaction] == 2) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /givegunrights [playerid/partofname].");
+	if(PlayerInfo[playerid][pAdmin] < 2 || PlayerInfo[playerid][pFaction] == 2) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /givegunrights [playerid/partofname].");
     PlayerInfo[id][pGunRights] = 1;
     new string[128];
    	format(string, sizeof(string), "%s has given you weapon rights.", GetName(playerid));
@@ -6050,7 +6048,7 @@ CMD:buyclothes(playerid, params[])
     		ShowModelSelectionMenu(playerid, females, "Clothes");
 		}
 	}
-	else return SCM(playerid, COLOR_GREY, "You need to be in a clothes shop.");
+	else return SendClientMessage(playerid, COLOR_GREY, "You need to be in a clothes shop.");
   	return 1;
 }
 
@@ -6061,17 +6059,17 @@ CMD:buydrink(playerid, params[])
     {
     	ShowPlayerDialog(playerid, DIALOG_BUYDRINK, DIALOG_STYLE_LIST, "Drinks", "Carlsberg "COL_GREEN"($5)\nGuinness "COL_GREEN"($5)\nMartini "COL_GREEN"(7$)\nBloody Mary "COL_GREEN"($10)\nSex On The Beach "COL_GREEN"($15)", "Purchase", "Cancel");
 	}
-	else return SCM(playerid, COLOR_GREY, "You need to be in a club/bar.");
+	else return SendClientMessage(playerid, COLOR_GREY, "You need to be in a club/bar.");
   	return 1;
 }
 
 CMD:train(playerid, params[])
 {
-	if(PlayerInfo[playerid][pPlayingHours] < 4) return SCM(playerid, COLOR_LIGHTRED, "You need to play four hours before you can train at the gym.");
+	if(PlayerInfo[playerid][pPlayingHours] < 4) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to play four hours before you can train at the gym.");
     if(IsPlayerInRangeOfPoint(playerid, 7.0, 772.2167, 5.2337, 1000.7802) || IsPlayerInRangeOfPoint(playerid, 7.0, 759.2585, -59.2561, 1000.7802))
 	{
  		ShowPlayerDialog(playerid, DIALOG_TRAIN, DIALOG_STYLE_LIST, "Gym", "Normal ($100)\nBoxing ($100)\nKneehead($100)\nKung-Fu ($100)", "Learn", "Cancel");
-	} else return SCM(playerid, COLOR_LIGHTRED, "You are not inside a gym.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not inside a gym.");
   	return 1;
 }
 
@@ -6079,7 +6077,7 @@ CMD:lockbiz(playerid, params[])
 {
 		new id = IsPlayerNearBizEnt(playerid);
 		new id2 = IsPlayerNearBizExit(playerid);
-		if(PlayerInfo[playerid][BizID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a business.");
+		if(PlayerInfo[playerid][BizID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a business.");
 	   	for(new b = 1; b < sizeof(BusinessInfo); b++)
 	  	{
 	   		    if(id == PlayerInfo[playerid][BizID] || id2 == PlayerInfo[playerid][BizID])
@@ -6123,7 +6121,7 @@ CMD:alockbiz(playerid, params[])
 	{
 		if(IsPlayerInRangeOfPoint(playerid, 2.5, BusinessInfo[b][bEntranceX], BusinessInfo[b][bEntranceY], BusinessInfo[b][bEntranceZ]))
 	 	{
-		    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+		    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
 		    if(BusinessInfo[b][bLocked] == 1)
 		    {
 		        BusinessInfo[b][bLocked] = 0;
@@ -6150,7 +6148,7 @@ CMD:alockbiz(playerid, params[])
 				INI_WriteInt(File, "bLocked", BusinessInfo[b][bLocked]);
 				INI_Close(File);
 		    }
-		} else return SCM(playerid, COLOR_LIGHTRED, "You're not close to any business.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close to any business.");
 	}
 	return 1;
 }
@@ -6159,12 +6157,12 @@ CMD:agotobiz(playerid, params[])
 {
     new id, str[64];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
     if(sscanf(params, "d", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /agotobusiness [id] (street number is the ID)");
 
     SetPlayerPos(playerid, BusinessInfo[id][bEntranceX], BusinessInfo[id][bEntranceY], BusinessInfo[id][bEntranceZ]);
     format(str, sizeof(str), "AdmCmd: You have succesfully teleported to business id %d.", id);
-	SCM(playerid, COLOR_LIGHTRED, str);
+	SendClientMessage(playerid, COLOR_LIGHTRED, str);
     return 1;
 }
 
@@ -6177,8 +6175,8 @@ CMD:abizname(playerid, params[])
  	new
 	id = IsPlayerNearBizEnt(playerid);
 
-    if(sscanf(params, "s[128]", name)) return SCM(playerid, COLOR_GREY, "[Usage:] /abizname [name]");
-    SCM(playerid, COLOR_LIGHTRED, "AdmCmd: You have succesfully changed the name of this business.");
+    if(sscanf(params, "s[128]", name)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /abizname [name]");
+    SendClientMessage(playerid, COLOR_LIGHTRED, "AdmCmd: You have succesfully changed the name of this business.");
    	switch(BusinessInfo[id][bType])
     {
         	case 24: biztext = "Advertisement Center";
@@ -6489,14 +6487,14 @@ CMD:sellbiz(playerid, params[])
 	new biztext[24];
 	new string[256];
 
-    if(PlayerInfo[playerid][BizID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a business.");
+    if(PlayerInfo[playerid][BizID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a business.");
     BusinessInfo[id2][bOwned] = 0;
     BusinessInfo[id2][bOwner] = 0;
     BusinessInfo[id2][bLocked] = 0;
     BusinessInfo[id2][bName] = 0;
     GivePlayerMoney(playerid, BusinessInfo[id2][bPrice]);
     PlayerInfo[playerid][BizID] = 0;
-    SCM(playerid, COLOR_WHITE, "You have succesfully sold your business. Sad to see it go.");
+    SendClientMessage(playerid, COLOR_WHITE, "You have succesfully sold your business. Sad to see it go.");
 
 	switch(BusinessInfo[id2][bType])
  	{
@@ -6567,13 +6565,13 @@ CMD:asellbiz(playerid, params[])
     new id = IsPlayerNearBizEnt(playerid);
    	new biztext[24];
 	new string[256];
-    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(BusinessInfo[id][bOwned] == 0) return SCM(playerid, COLOR_LIGHTRED, "This business is not owned by anyone.");
+    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(BusinessInfo[id][bOwned] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "This business is not owned by anyone.");
     BusinessInfo[id][bOwned] = 0;
     BusinessInfo[id][bOwner] = 0;
     BusinessInfo[id][bName] = 0;
     BusinessInfo[id][bLocked] = 1;
-    SCM(playerid, COLOR_LIGHTRED, "AdmCmd: You have succesfully admin-sold this business.");
+    SendClientMessage(playerid, COLOR_LIGHTRED, "AdmCmd: You have succesfully admin-sold this business.");
 
 	switch(BusinessInfo[id][bType])
  	{
@@ -6644,11 +6642,11 @@ CMD:bizname(playerid, params[])
  	new
 	id = IsPlayerNearBizEnt(playerid);
 
- 	if(id != PlayerInfo[playerid][BizID]) return SCM(playerid, COLOR_LIGHTRED, "You do not own this business.");
-    if(sscanf(params, "s[128]", name)) return SCM(playerid, COLOR_GREY, "[Usage:] /bizname [name]");
-    if(PlayerInfo[playerid][BizID] == 0) return SCM(playerid, COLOR_GREY, "You do not own a business!");
+ 	if(id != PlayerInfo[playerid][BizID]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own this business.");
+    if(sscanf(params, "s[128]", name)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /bizname [name]");
+    if(PlayerInfo[playerid][BizID] == 0) return SendClientMessage(playerid, COLOR_GREY, "You do not own a business!");
     BusinessInfo[PlayerInfo[playerid][BizID]][bName] = name;
-    SCM(playerid, COLOR_WHITE, "You have succesfully changed the name of your business.");
+    SendClientMessage(playerid, COLOR_WHITE, "You have succesfully changed the name of your business.");
 
 	switch(BusinessInfo[id][bType])
  	{
@@ -6717,7 +6715,7 @@ CMD:alockhouse(playerid, params[])
         {
        		if(GetPlayerVirtualWorld(playerid) == HouseInfo[h][hWorld])
         	{
-			    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+			    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
 			    if(HouseInfo[h][hLocked] == 1)
 			    {
 			        HouseInfo[h][hLocked] = 0;
@@ -6754,12 +6752,12 @@ CMD:agotohouse(playerid, params[])
 {
     new id, str[144];
     
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
     if(sscanf(params, "d", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /agotohouse [id] (street number is the ID)");
 
     SetPlayerPos(playerid, HouseInfo[id][hEntranceX], HouseInfo[id][hEntranceY], HouseInfo[id][hEntranceZ]);
     format(str, sizeof(str), "AdmCmd: You have succesfully teleported to house id %d.", id);
-	SCM(playerid, COLOR_LIGHTRED, str);
+	SendClientMessage(playerid, COLOR_LIGHTRED, str);
     return 1;
 }
 
@@ -6833,18 +6831,18 @@ CMD:buyhouse(playerid, params[])
 CMD:asellhouse(playerid, params[])
 {
 	new string[144];
-    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     for(new h = 1; h < sizeof(HouseInfo); h++)
     {
         if(IsPlayerInRangeOfPoint(playerid, 2.0, HouseInfo[h][hEntranceX], HouseInfo[h][hEntranceY], HouseInfo[h][hEntranceZ]))
         {
        		if(GetPlayerVirtualWorld(playerid) == HouseInfo[h][hWorld])
         	{
-    			if(HouseInfo[h][hOwned] == 0) return SCM(playerid, COLOR_LIGHTRED, "This house is not owned by anyone.");
+    			if(HouseInfo[h][hOwned] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "This house is not owned by anyone.");
 			    HouseInfo[h][hOwned] = 0;
 			    HouseInfo[h][hOwner] = 0;
 			    HouseInfo[h][hLocked] = 1;
-			    SCM(playerid, COLOR_LIGHTRED, "AdmCmd: You have succesfully admin-sold this house.");
+			    SendClientMessage(playerid, COLOR_LIGHTRED, "AdmCmd: You have succesfully admin-sold this house.");
 
 			 	format(string, sizeof(string), ""COL_WHITE"For Sale!\n"COL_BROWN"Price: "COL_WHITE"$%d\n"COL_BROWN"Number: "COL_WHITE"%d", HouseInfo[h][hPrice], h);
 				Update3DTextLabelText(HouseInfo[h][hDLabel], 0xFFFFFFFF, string);
@@ -6887,14 +6885,14 @@ CMD:sellhouse(playerid, params[])
 
 	new string[144];
 
-    if(PlayerInfo[playerid][HouseID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a house.");
+    if(PlayerInfo[playerid][HouseID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a house.");
     HouseInfo[id2][hOwned] = 0;
     HouseInfo[id2][hOwner] = 0;
     HouseInfo[id2][hLocked] = 1;
     PlayerInfo[playerid][pPlayerOwnsHouse] = 0;
 
     GivePlayerMoney(playerid, HouseInfo[id2][hPrice]);
-    SCM(playerid, COLOR_WHITE, "You have succesfully sold your house. Sad to see it go.");
+    SendClientMessage(playerid, COLOR_WHITE, "You have succesfully sold your house. Sad to see it go.");
 
  	format(string, sizeof(string), ""COL_WHITE"For Sale!\n"COL_BROWN"Price: "COL_WHITE"$%d\n"COL_BROWN"Street Number: "COL_WHITE"%d", HouseInfo[id2][hPrice], id2);
 	Update3DTextLabelText(HouseInfo[id2][hDLabel], 0xFFFFFFFF, string);
@@ -6938,7 +6936,7 @@ CMD:createhouse(playerid, params[])
 	price, id, int, world, string[144], Float:Xi, 
 	Float:Yi, Float:Zi, inti, Float:X, Float:Y, Float:Z, Float:A;
 
-    if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "ddfff", price, inti, Xi, Yi, Zi)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /createhouse [price] [interior] [X] [Y] [Z]");
 
     if(price < 4000) return SendClientMessage(playerid, COLOR_LIGHTRED, "Price cannot go below $4, 000.");
@@ -7015,8 +7013,8 @@ CMD:deletehouse(playerid, params[])
         {
        		if(GetPlayerVirtualWorld(playerid) == HouseInfo[h][hWorld])
         	{
-			 	if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-			 	if(HouseInfo[h][hOwned] == 1) return SCM(playerid, COLOR_LIGHTRED, "This house is owned.");
+			 	if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+			 	if(HouseInfo[h][hOwned] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "This house is owned.");
 
 			    HouseInfo[h][hOwned] = 0;
 			    HouseInfo[h][hPrice] = 0;
@@ -7053,10 +7051,10 @@ CMD:housebalance(playerid, params[])
 	new
 	str[64], id = IsPlayerInsideHouse(playerid);
 
-	if(id != PlayerInfo[playerid][HouseID]) return SCM(playerid, COLOR_LIGHTRED, "You do not own this house.");
- 	if(PlayerInfo[playerid][HouseID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a house!");
+	if(id != PlayerInfo[playerid][HouseID]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own this house.");
+ 	if(PlayerInfo[playerid][HouseID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a house!");
 	format(str, sizeof(str), "You have $%d in your house vault.", HouseInfo[PlayerInfo[playerid][HouseID]][hMoney]);
-	SCM(playerid, COLOR_WHITE, str);
+	SendClientMessage(playerid, COLOR_WHITE, str);
     return 1;
 }
 
@@ -7064,7 +7062,7 @@ CMD:lock(playerid, params[])
 {
  	new vw = GetPlayerVirtualWorld(playerid);
         
-	if(PlayerInfo[playerid][HouseID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a house.");
+	if(PlayerInfo[playerid][HouseID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a house.");
 	for(new h = 1; h < sizeof(HouseInfo); h++)
 	{
 		if(IsPlayerInRangeOfPoint(playerid, 5.0, HouseInfo[h][hEntranceX], HouseInfo[h][hEntranceY], HouseInfo[h][hEntranceZ]) && vw == HouseInfo[h][hWorld]) return h;
@@ -7165,7 +7163,7 @@ CMD:takedrug(playerid, params[])
     new house = PlayerInfo[playerid][HouseID];
 
     if(sscanf(params, "s[24]d", give, amount)) return SendClientMessage(playerid, COLOR_GREY, "[SERVER:] /takedrug (lsd, marijuana, cocaine, meth, ecstasy) [amount]");
-    if(house == 0) return SCM(playerid, COLOR_LIGHTRED, "You don't own any house.");
+    if(house == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't own any house.");
     for(new h = 1; h < sizeof(HouseInfo); h++)
 	{
 		if(hworld == HouseInfo[h][hInsideWorld])
@@ -7285,7 +7283,7 @@ CMD:putdrug(playerid, params[])
     new house = PlayerInfo[playerid][HouseID];
 
     if(sscanf(params, "s[24]d", give, amount)) return SendClientMessage(playerid, COLOR_GREY, "[SERVER:] /putdrug (lsd, marijuana, cocaine, meth, ecstasy) [amount]");
-    if(house == 0) return SCM(playerid, COLOR_LIGHTRED, "You don't own any house.");
+    if(house == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't own any house.");
     for(new h = 1; h < sizeof(HouseInfo); h++)
 	{
 		if(hworld == HouseInfo[h][hInsideWorld])
@@ -7404,7 +7402,7 @@ CMD:checkhouse(playerid, params[])
  		new hworld = GetPlayerVirtualWorld(playerid);
 	    new house = PlayerInfo[playerid][HouseID];
 	    
-	    if(house == 0) return SCM(playerid, COLOR_LIGHTRED, "You don't own any house.");
+	    if(house == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't own any house.");
 	    for(new h = 1; h < sizeof(HouseInfo); h++)
 	  	{
 	   		if(hworld == HouseInfo[h][hInsideWorld])
@@ -7502,7 +7500,7 @@ CMD:putgun(playerid, params[])
 		new hworld = GetPlayerVirtualWorld(playerid);
         new house = PlayerInfo[playerid][HouseID];
         
-        if(house == 0) return SCM(playerid, COLOR_LIGHTRED, "You don't own any house.");
+        if(house == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't own any house.");
         for(new h = 1; h < sizeof(HouseInfo); h++)
         {
             if(hworld == HouseInfo[h][hInsideWorld])
@@ -7514,13 +7512,13 @@ CMD:putgun(playerid, params[])
                     playergun = GetPlayerWeapon(playerid);
                     playerammo = GetPlayerAmmo(playerid);
 
-                    if(playergun < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have a weapon.");
-                    if(playerammo < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any ammo.");
+                    if(playergun < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a weapon.");
+                    if(playerammo < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any ammo.");
 
-                    if(sscanf(params, "d", slot)) return SCM(playerid, COLOR_GREY, "[Usage:] /putgun [slot].");
+                    if(sscanf(params, "d", slot)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /putgun [slot].");
                     if(slot == 1)
                     {
-                        if(HouseInfo[h][hWeapon1] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon1] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon1] = playergun;
                         HouseInfo[h][hAmmo1] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7540,7 +7538,7 @@ CMD:putgun(playerid, params[])
                     }
                     else if(slot == 2)
                     {
-                        if(HouseInfo[h][hWeapon2] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon2] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon2] = playergun;
                         HouseInfo[h][hAmmo2] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7560,7 +7558,7 @@ CMD:putgun(playerid, params[])
                     }
                     else if(slot == 3)
                     {
-                        if(HouseInfo[h][hWeapon3] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon3] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon3] = playergun;
                         HouseInfo[h][hAmmo3] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7580,7 +7578,7 @@ CMD:putgun(playerid, params[])
                     }
                     else if(slot == 4)
                     {
-                        if(HouseInfo[h][hWeapon4] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon4] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon4] = playergun;
                         HouseInfo[h][hAmmo4] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7600,7 +7598,7 @@ CMD:putgun(playerid, params[])
                     }
                     if(slot == 5)
                     {
-                        if(HouseInfo[h][hWeapon5] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon5] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon5] = playergun;
                         HouseInfo[h][hAmmo5] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7620,7 +7618,7 @@ CMD:putgun(playerid, params[])
                     }
                     else if(slot == 6)
                     {
-                        if(HouseInfo[h][hWeapon6] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon6] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon6] = playergun;
                         HouseInfo[h][hAmmo6] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7640,7 +7638,7 @@ CMD:putgun(playerid, params[])
                     }
                     else if(slot == 7)
                     {
-                        if(HouseInfo[h][hWeapon7] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon7] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon7] = playergun;
                         HouseInfo[h][hAmmo7] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7660,7 +7658,7 @@ CMD:putgun(playerid, params[])
                     }
                     else if(slot == 8)
                     {
-                        if(HouseInfo[h][hWeapon8] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon8] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon8] = playergun;
                         HouseInfo[h][hAmmo8] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7680,7 +7678,7 @@ CMD:putgun(playerid, params[])
                     }
                     else if(slot == 9)
                     {
-                        if(HouseInfo[h][hWeapon9] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon9] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon9] = playergun;
                         HouseInfo[h][hAmmo9] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7700,7 +7698,7 @@ CMD:putgun(playerid, params[])
                     }
                     else if(slot == 10)
                     {
-                        if(HouseInfo[h][hWeapon10] != 0) return SCM(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
+                        if(HouseInfo[h][hWeapon10] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is already a weapon in this slot.");
                         HouseInfo[h][hWeapon10] = playergun;
                         HouseInfo[h][hAmmo10] += playerammo;
                         RemovePlayerWeapon(playerid, playergun);
@@ -7728,7 +7726,7 @@ CMD:takegun(playerid, params[])
 {
 		new hworld = GetPlayerVirtualWorld(playerid);
 	    new house = PlayerInfo[playerid][HouseID];
-	    if(house == 0) return SCM(playerid, COLOR_LIGHTRED, "You don't own any house.");
+	    if(house == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't own any house.");
 		for(new h = 1; h < sizeof(HouseInfo); h++)
 	  	{
 	   		if(hworld == HouseInfo[h][hInsideWorld])
@@ -7738,15 +7736,15 @@ CMD:takegun(playerid, params[])
   	    			new
 					string[128], gunname[100], slot, playergun;
 
-				    if(sscanf(params, "i", slot)) return SCM(playerid, COLOR_GREY, "[Usage:] /takegun [slot].");
+				    if(sscanf(params, "i", slot)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /takegun [slot].");
 
         			playergun = GetPlayerWeapon(playerid);
 
-                    if(playergun > 0) return SCM(playerid, COLOR_LIGHTRED, "You need to have an un-equipped hand to take a gun from the vault.");
+                    if(playergun > 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to have an un-equipped hand to take a gun from the vault.");
 
 			    	if(slot == 1)
 			    	{
-			    	    if(HouseInfo[h][hWeapon1] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+			    	    if(HouseInfo[h][hWeapon1] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon1], HouseInfo[h][hAmmo1]);
 			            GetWeaponName(HouseInfo[h][hWeapon1], gunname, sizeof(gunname));
 			            format(string, sizeof(string), "You have taken your %s from slot 1.", gunname);
@@ -7766,7 +7764,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 2)
 					{
-	    				if(HouseInfo[h][hWeapon2] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+	    				if(HouseInfo[h][hWeapon2] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon2], HouseInfo[h][hAmmo2]);
       					GetWeaponName(HouseInfo[h][hWeapon2], gunname, sizeof(gunname));
 			            format(string, sizeof(string), "You have taken your %s from slot 2.", gunname);
@@ -7786,7 +7784,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 3)
 					{
-	    				if(HouseInfo[h][hWeapon3] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+	    				if(HouseInfo[h][hWeapon3] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
                         GivePlayerWeapon(playerid, HouseInfo[h][hWeapon3], HouseInfo[h][hAmmo3]);
       					GetWeaponName(HouseInfo[h][hWeapon3], gunname, sizeof(gunname));
 			            format(string, sizeof(string), "You have taken your %s from slot 3.", gunname);
@@ -7806,7 +7804,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 4)
 					{
-						if(HouseInfo[h][hWeapon4] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+						if(HouseInfo[h][hWeapon4] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon4], HouseInfo[h][hAmmo4]);
 						GetWeaponName(HouseInfo[h][hWeapon4], gunname, sizeof(gunname));
 			           	format(string, sizeof(string), "You have taken your %s from slot 4.", gunname);
@@ -7826,7 +7824,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 5)
 					{
-						if(HouseInfo[h][hWeapon5] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+						if(HouseInfo[h][hWeapon5] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon5], HouseInfo[h][hAmmo5]);
 						GetWeaponName(HouseInfo[h][hWeapon5], gunname, sizeof(gunname));
 			           	format(string, sizeof(string), "You have taken your %s from slot 5.", gunname);
@@ -7846,7 +7844,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 6)
 					{
-						if(HouseInfo[h][hWeapon6] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+						if(HouseInfo[h][hWeapon6] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon6], HouseInfo[h][hAmmo6]);
 						GetWeaponName(HouseInfo[h][hWeapon6], gunname, sizeof(gunname));
 			           	format(string, sizeof(string), "You have taken your %s from slot 6.", gunname);
@@ -7866,7 +7864,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 7)
 					{
-						if(HouseInfo[h][hWeapon7] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+						if(HouseInfo[h][hWeapon7] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon7], HouseInfo[h][hAmmo7]);
 						GetWeaponName(HouseInfo[h][hWeapon7], gunname, sizeof(gunname));
 			           	format(string, sizeof(string), "You have taken your %s from slot 7.", gunname);
@@ -7886,7 +7884,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 8)
 					{
-						if(HouseInfo[h][hWeapon8] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+						if(HouseInfo[h][hWeapon8] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon8], HouseInfo[h][hAmmo8]);
 						GetWeaponName(HouseInfo[h][hWeapon8], gunname, sizeof(gunname));
 			           	format(string, sizeof(string), "You have taken your %s from slot 8.", gunname);
@@ -7906,7 +7904,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 9)
 					{
-						if(HouseInfo[h][hWeapon9] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+						if(HouseInfo[h][hWeapon9] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon9], HouseInfo[h][hAmmo9]);
 						GetWeaponName(HouseInfo[h][hWeapon9], gunname, sizeof(gunname));
 			           	format(string, sizeof(string), "You have taken your %s from slot 9.", gunname);
@@ -7926,7 +7924,7 @@ CMD:takegun(playerid, params[])
 					}
 					else if(slot == 10)
 					{
-						if(HouseInfo[h][hWeapon10] == 0) return SCM(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
+						if(HouseInfo[h][hWeapon10] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "There is not any weapon in this slot.");
 						GivePlayerWeapon(playerid, HouseInfo[h][hWeapon10], HouseInfo[h][hAmmo10]);
 						GetWeaponName(HouseInfo[h][hWeapon10], gunname, sizeof(gunname));
 			           	format(string, sizeof(string), "You have taken your %s from slot 10.", gunname);
@@ -7955,8 +7953,8 @@ CMD:housedeposit(playerid, params[])
     new
 	string[64], amount, id = IsPlayerInsideHouse(playerid);
 
-	if(id != PlayerInfo[playerid][HouseID]) return SCM(playerid, COLOR_LIGHTRED, "You do not own this house.");
- 	if(PlayerInfo[playerid][HouseID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a house!");
+	if(id != PlayerInfo[playerid][HouseID]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own this house.");
+ 	if(PlayerInfo[playerid][HouseID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a house!");
 	if(sscanf(params, "d", amount)) return SendClientMessage(playerid, -1, "[Usage:] /housedeposit [amount]");
  	if (amount > GetPlayerMoney(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much money.");
 
@@ -7972,8 +7970,8 @@ CMD:housewithdraw(playerid, params[])
     new
 	string[128], amount, id = IsPlayerInsideHouse(playerid);
 
-	if(id != PlayerInfo[playerid][HouseID]) return SCM(playerid, COLOR_LIGHTRED, "You do not own this house.");
- 	if(PlayerInfo[playerid][HouseID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a house!");
+	if(id != PlayerInfo[playerid][HouseID]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own this house.");
+ 	if(PlayerInfo[playerid][HouseID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a house!");
 	if(sscanf(params, "d", amount)) return SendClientMessage(playerid, -1, "[Usage:] /housewithdraw [amount]");
  	if (amount > HouseInfo[id][hMoney]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much money in your house vault.");
 
@@ -8086,7 +8084,7 @@ CMD:bizdeposit(playerid, params[])
 	if(sscanf(params, "d", amount)) return SendClientMessage(playerid, -1, "[Usage:] /bizdeposit [amount]");
  	if (amount > GetPlayerMoney(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much money.");
 	
-	if(PlayerInfo[playerid][BizID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a business!");
+	if(PlayerInfo[playerid][BizID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a business!");
 	for(new b = 1; b < sizeof(BusinessInfo); b++)
 	{
 		if(IsPlayerInRangeOfPoint(playerid, 50.0, BusinessInfo[b][bExitX], BusinessInfo[b][bExitY], BusinessInfo[b][bExitZ]) && vw == BusinessInfo[b][bInsideWorld]) return b;
@@ -8123,10 +8121,10 @@ CMD:bizwithdraw(playerid, params[])
 	new amount, string[128];
 
     new vw = GetPlayerVirtualWorld(playerid);
-    if(sscanf(params, "d", amount)) return SCM(playerid, COLOR_GREY, "[Usage:] /bizwithdraw [amount]");
-    if (amount > BusinessInfo[PlayerInfo[playerid][BizID]][bMoney]) return SCM(playerid, COLOR_LIGHTRED, "Your business does not contain that much money.");
+    if(sscanf(params, "d", amount)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /bizwithdraw [amount]");
+    if (amount > BusinessInfo[PlayerInfo[playerid][BizID]][bMoney]) return SendClientMessage(playerid, COLOR_LIGHTRED, "Your business does not contain that much money.");
 	
-	if(PlayerInfo[playerid][BizID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a business!");
+	if(PlayerInfo[playerid][BizID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a business!");
 	for(new b = 1; b < sizeof(BusinessInfo); b++)
 	{
 		if(IsPlayerInRangeOfPoint(playerid, 50.0, BusinessInfo[b][bExitX], BusinessInfo[b][bExitY], BusinessInfo[b][bExitZ]) && vw == BusinessInfo[b][bInsideWorld]) return b;
@@ -8165,7 +8163,7 @@ CMD:bizbalance(playerid, params[])
 	
 	new vw = GetPlayerVirtualWorld(playerid);
 	
-	if(PlayerInfo[playerid][BizID] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a business!");
+	if(PlayerInfo[playerid][BizID] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a business!");
 	for(new b = 1; b < sizeof(BusinessInfo); b++)
 	{
 		if(IsPlayerInRangeOfPoint(playerid, 50.0, BusinessInfo[b][bExitX], BusinessInfo[b][bExitY], BusinessInfo[b][bExitZ]) && vw == BusinessInfo[b][bInsideWorld]) return b;
@@ -8197,7 +8195,7 @@ CMD:bizbalance(playerid, params[])
 
 CMD:dropcigarette(playerid, params[])
 {
-    if(IsSmokingCigarette[playerid] == 0) return SCM(playerid, COLOR_LIGHTRED, "You're not smoking a cigarette.");
+    if(IsSmokingCigarette[playerid] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not smoking a cigarette.");
 
     IsSmokingCigarette[playerid] = 0;
     PlayerActionMessage(playerid, 15.0, "drop his cigarette on the ground.");
@@ -8218,7 +8216,7 @@ CMD:deposit(playerid, params[])
 		PlayerInfo[playerid][pBankAccount] += amount;
 		format(string, sizeof(string), "You have successfully deposited $%d to your bank account.", amount);
 		SendClientMessage(playerid, COLOR_WHITE, string);
- 	} else return SCM(playerid, COLOR_LIGHTRED, "You're not at the bank.");
+ 	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not at the bank.");
  	return 1;
 }
 
@@ -8236,7 +8234,7 @@ CMD:withdraw(playerid, params[])
 		GivePlayerMoney(playerid, amount);
 		format(string, sizeof(string), "You have successfully withdrawn $%d from your bank account.", amount);
 		SendClientMessage(playerid, COLOR_WHITE, string);
-	} else return SCM(playerid, COLOR_LIGHTRED, "You're not at the bank.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not at the bank.");
 	return 1;
 }
 
@@ -8249,7 +8247,7 @@ CMD:balance(playerid, params[])
 	{
 	    format(string, sizeof(string), "You currently have $%d in your bank account.", PlayerInfo[playerid][pBankAccount]);
 	    SendClientMessage(playerid, COLOR_WHITE, string);
-	} else return SCM(playerid, COLOR_LIGHTRED, "You're not at the bank.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not at the bank.");
 	return 1;
 }
 
@@ -8271,7 +8269,7 @@ CMD:mask(playerid, params[])
 		}
 		return 1;
 	}
-	else return SCM(playerid, COLOR_LIGHTRED, "You do not have a mask.");
+	else return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a mask.");
 }
 
 CMD:pm(playerid, params[])
@@ -8279,9 +8277,9 @@ CMD:pm(playerid, params[])
     new
 	PID, message[144], string[144];
 
-    if(gMuted[playerid]) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
-    if(sscanf(params, "us[144]", PID, message)) return SCM(playerid, COLOR_GREY, "[Usage:] /PM  [PlayerID] [message].");
-    if(!IsPlayerConnected(PID)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(gMuted[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
+    if(sscanf(params, "us[144]", PID, message)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /PM  [PlayerID] [message].");
+    if(!IsPlayerConnected(PID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     if (playerid == PID) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't PM yourself.");
     if (PlayerInfo[PID][pBlockPM] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "This person is currently blocking their PM's.");
 
@@ -8320,82 +8318,82 @@ CMD:ame(playerid, params[])
 	new
 	string[144];
 
-    if(sscanf(params, "s[144]", params)) return SCM(playerid, COLOR_GREY, "[Usage:] /ame [message]");
+    if(sscanf(params, "s[144]", params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /ame [message]");
 
     format(string, sizeof(string), "* %s %s", GetName(playerid), params);
     SetPlayerChatBubble(playerid, string, COLOR_PURPLE, 6.0, 10000);
-	SCM(playerid, COLOR_PURPLE, string);
+	SendClientMessage(playerid, COLOR_PURPLE, string);
 	return 1;
 }
 
 CMD:commands(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[SERVER COMMANDS]_______________________________");
-	SCM(playerid, COLOR_WHITE, "[GENERAL:] /pay /pm /stats /dice /call /givedrug /animlist /factionhelp /dropgun /refuel /kph /mph /stats /admins /supporters");
-	SCM(playerid, COLOR_WHITE, "[GENERAL:] /report /givegun /balance /withdraw /deposit /pickup /hangup /takedrivingtest /notehelp /jobhelp /pickupgun /inv");
-	SCM(playerid, COLOR_WHITE, "[GENERAL:] /sms /licenses /greet /v /businesshelp /househelp /fishinghelp /factioninfo /invite /id /coin /ageup /vgivekeys /walk");
-	SCM(playerid, COLOR_WHITE, "[GENERAL:] /(ad)vertisement /frisk /train /buy /help /low /do /me /shout /(o)oc /(f)action /windows /removecp /signwelfare /walkstyle");
-	SCM(playerid, COLOR_WHITE, "[GENERAL:] /phonehelp /boombox /smoke /drink /usedrug /blockpm /fishingrod /helpme /buydrink /refuel /vsell /map /quitwelfare /list_tickets");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[SERVER COMMANDS]_______________________________");
+	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL:] /pay /pm /stats /dice /call /givedrug /animlist /factionhelp /dropgun /refuel /kph /mph /stats /admins /supporters");
+	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL:] /report /givegun /balance /withdraw /deposit /pickup /hangup /takedrivingtest /notehelp /jobhelp /pickupgun /inv");
+	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL:] /sms /licenses /greet /v /businesshelp /househelp /fishinghelp /factioninfo /invite /id /coin /ageup /vgivekeys /walk");
+	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL:] /(ad)vertisement /frisk /train /buy /help /low /do /me /shout /(o)oc /(f)action /windows /removecp /signwelfare /walkstyle");
+	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL:] /phonehelp /boombox /smoke /drink /usedrug /blockpm /fishingrod /helpme /buydrink /refuel /vsell /map /quitwelfare /list_tickets");
     if(PlayerInfo[playerid][pFaction] == 2)
     {
-		SCM(playerid, COLOR_WHITE, "[POLICE:] /arrest /cuff /uncuff /opendoor /closedoor /locker /closecell /opencell /opengate /closegate");
-		SCM(playerid, COLOR_WHITE, "[POLICE:] /revokeguns /revokedrugs /(m)egaphone /tazer /(r)adio /revokelicense /vmdc");
-		SCM(playerid, COLOR_WHITE, "[POLICE:] /spike /removespike /removeroadblock /roadblock /ticket /takegunrights /mdc /suspect");
+		SendClientMessage(playerid, COLOR_WHITE, "[POLICE:] /arrest /cuff /uncuff /opendoor /closedoor /locker /closecell /opencell /opengate /closegate");
+		SendClientMessage(playerid, COLOR_WHITE, "[POLICE:] /revokeguns /revokedrugs /(m)egaphone /tazer /(r)adio /revokelicense /vmdc");
+		SendClientMessage(playerid, COLOR_WHITE, "[POLICE:] /spike /removespike /removeroadblock /roadblock /ticket /takegunrights /mdc /suspect");
     }
    	return 1;
 }
 
 CMD:jobhelp(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[JOB COMMANDS]_______________________________");
-    SCM(playerid, COLOR_WHITE, "[COMMANDS:] /takejob /quitjob /work /stopworking");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[JOB COMMANDS]_______________________________");
+    SendClientMessage(playerid, COLOR_WHITE, "[COMMANDS:] /takejob /quitjob /work /stopworking");
    	return 1;
 }
 
 CMD:factionhelp(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[FACTION COMMANDS]_______________________________");
-    SCM(playerid, COLOR_WHITE, "[COMMANDS:] /invite /acceptinvite /setrank /(f)action /leavefaction /factionkick /factioninfo");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[FACTION COMMANDS]_______________________________");
+    SendClientMessage(playerid, COLOR_WHITE, "[COMMANDS:] /invite /acceptinvite /setrank /(f)action /leavefaction /factionkick /factioninfo");
    	return 1;
 }
 
 CMD:notehelp(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[NOTE COMMANDS]_______________________________");
-    SCM(playerid, COLOR_WHITE, "[COMMANDS:] /createnote /deletenote /notes /readnote");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[NOTE COMMANDS]_______________________________");
+    SendClientMessage(playerid, COLOR_WHITE, "[COMMANDS:] /createnote /deletenote /notes /readnote");
    	return 1;
 }
 
 
 CMD:phonehelp(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[HOUSE COMMANDS]_______________________________");
-    SCM(playerid, COLOR_WHITE, "[COMMANDS:] /call /pickup /hangup /sms /dropphone");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[HOUSE COMMANDS]_______________________________");
+    SendClientMessage(playerid, COLOR_WHITE, "[COMMANDS:] /call /pickup /hangup /sms /dropphone");
    	return 1;
 }
 
 
 CMD:househelp(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[HOUSE COMMANDS]_______________________________");
-    SCM(playerid, COLOR_WHITE, "[COMMANDS:] /buyhouse /lock /housewithdraw /housedeposit /housebalance");
-    SCM(playerid, COLOR_WHITE, "[COMMANDS:] /sellhouse /putgun /takegun /checkhouse /putdrug /takedrug");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[HOUSE COMMANDS]_______________________________");
+    SendClientMessage(playerid, COLOR_WHITE, "[COMMANDS:] /buyhouse /lock /housewithdraw /housedeposit /housebalance");
+    SendClientMessage(playerid, COLOR_WHITE, "[COMMANDS:] /sellhouse /putgun /takegun /checkhouse /putdrug /takedrug");
    	return 1;
 }
 
 CMD:fishinghelp(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[FISHING COMMANDS]_______________________________");
-    SCM(playerid, COLOR_WHITE, "[COMMANDS:] /attachworm /fish /buy");
-    SCM(playerid, COLOR_WHITE, "[HINTS:] Type /fishingrod to equip your fishing rod.");
-    SCM(playerid, COLOR_WHITE, "[HINTS:] You can buy a fishing rod and worms at the fishing store.");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[FISHING COMMANDS]_______________________________");
+    SendClientMessage(playerid, COLOR_WHITE, "[COMMANDS:] /attachworm /fish /buy");
+    SendClientMessage(playerid, COLOR_WHITE, "[HINTS:] Type /fishingrod to equip your fishing rod.");
+    SendClientMessage(playerid, COLOR_WHITE, "[HINTS:] You can buy a fishing rod and worms at the fishing store.");
    	return 1;
 }
 
 CMD:businesshelp(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "_______________________________[BUSINESS COMMANDS]_______________________________");
-	SCM(playerid, COLOR_WHITE, "[COMMANDS:] /buybiz /sellbiz /bizname /lockbiz /bizwithdraw /bizbalance /bizdeposit");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[BUSINESS COMMANDS]_______________________________");
+	SendClientMessage(playerid, COLOR_WHITE, "[COMMANDS:] /buybiz /sellbiz /bizname /lockbiz /bizwithdraw /bizbalance /bizdeposit");
    	return 1;
 }
 
@@ -8403,46 +8401,46 @@ CMD:admincommands(playerid, params[])
 {
 	if(PlayerInfo[playerid][pAdmin] < 1)
     {
-		SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+		SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
 	}
 	if(PlayerInfo[playerid][pAdmin] == 1)
     {
-   		SCM(playerid, COLOR_WHITE, "_______________________________[SUPPORTER COMMANDS]_______________________________");
-		SCM(playerid, COLOR_WHITE, "[SUPPORTERS:] /accepthelpme /ignorehelpme /warn /mute /unmute /freeze /unfreeze");
-		SCM(playerid, COLOR_WHITE, "[SUPPORTERS:] /tduty /(a)dminchat /ajail /astats /kick /spectate /spectateoff");
+   		SendClientMessage(playerid, COLOR_WHITE, "_______________________________[SUPPORTER COMMANDS]_______________________________");
+		SendClientMessage(playerid, COLOR_WHITE, "[SUPPORTERS:] /accepthelpme /ignorehelpme /warn /mute /unmute /freeze /unfreeze");
+		SendClientMessage(playerid, COLOR_WHITE, "[SUPPORTERS:] /tduty /(a)dminchat /ajail /astats /kick /spectate /spectateoff");
     }
     if(PlayerInfo[playerid][pAdmin] == 2)
     {
-   		SCM(playerid, COLOR_WHITE, "_______________________________[ADMINISTRATOR COMMANDS]_______________________________");
-		SCM(playerid, COLOR_WHITE, "[SUPPORTERS:] /accepthelpme /ignorehelpme /warn /mute /unmute /freeze /unfreeze");
-		SCM(playerid, COLOR_WHITE, "[SUPPORTERS:] /goto /gethere /tduty /(a)dminchat /ajail /astats /kick /spectate /spectateoff");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /free /gotofuelstation /editv /setfuel /takegunrights /givegunrights /setskin /setvw /sethp");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /setarmour /rtc /arevokedrugs /arevokeguns /afactionname /asetleader /sendtols /gotols /�slap");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /afactioninfo /afactionrankname /alock /seenames /spectate /spectateoff /ban /unban /unbanip /offlineban");
+   		SendClientMessage(playerid, COLOR_WHITE, "_______________________________[ADMINISTRATOR COMMANDS]_______________________________");
+		SendClientMessage(playerid, COLOR_WHITE, "[SUPPORTERS:] /accepthelpme /ignorehelpme /warn /mute /unmute /freeze /unfreeze");
+		SendClientMessage(playerid, COLOR_WHITE, "[SUPPORTERS:] /goto /gethere /tduty /(a)dminchat /ajail /astats /kick /spectate /spectateoff");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /free /gotofuelstation /editv /setfuel /takegunrights /givegunrights /setskin /setvw /sethp");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /setarmour /rtc /arevokedrugs /arevokeguns /afactionname /asetleader /sendtols /gotols /�slap");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /afactioninfo /afactionrankname /alock /seenames /spectate /spectateoff /ban /unban /unbanip /offlineban");
     }
     if(PlayerInfo[playerid][pAdmin] == 3)
     {
-   		SCM(playerid, COLOR_WHITE, "_______________________________[ADMINISTRATOR COMMANDS]_______________________________");
-		SCM(playerid, COLOR_WHITE, "[SUPPORTERS:] /accepthelpme /ignorehelpme /warn /mute /unmute /freeze /unfreeze");
-		SCM(playerid, COLOR_WHITE, "[SUPPORTERS:] /goto /gethere /tduty /(a)dminchat /ajail /astats /kick /spectate /spectateoff");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /free /gotofuelstation /editv /setfuel /takegunrights /givegunrights /setskin /setvw /sethp");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /setarmour /rtc /arevokedrugs /arevokeguns /afactionname /asetleader /sendtols /gotols /aslap");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /afactioninfo /afactionrankname /alock /seenames /spectate /spectateoff /ban /unban /unbanip /offlineban");
-       	SCM(playerid, COLOR_WHITE, "[GENERAL ADMINISTRATORS:] /agivegun /givemoney /setmoney /agivedrug /alockbiz /asellbiz /sethours" );
-       	SCM(playerid, COLOR_WHITE, "[GENERAL ADMINISTRATORS:] /asellhouse /alockhouse /createhouse /deletehouse /alock /seenames" );
+   		SendClientMessage(playerid, COLOR_WHITE, "_______________________________[ADMINISTRATOR COMMANDS]_______________________________");
+		SendClientMessage(playerid, COLOR_WHITE, "[SUPPORTERS:] /accepthelpme /ignorehelpme /warn /mute /unmute /freeze /unfreeze");
+		SendClientMessage(playerid, COLOR_WHITE, "[SUPPORTERS:] /goto /gethere /tduty /(a)dminchat /ajail /astats /kick /spectate /spectateoff");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /free /gotofuelstation /editv /setfuel /takegunrights /givegunrights /setskin /setvw /sethp");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /setarmour /rtc /arevokedrugs /arevokeguns /afactionname /asetleader /sendtols /gotols /aslap");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /afactioninfo /afactionrankname /alock /seenames /spectate /spectateoff /ban /unban /unbanip /offlineban");
+       	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL ADMINISTRATORS:] /agivegun /givemoney /setmoney /agivedrug /alockbiz /asellbiz /sethours" );
+       	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL ADMINISTRATORS:] /asellhouse /alockhouse /createhouse /deletehouse /alock /seenames" );
     }
     if(PlayerInfo[playerid][pAdmin] == 4)
     {
-   		SCM(playerid, COLOR_WHITE, "_______________________________[ADMINISTRATOR COMMANDS]_______________________________");
+   		SendClientMessage(playerid, COLOR_WHITE, "_______________________________[ADMINISTRATOR COMMANDS]_______________________________");
    		
-		SCM(playerid, COLOR_WHITE, "[SUPPORTERS:] /accepthelpme /ignorehelpme /warn /mute /unmute /freeze /unfreeze");
-		SCM(playerid, COLOR_WHITE, "[SUPPORTERS:] /goto /gethere /tduty /(a)dminchat /ajail /astats /kick /spectate /spectateoff");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /free /gotofuelstation /editv /setfuel /takegunrights /givegunrights /setskin /setvw /sethp");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /setarmour /rtc /arevokedrugs /arevokeguns /afactionname /asetleader /sendtols /gotols /aslap");
-		SCM(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /afactioninfo /afactionrankname /alock /seenames /spectate /spectateoff /ban /unban /unbanip /offlineban");
-       	SCM(playerid, COLOR_WHITE, "[GENERAL ADMINISTRATORS:] /agivegun /givemoney /setmoney /agivedrug /alockbiz /asellbiz /sethours" );
-       	SCM(playerid, COLOR_WHITE, "[GENERAL ADMINISTRATORS:] /asellhouse /alockhouse /createhouse /deletehouse /alock /seenames" );
-       	SCM(playerid, COLOR_WHITE, "[LEAD ADMINISTRATORS:] /restart");
+		SendClientMessage(playerid, COLOR_WHITE, "[SUPPORTERS:] /accepthelpme /ignorehelpme /warn /mute /unmute /freeze /unfreeze");
+		SendClientMessage(playerid, COLOR_WHITE, "[SUPPORTERS:] /goto /gethere /tduty /(a)dminchat /ajail /astats /kick /spectate /spectateoff");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /free /gotofuelstation /editv /setfuel /takegunrights /givegunrights /setskin /setvw /sethp");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /setarmour /rtc /arevokedrugs /arevokeguns /afactionname /asetleader /sendtols /gotols /aslap");
+		SendClientMessage(playerid, COLOR_WHITE, "[JUNIOR ADMINISTRATORS:] /afactioninfo /afactionrankname /alock /seenames /spectate /spectateoff /ban /unban /unbanip /offlineban");
+       	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL ADMINISTRATORS:] /agivegun /givemoney /setmoney /agivedrug /alockbiz /asellbiz /sethours" );
+       	SendClientMessage(playerid, COLOR_WHITE, "[GENERAL ADMINISTRATORS:] /asellhouse /alockhouse /createhouse /deletehouse /alock /seenames" );
+       	SendClientMessage(playerid, COLOR_WHITE, "[LEAD ADMINISTRATORS:] /restart");
     }
    	return 1;
 }
@@ -8556,8 +8554,8 @@ CMD:agiveboombox(playerid, params[])
 	new
 	targetid, string[64];
 
-	if(!IsPlayerAdmin(playerid)) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
-	if(sscanf(params, "u", targetid)) return SCM(playerid, COLOR_GREY, "[Usage:] /agiveboombox [playerid]");
+	if(!IsPlayerAdmin(playerid)) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(sscanf(params, "u", targetid)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /agiveboombox [playerid]");
 	PlayerInfo[targetid][pBoombox] = 1;
 
 	format(string, sizeof(string), "AdmCmd: %s has given %s a boombox.", GetName(playerid), GetName(targetid));
@@ -8577,7 +8575,7 @@ CMD:pay(playerid, params[])
 
     if (sscanf(params, "ud", id, amount)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /pay [playerid/partname] [amount].");
 	GetPlayerPos(id, x, y, z);
-    if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
     if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     if (amount > GetPlayerMoney(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much of money.");
     if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself money.");
@@ -8624,7 +8622,7 @@ CMD:givedrug(playerid, params[])
     {
    		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][dLSD]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much LSD.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself LSD.");
@@ -8645,7 +8643,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][dMarijuana]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much marijuana.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself marijuana.");
@@ -8667,7 +8665,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][dCocaine]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much cocaine.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself cocaine.");
@@ -8688,7 +8686,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][pCigarettes]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that many cigarettes.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself cigarettes.");
@@ -8710,7 +8708,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][pBeer]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much beer.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself beer.");
@@ -8732,7 +8730,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][dMeth]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much cocaine.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself cocaine.");
@@ -8753,7 +8751,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][dEcstasy]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much cocaine.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself cocaine.");
@@ -8774,7 +8772,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][dEcstasy]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much seeds.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself seeds.");
@@ -8795,7 +8793,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][dHeroin]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much seeds.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself heroin.");
@@ -8816,7 +8814,7 @@ CMD:givedrug(playerid, params[])
     {
   		new Float:x, Float:y, Float:z;
 		GetPlayerPos(id, x, y, z);
-    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SCM(playerid, COLOR_LIGHTRED, "You are not close to that player.");
+    	if(!IsPlayerInRangeOfPoint(playerid, 7.0, x, y, z)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close to that player.");
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 	    if (amount > PlayerInfo[playerid][dCrack]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have that much crack.");
 	    if (playerid == id) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give yourself crack.");
@@ -8838,7 +8836,7 @@ CMD:givedrug(playerid, params[])
 
 CMD:me(playerid, params[])
 {
-	if(gMuted[playerid]) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
+	if(gMuted[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
 
     if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /me [text]");
 	new string[144];
@@ -8875,7 +8873,7 @@ CMD:me(playerid, params[])
 
 CMD:do(playerid, params[])
 {
-	if(gMuted[playerid]) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
+	if(gMuted[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
 
 	if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /do [text]");
 	new string[144];
@@ -8911,7 +8909,7 @@ CMD:do(playerid, params[])
 
 CMD:b(playerid, params[])
 {
-	if(gMuted[playerid]) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
+	if(gMuted[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
 
     if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /b [text]");
     new string[144];
@@ -9053,7 +9051,7 @@ CMD:b(playerid, params[])
 
 CMD:ooc(playerid, params[])
 {
-	if(gMuted[playerid]) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
+	if(gMuted[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
 	if(!OOCenable) return SendClientMessage(playerid, COLOR_LIGHTRED, "The OOC chat is currently disabled.");
 
     if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /(o)oc [text]");
@@ -9084,7 +9082,7 @@ CMD:ooc(playerid, params[])
 CMD:oocstatus(playerid, params[])
 {
 	new string[128];
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
 
    	if(!OOCenable)
 	{
@@ -9104,7 +9102,7 @@ CMD:oocstatus(playerid, params[])
 
 CMD:low(playerid, params[])
 {
-	if(gMuted[playerid]) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
+	if(gMuted[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
 
     if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /(l)ow [text]");
     new string[144];
@@ -9122,14 +9120,14 @@ CMD:low(playerid, params[])
 
 CMD:boombox(playerid, params[])
 {
-	if(PlayerInfo[playerid][pBoombox] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not own a boombox.");
+	if(PlayerInfo[playerid][pBoombox] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not own a boombox.");
 	ShowPlayerDialog(playerid, 76, DIALOG_STYLE_LIST, "Boombox", "Use\nChange Channel\nPickup", "Use", "Cancel");
 	return 1;
 }
 
 CMD:drink(playerid, params[])
 {
-	if (PlayerInfo[playerid][pBeer] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any beers.");
+	if (PlayerInfo[playerid][pBeer] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any beers.");
 
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DRINK_BEER);
 	IsDrinkingBeer[playerid] = 1;
@@ -9149,7 +9147,7 @@ CMD:forumname(playerid, params[])
 
 CMD:fishingrod(playerid, params[])
 {
-	if(PlayerInfo[playerid][pFishingRod] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have a fishing rod.");
+	if(PlayerInfo[playerid][pFishingRod] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a fishing rod.");
 	if(Equipped[playerid] == 0)
 	{
  		RodObject = SetPlayerAttachedObject(playerid, 0, 18632, 6, 0.079376, 0.037070, 0.007706, 181.482910, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000);
@@ -9165,17 +9163,17 @@ CMD:fishingrod(playerid, params[])
 }
 CMD:blockpm(playerid, params[])
 {
-	if (PlayerInfo[playerid][pDonator] < 1) return SCM(playerid, COLOR_LIGHTRED, "You are not a donator.");
+	if (PlayerInfo[playerid][pDonator] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a donator.");
 
 	if(PlayerInfo[playerid][pBlockPM] == 1)
 	{
 		PlayerInfo[playerid][pBlockPM] = 0;
-		SCM(playerid, -1, "You have un-blocked your private messages.");
+		SendClientMessage(playerid, -1, "You have un-blocked your private messages.");
 	}
 	else
 	{
 	    PlayerInfo[playerid][pBlockPM] = 1;
-	    SCM(playerid, -1, "You have blocked your private messages.");
+	    SendClientMessage(playerid, -1, "You have blocked your private messages.");
 	}
 	return 1;
 }
@@ -9183,7 +9181,7 @@ CMD:blockpm(playerid, params[])
 
 CMD:smoke(playerid, params[])
 {
-	if (PlayerInfo[playerid][pCigarettes] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any cigarettes.");
+	if (PlayerInfo[playerid][pCigarettes] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any cigarettes.");
 
 	SetPlayerSpecialAction(playerid, SPECIAL_ACTION_SMOKE_CIGGY);
 	IsSmokingCigarette[playerid] = 1;
@@ -9205,7 +9203,7 @@ CMD:usedrug(playerid, params[])
     if(sscanf(params, "s[24]", give)) return SendClientMessage(playerid, COLOR_GREY, "[SERVER] /usedrug (lsd, marijuana, cocaine, meth, ecstasy, heroin, crack)");
     if(!strcmp(give, "marijuana", true))
     {
-		if (PlayerInfo[playerid][dMarijuana] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any marijuana.");
+		if (PlayerInfo[playerid][dMarijuana] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any marijuana.");
 		SetPlayerSpecialAction(playerid, SPECIAL_ACTION_SMOKE_CIGGY);
 		IsSmokingJoint[playerid] = 1;
 
@@ -9222,9 +9220,9 @@ CMD:usedrug(playerid, params[])
 		new
 		Float: fArmour;
 		GetPlayerArmour( playerid, fArmour );
-		if (PlayerInfo[playerid][dCocaine] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any cocaine.");
-		if (fArmour > 35) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more cocaine.");
-		if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more cocaine.");
+		if (PlayerInfo[playerid][dCocaine] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any cocaine.");
+		if (fArmour > 35) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more cocaine.");
+		if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more cocaine.");
 
 		SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -9237,8 +9235,8 @@ CMD:usedrug(playerid, params[])
 	}
     else if(!strcmp(give, "lsd", true))
     {
-		if (PlayerInfo[playerid][dLSD] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any LSD.");
-		if(IsLSDHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more LSD.");
+		if (PlayerInfo[playerid][dLSD] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any LSD.");
+		if(IsLSDHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more LSD.");
 
 		SetTimerEx("LSDEffect", 300000, 0, "i", playerid);
 
@@ -9255,9 +9253,9 @@ CMD:usedrug(playerid, params[])
 		new
 		Float: fArmour;
 		GetPlayerArmour( playerid, fArmour );
-		if (PlayerInfo[playerid][dMeth] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any meth.");
-		if (fArmour > 45) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more meth.");
-		if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more meth.");
+		if (PlayerInfo[playerid][dMeth] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any meth.");
+		if (fArmour > 45) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more meth.");
+		if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more meth.");
 
 		SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -9273,9 +9271,9 @@ CMD:usedrug(playerid, params[])
 		new
 		Float: fArmour;
 		GetPlayerArmour( playerid, fArmour );
-		if (PlayerInfo[playerid][dEcstasy] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any ecstasy.");
-		if (fArmour > 20) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more ecstasy.");
-		if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more ecstasy.");
+		if (PlayerInfo[playerid][dEcstasy] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any ecstasy.");
+		if (fArmour > 20) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more ecstasy.");
+		if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more ecstasy.");
 
 		SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -9291,9 +9289,9 @@ CMD:usedrug(playerid, params[])
 		new
 		Float: fArmour;
 		GetPlayerArmour( playerid, fArmour );
-		if (PlayerInfo[playerid][dHeroin] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any heroin.");
-		if (fArmour > 35) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more heroin.");
-		if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more ecstasy.");
+		if (PlayerInfo[playerid][dHeroin] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any heroin.");
+		if (fArmour > 35) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more heroin.");
+		if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more ecstasy.");
 
 		SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -9309,9 +9307,9 @@ CMD:usedrug(playerid, params[])
 		new
 		Float: fArmour;
 		GetPlayerArmour( playerid, fArmour );
-		if (PlayerInfo[playerid][dCrack] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any crack.");
-		if (fArmour > 30) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more crack.");
-		if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more crack.");
+		if (PlayerInfo[playerid][dCrack] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any crack.");
+		if (fArmour > 30) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more crack.");
+		if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more crack.");
 
 		SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -9327,13 +9325,13 @@ CMD:usedrug(playerid, params[])
 
 CMD:help(playerid, params[])
 {
-	SCM(playerid, COLOR_WHITE, "[Server:] If you need help, please type /helpme and describe your situation.");
+	SendClientMessage(playerid, COLOR_WHITE, "[Server:] If you need help, please type /helpme and describe your situation.");
     return 1;
 }
 
 CMD:shout(playerid, params[])
 {
-	if(gMuted[playerid]) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
+	if(gMuted[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
 
     if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /(s)hout [text]");
 	new string[144];
@@ -9345,8 +9343,8 @@ CMD:shout(playerid, params[])
 CMD:revokelicense(playerid, params[])
 {
 	new id, string[128];
-	if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /revokelicense [playerid/partofname]");
-	if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+	if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /revokelicense [playerid/partofname]");
+	if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 	
 	PlayerInfo[id][pDriverLicense] = 0;
 	
@@ -9397,72 +9395,72 @@ CMD:stats(playerid, params[])
 	if(PlayerInfo[playerid][pAdmin] < 1)
 	{
 		format(string, sizeof(string), "_______________________________[%s]_______________________________", GetName(playerid));
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 
 		format(string, sizeof(string), "[GENERAL:] Age: %d | Name: %s | Register Date: %d-%d-%d", PlayerInfo[playerid][pAge], GetName(playerid), PlayerInfo[playerid][pYear], PlayerInfo[playerid][pMonth], PlayerInfo[playerid][pDay]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 		format(string, sizeof(string), "[GENERAL:] Donator Status: %s | Playing Hours: %d | Bank: $%d", donatortext, PlayerInfo[playerid][pPlayingHours], PlayerInfo[playerid][pBankAccount]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 		
 		if(PlayerInfo[playerid][fRank] == 1)
 		{
 			format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank1]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 		}
 		else if (PlayerInfo[playerid][fRank] == 2)
 		{
 			format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank2]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 		}
 		else if (PlayerInfo[playerid][fRank] == 3)
 		{
 			format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank3]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 		}
 		else if (PlayerInfo[playerid][fRank] == 4)
 		{
 			format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank4]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 		}
 
 		format(string, sizeof(string), "[JOB:] %s", jobtext);
-		SCM(playerid, COLOR_WHITE, string);
-		SCM(playerid, COLOR_LIGHTRED, "HINT: Type /inv to see your possesions and currency.");
+		SendClientMessage(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_LIGHTRED, "HINT: Type /inv to see your possesions and currency.");
 	}
 	else
 	{
 		format(string, sizeof(string), "_______________________________[%s]_______________________________", GetName(playerid));
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 
 		format(string, sizeof(string), "[GENERAL:] Age: %d | Name: %s | Register Date: %d-%d-%d | Admin Level: %d", PlayerInfo[playerid][pAge], GetName(playerid), PlayerInfo[playerid][pYear], PlayerInfo[playerid][pMonth], PlayerInfo[playerid][pDay], PlayerInfo[playerid][pAdmin]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 		format(string, sizeof(string), "[GENERAL:] Donator Status: %s | Playing Hours: %d | Bank: $%d", donatortext, PlayerInfo[playerid][pPlayingHours], PlayerInfo[playerid][pBankAccount]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 
 		if(PlayerInfo[playerid][fRank] == 1)
 		{
 			format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank1]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 		}
 		else if (PlayerInfo[playerid][fRank] == 2)
 		{
 			format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank2]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 		}
 		else if (PlayerInfo[playerid][fRank] == 3)
 		{
 			format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank3]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 		}
 		else if (PlayerInfo[playerid][fRank] == 4)
 		{
 			format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank4]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 		}
 		
 		format(string, sizeof(string), "[JOB:] %s", jobtext);
-		SCM(playerid, COLOR_WHITE, string);
-		SCM(playerid, COLOR_LIGHTRED, "HINT: Type /inv to see your possesions and currency.");
+		SendClientMessage(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_LIGHTRED, "HINT: Type /inv to see your possesions and currency.");
 	}
 	return 1;
 }
@@ -9486,42 +9484,42 @@ CMD:astats(playerid, params[])
 		case 0: donatortext = "Regular Player";
 	}
 	
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /astats [playerid/partofname]");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /astats [playerid/partofname]");
 	format(string, sizeof(string), "_______________________________[%s]_______________________________", GetName(id));
-	SCM(playerid, COLOR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), "[GENERAL:] Age: %d | Name: %s | Money: $%d | Number: %d | Cigarettes: %d | Beers: %d | Register Date: %d-%d-%d", PlayerInfo[id][pAge], GetName(id), GetPlayerMoney(id), PlayerInfo[id][pNumber], PlayerInfo[id][pCigarettes], PlayerInfo[id][pBeer],  PlayerInfo[id][pYear], PlayerInfo[id][pMonth], PlayerInfo[id][pDay]);
-	SCM(playerid, COLOR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), "[GENERAL:] Donator Status: %s | Admin Level: %d | Business Key: %d | House Key: %d | Bank: $%d | Playing Hours: %d", donatortext, PlayerInfo[id][pAdmin], PlayerInfo[id][BizID], PlayerInfo[id][HouseID], PlayerInfo[id][pBankAccount], PlayerInfo[id][pPlayingHours]);
-	SCM(playerid, COLOR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), "[DRUGS:] Marijuana: %dg | Cocaine: %dg | LSD: %dg | Ecstasy: %dg | Methamphetamine: %dg | Heroin: %d | Crack: %d", PlayerInfo[id][dMarijuana], PlayerInfo[id][dCocaine], PlayerInfo[id][dLSD], PlayerInfo[id][dEcstasy], PlayerInfo[id][dMeth], PlayerInfo[id][dHeroin], PlayerInfo[id][dCrack]);
-	SCM(playerid, COLOR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	format(string, sizeof(string), "[FISHING:] FIG(fishes in grams): %d | Worms: %d", PlayerInfo[id][pFishes], PlayerInfo[id][pWorms]);
-	SCM(playerid, COLOR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 
 	if(PlayerInfo[id][fRank] == 1)
 	{
 		format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank1]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 	}
 	else if (PlayerInfo[id][fRank] == 2)
 	{
 		format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank2]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 	}
 	else if (PlayerInfo[id][fRank] == 3)
 	{
 		format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank3]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 	}
 	else if (PlayerInfo[id][fRank] == 4)
 	{
 		format(string, sizeof(string), "[FACTION:] Name: %s | Rank: %s ", FactionInfo[faction][fName], FactionInfo[faction][fRank4]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 	}
 	return 1;
 }
@@ -9540,7 +9538,7 @@ CMD:astats(playerid, params[])
     if(sscanf(params, "u", criminal)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /taze [ID].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     if(criminal == playerid) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't taze yourself.");
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 
     GetPlayerPos(criminal, X, Y, Z);
     if(IsPlayerInRangeOfPoint(playerid, 10.0, X, Y, Z))
@@ -9551,7 +9549,7 @@ CMD:astats(playerid, params[])
 		SetTimerEx("LoadDeathAnim", 1000, false, "i", criminal);
 		SetTimerEx("UnloadTazer", 10000, false, "i", criminal);
 
-	} else return SCM(playerid, COLOR_LIGHTRED, "You are not close enough.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not close enough.");
 	return 1;
 }
 
@@ -9688,22 +9686,22 @@ COMMAND:removespike(playerid, params[])
 COMMAND:signwelfare(playerid, params[])
 {
 	new string[128];
-	if(PlayerInfo[playerid][pJob] != 0) return SCM(playerid, COLOR_LIGHTRED, "You have a job. You can't sign up for a welfare bonus while having a job.");
+	if(PlayerInfo[playerid][pJob] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have a job. You can't sign up for a welfare bonus while having a job.");
 	PlayerInfo[playerid][pWelfare] = 1;
 	format(string, sizeof(string), "SMS from: 555-1999. MSG: Your information has been set-up, you will now receive a welfare bonus, %s.", GetName(playerid));
-	SCM(playerid, COLOR_GREEN, string);
-	SCM(playerid, COLOR_WHITE, "You have signed up for the welfare system. You will now get a bonus every PayDay. If you want to get a job, type /quitwelfare.");
+	SendClientMessage(playerid, COLOR_GREEN, string);
+	SendClientMessage(playerid, COLOR_WHITE, "You have signed up for the welfare system. You will now get a bonus every PayDay. If you want to get a job, type /quitwelfare.");
 	return 1;
 }
 
 COMMAND:quitwelfare(playerid, params[])
 {
     new string[128];
-	if(PlayerInfo[playerid][pWelfare] == 0) return SCM(playerid, COLOR_LIGHTRED, "You are not signed up to the welfare program.");
+	if(PlayerInfo[playerid][pWelfare] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not signed up to the welfare program.");
 	PlayerInfo[playerid][pWelfare] = 0;
 	format(string, sizeof(string), "SMS from: 555-1999. MSG: Your welfare bonuses have been cancelled, %s.", GetName(playerid));
-	SCM(playerid, COLOR_GREEN, string);
-	SCM(playerid, COLOR_WHITE, "You have quit the welfare system.");
+	SendClientMessage(playerid, COLOR_GREEN, string);
+	SendClientMessage(playerid, COLOR_WHITE, "You have quit the welfare system.");
 	return 1;
 }
 
@@ -9716,7 +9714,7 @@ COMMAND:ticket(playerid, params[])
     if(sscanf(params, "uis[128]", criminal, amount, reason)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /ticket [ID] [price] [reason].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     if(amount < 1 || amount > 1000) return SendClientMessage(playerid, COLOR_LIGHTRED, "Tickets can only range between 1-1000 dollars.");
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 
 	if(PlayerInfo[criminal][pTicket1] == 0)
 	{
@@ -9727,10 +9725,10 @@ COMMAND:ticket(playerid, params[])
 			ProxDetector(15.0, playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 			PlayerInfo[criminal][pTicketReason1] = reason;
 			format(string, sizeof(string), "A ticket of $%d has been added to your register. /list_tickets to pay it.", amount);
-			SCM(criminal, -1, string);
+			SendClientMessage(criminal, -1, string);
 			PlayerInfo[criminal][pTicket1] = 1;
 			PlayerInfo[criminal][pTicketPrice1] = amount;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You're not close enough.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close enough.");
 	}
 	else if(PlayerInfo[criminal][pTicket2] == 0)
 	{
@@ -9741,12 +9739,12 @@ COMMAND:ticket(playerid, params[])
 			ProxDetector(15.0, playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
 			PlayerInfo[criminal][pTicketReason2] = reason;
 			format(string, sizeof(string), "A ticket of $%d has been added to your register. /list_tickets to pay it.", amount);
-			SCM(criminal, -1, string);
+			SendClientMessage(criminal, -1, string);
 			PlayerInfo[criminal][pTicket2] = 1;
 			PlayerInfo[criminal][pTicketPrice2] = amount;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You're not close enough.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close enough.");
 	}
-	else return SCM(playerid, COLOR_LIGHTRED, "That player already has two unpaid tickets, arrest them.");
+	else return SendClientMessage(playerid, COLOR_LIGHTRED, "That player already has two unpaid tickets, arrest them.");
 	return 1;
 }
 
@@ -9757,9 +9755,9 @@ COMMAND:payticket(playerid, params[])
 	new string[128];
 	if(!strcmp(params, "1", true))
     {
-        if(GetPlayerMoney(playerid) < PlayerInfo[playerid][pTicketPrice1]) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money to pay that ticket.");
+        if(GetPlayerMoney(playerid) < PlayerInfo[playerid][pTicketPrice1]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money to pay that ticket.");
 		format(string, sizeof(string), "You have paid this ticket of $%d.", PlayerInfo[playerid][pTicketPrice1]);
-		SCM(playerid, -1, string);
+		SendClientMessage(playerid, -1, string);
 		GivePlayerMoney(playerid, PlayerInfo[playerid][pTicketPrice1]);
 		PlayerInfo[playerid][pTicket1] = 0;
 		strdel(PlayerInfo[playerid][pTicketReason1], 0, 128);
@@ -9767,9 +9765,9 @@ COMMAND:payticket(playerid, params[])
     }
     else if(!strcmp(params, "2", true))
     {
-        if(GetPlayerMoney(playerid) < PlayerInfo[playerid][pTicketPrice2]) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money to pay that ticket.");
+        if(GetPlayerMoney(playerid) < PlayerInfo[playerid][pTicketPrice2]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money to pay that ticket.");
   		format(string, sizeof(string), "You have paid this ticket of $%d.", PlayerInfo[playerid][pTicketPrice2]);
-		SCM(playerid, -1, string);
+		SendClientMessage(playerid, -1, string);
         GivePlayerMoney(playerid, PlayerInfo[playerid][pTicketPrice2]);
         PlayerInfo[playerid][pTicket2] = 0;
         strdel(PlayerInfo[playerid][pTicketReason2], 0, 128);
@@ -9781,7 +9779,7 @@ COMMAND:payticket(playerid, params[])
 COMMAND:list_tickets(playerid, params[])
 {
 	new string[128];
-	SCM(playerid, COLOR_YELLOW, "Type /payticket [ID] to pay your tickets.");
+	SendClientMessage(playerid, COLOR_YELLOW, "Type /payticket [ID] to pay your tickets.");
 	if(PlayerInfo[playerid][pTicket1] == 1 && PlayerInfo[playerid][pTicket2] == 1)
 	{
 		format(string, sizeof(string), "[TICKET 1:] %s, Price: $%d.", PlayerInfo[playerid][pTicketReason1], PlayerInfo[playerid][pTicketPrice1]);
@@ -9798,7 +9796,7 @@ COMMAND:list_tickets(playerid, params[])
  	{
 		format(string, sizeof(string), "[TICKET 2:] %s, Price: $%d.", PlayerInfo[playerid][pTicketReason2], PlayerInfo[playerid][pTicketPrice2]);
 		SendClientMessage(playerid, COLOR_WHITE, string);
-	} else return SCM(playerid, COLOR_LIGHTRED, "You do not have any tickets.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any tickets.");
 	return 1;
 }
 
@@ -9812,7 +9810,7 @@ COMMAND:cuff(playerid, params[])
     if(sscanf(params, "u", criminal)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /cuff [ID].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     if(criminal == playerid) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't cuff yourself.");
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 
     GetPlayerPos(criminal, X, Y, Z);
     if(IsPlayerInRangeOfPoint(playerid, 7.0, X, Y, Z))
@@ -9821,27 +9819,27 @@ COMMAND:cuff(playerid, params[])
 	   	SetPlayerAttachedObject(criminal, 9, 19418, 6, -0.011000, 0.028000, -0.022000, -15.600012, -33.699977, -81.700035, 0.891999, 1.000000, 1.168000);
 	   	format(string, sizeof(string), "%s cuffs %s.", GetName(playerid), GetName(criminal));
 		ProxDetector(15.0, playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
-	} else return SCM(playerid, COLOR_LIGHTRED, "You're not close enough.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close enough.");
 	return 1;
 }
 
 COMMAND:carsign(playerid, params[])
 {
     new getcar = GetPlayerVehicleID(playerid);
-	if(!(IsPlayerInAnyVehicle(playerid))) return SCM(playerid, COLOR_LIGHTRED, "You have to be in a vehicle.");
-	if(isnull(params)) return SCM(playerid, COLOR_GREY, "[Usage:] /carsign [text].");
+	if(!(IsPlayerInAnyVehicle(playerid))) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to be in a vehicle.");
+	if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /carsign [text].");
 	
 	Delete3DTextLabel(vehicle3Dtext4[getcar]);
  	vehicle3Dtext4[getcar] = Create3DTextLabel(params, -1, 0.0, 0.0, 0.0, 50.0, 0, 1);
   	Attach3DTextLabelToVehicle(vehicle3Dtext4[getcar], getcar, -0.8, -2.8, -0.3);
-  	SCM(playerid, COLOR_GREY, "Remember to /remove_carsign when you're done.");
+  	SendClientMessage(playerid, COLOR_GREY, "Remember to /remove_carsign when you're done.");
 	return 1;
 }
 
 COMMAND:remove_carsign(playerid, params[])
 {
     new getcar = GetPlayerVehicleID(playerid);
-	if(!(IsPlayerInAnyVehicle(playerid))) return SCM(playerid, COLOR_LIGHTRED, "You have to be in a vehicle.");
+	if(!(IsPlayerInAnyVehicle(playerid))) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to be in a vehicle.");
 	Delete3DTextLabel(vehicle3Dtext4[getcar]);
 	return 1;
 }
@@ -9853,7 +9851,7 @@ COMMAND:uncuff(playerid, params[])
 
     if(sscanf(params, "u", criminal)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /uncuff [ID].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 
     GetPlayerPos(criminal, X, Y, Z);
     if(IsPlayerInRangeOfPoint(playerid, 7.0, X, Y, Z))
@@ -9862,14 +9860,14 @@ COMMAND:uncuff(playerid, params[])
 	    RemovePlayerAttachedObject(criminal, 9);
 	    format(string, sizeof(string), "%s uncuffs %s.", GetName(playerid), GetName(criminal));
 	   	ProxDetector(15.0, playerid, string, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE, COLOR_PURPLE);
-	} else return SCM(playerid, COLOR_LIGHTRED, "You're not close enough.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close enough.");
   	return 1;
 }
 
 CMD:megaphone(playerid, params[])
 {
-	if(gMuted[playerid]) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
-	if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+	if(gMuted[playerid]) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
+	if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
     if(isnull(params)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /(m)egaphone [text]");
 	new string[144];
 	format(string, sizeof(string), "[MEGAPHONE] %s: %s", GetName(playerid), params);
@@ -9882,7 +9880,7 @@ CMD:radio(playerid, params[])
 	new
 	string[128], message[144];
 
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
     if(sscanf(params, "s[144]", message)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /radio [message]");
 
 	format(string, sizeof(string), "**[CH: SJPD, 993] %s: %s", GetName(playerid), message);
@@ -9938,7 +9936,7 @@ COMMAND:free(playerid, params[])
     new
 	criminal, string[128];
 	
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
     if(sscanf(params, "u", criminal)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /free [ID].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
@@ -9962,7 +9960,7 @@ COMMAND:suspect(playerid, params[])
 
     if(sscanf(params, "us[128]", criminal, offense)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /suspect [ID/name] [offense/reason].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 
 	format(string, sizeof(string), "[SJPD:] %s has reported %s as a suspect, offense: %s", GetName(playerid), GetName(criminal), offense);
 	PoliceBroadcast(COLOR_SJPD, string, 1);
@@ -9979,10 +9977,10 @@ COMMAND:mdc(playerid, params[])
 	
     if(sscanf(params, "u", criminal)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /mdc [name].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 	
 	format(string, sizeof(string), "_______________________________[%s]_______________________________", GetName(criminal));
-	SCM(playerid, COLOR_WHITE, string);
+	SendClientMessage(playerid, COLOR_WHITE, string);
 	if(PlayerInfo[criminal][pActiveOffenses] < 1)
 	{
 		SendClientMessage(playerid, COLOR_SJPD, "[SJPD Database:] "COL_WHITE"None.");
@@ -9990,7 +9988,7 @@ COMMAND:mdc(playerid, params[])
 	else
 	{
 		format(string, sizeof(string), "[SJPD Database:] "COL_WHITE"%s", PlayerInfo[criminal][pActiveOffense]);
-		SCM(playerid, COLOR_SJPD, string);
+		SendClientMessage(playerid, COLOR_SJPD, string);
 	}
   	return 1;
 }
@@ -10000,18 +9998,18 @@ COMMAND:vmdc(playerid, params[])
     new plate, string[128];
 
     if(sscanf(params, "d", plate)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /vmdc [plate].");
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
     
     foreach(new i : Player)
     {
 	    if(plate == PlayerInfo[i][pPlate1] || plate == PlayerInfo[i][pPlate2] || plate == PlayerInfo[i][pPlate3])
 	    {
 			format(string, sizeof(string), "_______________________________[SJ-%d]_______________________________", plate);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 
 			format(string, sizeof(string), "[Vehicle Owner:] "COL_WHITE"%s.", PlayerInfo[i][pName]);
-			SCM(playerid, COLOR_SJPD, string);
-		} else return SCM(playerid, COLOR_LIGHTRED, "There is no player with that license plate.");
+			SendClientMessage(playerid, COLOR_SJPD, string);
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "There is no player with that license plate.");
 	}
   	return 1;
 }
@@ -10024,8 +10022,8 @@ COMMAND:arrest(playerid, params[])
 
     if(sscanf(params, "ud", criminal, time)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /arrest [ID] [minutes].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
-    if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
-    if(time > 120) return SCM(playerid, COLOR_LIGHTRED, "You can't give jail sentances that exceed two hours.");
+    if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+    if(time > 120) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't give jail sentances that exceed two hours.");
 
  	if (GetDistanceBetweenPlayers(playerid, criminal) > 5)
 	{
@@ -10037,17 +10035,17 @@ COMMAND:arrest(playerid, params[])
 		PlayerInfo[criminal][pJailed] = 1;
 		ResetPlayerWeapons(criminal);
 		PlayerInfo[criminal][pActiveOffenses] = 0;
-	} else return SCM(playerid, COLOR_LIGHTRED, "You're not close to that player.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not close to that player.");
   	return 1;
 }
 
 COMMAND:locker(playerid, params[])
 {
-	if(PlayerInfo[playerid][pFaction] != 2) return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+	if(PlayerInfo[playerid][pFaction] != 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
  	if(IsPlayerInRangeOfPoint(playerid, 6.0, 258.3803, 117.9075, 1003.2188))
 	{
 		ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
-	} else return SCM(playerid, COLOR_LIGHTRED, "You're not by the lockers.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not by the lockers.");
 	return 1;
 }
 
@@ -10084,7 +10082,7 @@ CMD:opengate(playerid, params[])
 		{
 		    MoveObject(gate1, 1588.60095, -1637.98071, 5.75035, 0.50, 0.00000, 0.00000, -0.06000);
 		}
-	} else return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 	return 1;
 }
 
@@ -10100,7 +10098,7 @@ CMD:closegate(playerid, params[])
 		{
 		    MoveObject(gate1, 1588.60095, -1637.98071, 14.13662, 0.50, 0.00000, 0.00000, -0.06000);
 		}
-	} else return SCM(playerid, COLOR_LIGHTRED, "You are not a police officer.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a police officer.");
 	return 1;
 }
 
@@ -10147,8 +10145,8 @@ CMD:opencell(playerid, params[])
 		{
 		    MoveObject(cell7, 1497.61999512-1.25, -1761.51000977, 3284.25048828, 0.50);
 		    PlayerActionMessage(playerid, 20.0, "inserts the keys and opens the cell.");
-		} else return SCM(playerid, COLOR_LIGHTRED, "[Error:] You're not by any cell.");
-	} else return SCM(playerid, COLOR_LIGHTRED, "[Error:] You're not a police officer.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "[Error:] You're not by any cell.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "[Error:] You're not a police officer.");
 	return 1;
 }
 
@@ -10195,8 +10193,8 @@ CMD:closecell(playerid, params[])
 		{
 		    MoveObject(cell7, 1497.61999512, -1761.51000977, 3284.25048828, 0.50);
 		    PlayerActionMessage(playerid, 20.0, "inserts the keys and closes the cell.");
-		} else return SCM(playerid, COLOR_LIGHTRED, "[Error:] You're not by any cell.");
-	} else return SCM(playerid, COLOR_LIGHTRED, "[Error:] You're not a police officer.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "[Error:] You're not by any cell.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "[Error:] You're not a police officer.");
 	return 1;
 }
 
@@ -10226,8 +10224,8 @@ CMD:opendoor(playerid, params[])
 		{
 		    MoveObject(door3, 253.20477, 125.75697, 1002.21490, 0.50, 0.00000, 0.00000, -0.06001);
 		    PlayerActionMessage(playerid, 20.0, "unlocks and opens the door.");
-		} else return SCM(playerid, COLOR_LIGHTRED, "[Error:] You're not by any door.");
-	} else return SCM(playerid, COLOR_LIGHTRED, "[Error:] You're not a police officer.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "[Error:] You're not by any door.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "[Error:] You're not a police officer.");
 	return 1;
 }
 	
@@ -10254,8 +10252,8 @@ CMD:closedoor(playerid, params[])
 		{
 		    MoveObject(door3, 253.20477, 125.75697, 1002.21490, 0.50, 0.00000, 0.00000, -90.12000);
 		    PlayerActionMessage(playerid, 20.0, "closes the door and locks it.");
-		} else return SCM(playerid, COLOR_LIGHTRED, "[Error:] You're not by any door.");
-	} else return SCM(playerid, COLOR_LIGHTRED, "[Error:] You're not a police officer.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "[Error:] You're not by any door.");
+	} else return SendClientMessage(playerid, COLOR_LIGHTRED, "[Error:] You're not a police officer.");
 	return 1;
 }
 
@@ -10271,9 +10269,9 @@ CMD:givemoney(playerid, params[])
     new
 	id, cash, string[128];
 
-    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
-    if(sscanf(params, "ui", id, cash)) return SCM(playerid, COLOR_GREY, "[Usage:] /givemoney [playerid/partofname] [amount].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(sscanf(params, "ui", id, cash)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /givemoney [playerid/partofname] [amount].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
 	GivePlayerMoney(id, cash);
 
@@ -10303,9 +10301,9 @@ CMD:setmoney(playerid, params[])
     new
 	id, cash, string[128];
 
-    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
-    if(sscanf(params, "ui", id, cash)) return SCM(playerid, COLOR_GREY, "[Usage:] /setmoney [playerid/partofname] [amount].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(sscanf(params, "ui", id, cash)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /setmoney [playerid/partofname] [amount].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
     ResetPlayerMoney(id);
 	GivePlayerMoney(id, cash);
@@ -10333,7 +10331,7 @@ CMD:setmoney(playerid, params[])
 
 CMD:settime(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_LIGHTRED, "You can't do this.");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do this.");
     if ( isnull ( params ) ) return SendClientMessage( playerid, -1, #[Usage:] /settime [ID]. );
     SetWorldTime( strval ( params ) );
     return true;
@@ -10341,7 +10339,7 @@ CMD:settime(playerid, params[])
 
 CMD:setweather(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_LIGHTRED, "You can't do this.");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do this.");
     if ( isnull ( params ) ) return SendClientMessage( playerid, -1, #[Usage:] /setweather [ID]. );
     SetWeather( strval ( params ) );
     return true;
@@ -10349,7 +10347,7 @@ CMD:setweather(playerid, params[])
 
 CMD:nos(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_LIGHTRED, "You can't do this.");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do this.");
 	if(IsPlayerInAnyVehicle(playerid))
  	{
   		AddVehicleComponent(GetPlayerVehicleID(playerid), 1010);
@@ -10360,7 +10358,7 @@ CMD:nos(playerid, params[])
 
 CMD:restart(playerid, params[])
 {
-    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
 	{
         foreach(new i : Player)
         {
@@ -10374,7 +10372,7 @@ CMD:restart(playerid, params[])
 
 CMD:seenames(playerid, params[])
 {
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
 	{
 		for(new i = 0; i < MAX_PLAYERS; i++) if(IsPlayerConnected(i))
 		{
@@ -10389,7 +10387,7 @@ CMD:seenames(playerid, params[])
 COMMAND:spectate(playerid, params[])
 {
 	new id;// This will hold the ID of the player you are going to be spectating.
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(sscanf(params, "u", id))return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /spectate [ID]");// Now this is where we use sscanf to check if the params were filled, if not we'll ask you to fill them
 	if(id == playerid)return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't spectate yourself.");// Just making sure.
 	if(id == INVALID_PLAYER_ID)return SendClientMessage(playerid, COLOR_GREY, "That player is not online.");// This is to ensure that you don't fill the param with an invalid player id.
@@ -10434,7 +10432,7 @@ COMMAND:spectate(playerid, params[])
 
 COMMAND:spectateoff(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You are not authorized to use this command.");
+	if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You are not authorized to use this command.");
 	if(IsSpecing[playerid] == 0)return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not spectating anyone.");
 	SetPlayerColor(playerid, Previous_Colour[playerid]);
 	TogglePlayerSpectating(playerid, 0);//Toggling spectate mode, off. Note: Once this is called, the player will be spawned, there we'll need to reset their positions, virtual world and interior to where they typed '/spec'
@@ -10446,8 +10444,8 @@ COMMAND:spectateoff(playerid, params[])
 COMMAND:sendtols(playerid, params[])
 {
 	new id, string[128];
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /sendtols [playerid/partofname].");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /sendtols [playerid/partofname].");
 	format(string, sizeof(string), "AdmCmd: %s has sent you to Los Santos.", GetName(playerid));
 	SendClientMessage(id, COLOR_LIGHTRED, string);
 	format(string, sizeof(string), "AdmCmd: You have sent %s to Los Santos.", GetName(id));
@@ -10460,7 +10458,7 @@ COMMAND:sendtols(playerid, params[])
 
 COMMAND:gotols(playerid, params[])
 {
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
 	SetPlayerPos(playerid, 1522.4865, -1677.2191, 13.5469);
 	SetPlayerVirtualWorld(playerid, 0);
 	SetPlayerInterior(playerid, 0);
@@ -10472,9 +10470,9 @@ CMD:warn(playerid, params[])
     new
 	id, reason[124], string[124], plrIP[16];
 
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use that command.");
-    if(sscanf(params, "us[124]", id, reason)) return SCM(playerid, COLOR_GREY, "[Usage:] /warn [playerid/partofname] [reason].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use that command.");
+    if(sscanf(params, "us[124]", id, reason)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /warn [playerid/partofname] [reason].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     if(Warns[playerid] >= 5)
 	{
 		format(string, sizeof(string), "AdmCmd: %s was banned by %s. Reason: 5 warnings.", GetName(playerid), GetName(id));
@@ -10551,8 +10549,8 @@ CMD:unbanip(playerid, params[])
     new
 	ip[32], dformat[64];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "s[32]", ip)) return SCM(playerid, COLOR_GREY, "[Usage:] /unbanip [IP]");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "s[32]", ip)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /unbanip [IP]");
     format(dformat, sizeof dformat, "unbanip %s", ip);
     SendRconCommand(dformat);
     return 1;
@@ -10561,7 +10559,7 @@ CMD:unbanip(playerid, params[])
 CMD:offlineban(playerid, params[])
 {
     new targetname[24], filestring[79];
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "s[24]", targetname)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /offlineban [playerName]");
     format(filestring, sizeof(filestring), "/users/%s.ini", targetname);
     if(!fexist(filestring)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player does not exist.");
@@ -10581,7 +10579,7 @@ CMD:offlineban(playerid, params[])
 CMD:unban(playerid, params[])
 {
     new tname[24];
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "s[24]", tname)) return SendClientMessage(playerid, COLOR_LIGHTRED, "[Usage:] /unban [playername] ");
     new filestring[79];
     format(filestring, sizeof(filestring), "/users/%s.ini", tname);
@@ -10608,7 +10606,7 @@ CMD:adminduty(playerid, params[])
 {
 	new string[128];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
    	if(aDuty[playerid] == 0)
 	{
 		aDuty[playerid] = 1;
@@ -10631,7 +10629,7 @@ CMD:tduty(playerid, params[])
 {
 	new string[128];
 
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
    	if(tDuty[playerid] == 0)
 	{
 		tDuty[playerid] = 1;
@@ -10655,7 +10653,7 @@ COMMAND:ajail(playerid, params[])
     new
 	criminal, time, string[128], reason[128];
 
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "uds[128]", criminal, time, reason)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /ajail [ID] [minutes] [reason].");
     if(criminal == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
@@ -10675,10 +10673,10 @@ CMD:setskin(playerid, params[])
     new
 	id, skin, string[128];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    else if(sscanf(params, "ui", id, skin)) return SCM(playerid, COLOR_GREY, "[Usage:] /setskin [playerid/partofname] [skinID].");
-    else if(skin > 299 || skin < 1) return SCM(playerid, COLOR_LIGHTRED, "Invalid skin ID.  [0-299].");
-    else if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    else if(sscanf(params, "ui", id, skin)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /setskin [playerid/partofname] [skinID].");
+    else if(skin > 299 || skin < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid skin ID.  [0-299].");
+    else if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
     format(string, sizeof(string), "AdmCmd: Your skin has been changed by %s.", GetName(playerid));
     SendClientMessage(id, COLOR_LIGHTRED, string);
@@ -10692,10 +10690,10 @@ CMD:asetleader(playerid, params[])
 {
 	new
 	id, pID, string[128];
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "du", id, pID)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /asetleader [factionID] [playerid/partofname]");
-    if(!IsPlayerConnected(pID)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
-	if(id < 1 || id > 10 ) return SCM(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
+    if(!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
+	if(id < 1 || id > 10 ) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
 
 	FactionInfo[id][fLeader] = GetName(pID);
 	PlayerInfo[pID][fRank] = 6;
@@ -10719,9 +10717,9 @@ CMD:factioninfo(playerid, params[])
 	string[128], string2[256], id;
 
 	if(sscanf(params, "d", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /factioninfo [factionID]");
-	if(id < 1 || id > 10 ) return SCM(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
+	if(id < 1 || id > 10 ) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
 
-	SCM(playerid, COLOR_WHITE, "_______________________________[FACTION INFO]_______________________________");
+	SendClientMessage(playerid, COLOR_WHITE, "_______________________________[FACTION INFO]_______________________________");
 	format(string, sizeof(string), "Name: %s", FactionInfo[id][fName]);
 	SendClientMessage(playerid, COLOR_WHITE, string);
 	format(string, sizeof(string), "Members: %d", FactionInfo[id][fMembers]);
@@ -10737,7 +10735,7 @@ CMD:invite(playerid, params[])
 	pID;
 
 	if(sscanf(params, "ud", pID)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /invite [playerid/partofname]");
- 	if(!IsPlayerConnected(pID)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+ 	if(!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
  	if(PlayerInfo[playerid][fRank] > 2)
  	{
  	    new string[128];
@@ -10754,7 +10752,7 @@ CMD:invite(playerid, params[])
 
 CMD:acceptinvite(playerid, params[])
 {
-	if(factionInvited[playerid] == false) return SCM(playerid, COLOR_LIGHTRED, "You're not invited to any faction.");
+	if(factionInvited[playerid] == false) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not invited to any faction.");
 
 	new faction = PlayerInfo[Player_Invited[playerid]][pFaction];
 	new wstring[128];
@@ -10772,10 +10770,10 @@ CMD:afactionrankname(playerid, params[])
 {
 	new
 	rankname[64], id, rank, string[128];
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "dds[128]", id, rank, rankname)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /afactionrankname [factionID] [rank] [rankname]");
-    if(id < 1 || id > 10 ) return SCM(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
-    if(id < 1 || id > 6 ) return SCM(playerid, COLOR_LIGHTRED, "Invalid faction rank.");
+    if(id < 1 || id > 10 ) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
+    if(id < 1 || id > 6 ) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid faction rank.");
 
 	if(rank == 1)
 	{
@@ -10856,9 +10854,9 @@ CMD:afactionname(playerid, params[])
 {
 	new
 	name[128], id, string[128];
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "ds[128]", id, name)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /afactionname [factionID] [name]");
-    if(id < 1 || id > 10 ) return SCM(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
+    if(id < 1 || id > 10 ) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
 
 	FactionInfo[id][fName] = name;
 	new file4[40];
@@ -10877,9 +10875,9 @@ CMD:afactioninfo(playerid, params[])
 {
 	new
 	id, string[128], info[256];
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "ds[128]", id, info)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /afactioninfo [factionID] [information]");
-    if(id < 1 || id > 10 ) return SCM(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
+    if(id < 1 || id > 10 ) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid faction ID.");
 
 	FactionInfo[id][fInformation] = info;
 	new file4[40];
@@ -10898,7 +10896,7 @@ CMD:faction(playerid, params[])
 	new
 	wstring[128], msg[128];
     if(sscanf(params, "s[128]", msg)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /(f)action [message]");
-	if(PlayerInfo[playerid][fRank] < 1) return SCM(playerid, COLOR_LIGHTRED, "You're not in any faction.");
+	if(PlayerInfo[playerid][fRank] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not in any faction.");
 
 	new faction = PlayerInfo[playerid][pFaction];
 	new rank = PlayerInfo[playerid][fRank];
@@ -10941,8 +10939,8 @@ CMD:setrank(playerid, params[])
 	new
 	pID, rank;
     if(sscanf(params, "ud", pID, rank)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /setrank [playerid/partofname] [rank]");
-	if(PlayerInfo[playerid][fRank] < 5) return SCM(playerid, COLOR_LIGHTRED, "You're not authorized to use this command.");
-	if(rank < 1 || rank > 6 ) return SCM(playerid, COLOR_LIGHTRED, "Invalid rank.");
+	if(PlayerInfo[playerid][fRank] < 5) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not authorized to use this command.");
+	if(rank < 1 || rank > 6 ) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid rank.");
 
 	PlayerInfo[pID][fRank] = rank;
     return 1;
@@ -10950,7 +10948,7 @@ CMD:setrank(playerid, params[])
 
 CMD:ageup(playerid, params[])
 {
-	SCM(playerid, COLOR_LIGHTRED, "This will make your character one year older. /acceptageup to confirm.");
+	SendClientMessage(playerid, COLOR_LIGHTRED, "This will make your character one year older. /acceptageup to confirm.");
 	
 	acceptageup[playerid] = 1;
     return 1;
@@ -10958,7 +10956,7 @@ CMD:ageup(playerid, params[])
 
 CMD:acceptageup(playerid, params[])
 {
-	SCM(playerid, COLOR_GREEN, "Your character has aged one year.");
+	SendClientMessage(playerid, COLOR_GREEN, "Your character has aged one year.");
 
 	PlayerInfo[playerid][pAge] += 1;
     return 1;
@@ -10971,13 +10969,13 @@ CMD:factionkick(playerid, params[])
 	new wstring[128];
 	new faction = PlayerInfo[pID][pFaction];
     if(sscanf(params, "u", pID)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /factionkick [playerid/partofname]");
-	if(PlayerInfo[playerid][fRank] < 3) return SCM(playerid, COLOR_LIGHTRED, "You're not authorized to use this command.");
+	if(PlayerInfo[playerid][fRank] < 3) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not authorized to use this command.");
 
 	PlayerInfo[pID][fRank] = 0;
 	PlayerInfo[pID][pFaction] = 255;
 	FactionInfo[faction][fMembers] -= 1;
 	
-	SCM(pID, COLOR_FACTIONCHAT, "You have been kicked from your faction.");
+	SendClientMessage(pID, COLOR_FACTIONCHAT, "You have been kicked from your faction.");
 	
  	format(wstring, sizeof(wstring), "You have kicked %s from the faction.", GetName(pID));
  	SendClientMessage(playerid, COLOR_FACTIONCHAT, wstring);
@@ -10997,7 +10995,7 @@ CMD:leavefaction(playerid, params[])
 	new faction = PlayerInfo[playerid][pFaction];
 	FactionInfo[faction][fMembers] -= 1;
 	PlayerInfo[playerid][pFaction] = 255;
-	SCM(playerid, COLOR_FACTIONCHAT, "You have left your faction.");
+	SendClientMessage(playerid, COLOR_FACTIONCHAT, "You have left your faction.");
 	
 	new file4[40];
     format(file4, sizeof(file4), FPATH, faction);
@@ -11081,10 +11079,10 @@ CMD:makeadmin(playerid, params[])
     new
 	pID, value, string[124];
 
-    if(PlayerInfo[playerid][pAdmin] < 4 && !IsPlayerAdmin(playerid)) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
-    else if (sscanf(params, "ui", pID, value)) return SCM(playerid, COLOR_GREY, "[Usage:] /makeadmin [playerid/partofname] [level 1-4].");
-    else if (value < 0 || value > 4) return SCM(playerid, COLOR_LIGHTRED, "Invalid administrator level, 0-4.");
-    else if(!IsPlayerConnected(pID)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 4 && !IsPlayerAdmin(playerid)) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    else if (sscanf(params, "ui", pID, value)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /makeadmin [playerid/partofname] [level 1-4].");
+    else if (value < 0 || value > 4) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid administrator level, 0-4.");
+    else if(!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
  	format(string, sizeof(string), "AdmCmd: %s has set %s's admin-level to %d.", GetName(playerid), GetName(pID), value);
  	SendClientMessageToAll(COLOR_LIGHTRED, string);
@@ -11097,10 +11095,10 @@ CMD:makedonator(playerid, params[])
     new
 	pID, value, string[124];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
-    else if (sscanf(params, "ui", pID, value)) return SCM(playerid, COLOR_GREY, "[Usage:] /makedonator [playerid/partofname] [level 0-3].");
-    else if (value < 0 || value > 3) return SCM(playerid, COLOR_LIGHTRED, "Invalid donator level, 0-3.");
-    else if(!IsPlayerConnected(pID)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    else if (sscanf(params, "ui", pID, value)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /makedonator [playerid/partofname] [level 0-3].");
+    else if (value < 0 || value > 3) return SendClientMessage(playerid, COLOR_LIGHTRED, "Invalid donator level, 0-3.");
+    else if(!IsPlayerConnected(pID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
  	format(string, sizeof(string), "AdmCmd: %s has set %s's donator-level to %d.", GetName(playerid), GetName(pID), value);
  	ABroadCast(COLOR_LIGHTRED, string, 1);
@@ -11114,9 +11112,9 @@ CMD:gethere(playerid, params[])
     new
 	ID, Float:x, Float:y, Float:z;
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
-    else if(sscanf(params, "u", ID)) return SCM(playerid, COLOR_GREY, "[Usage:] /gethere [playerid/partofname].");
-    else if(!IsPlayerConnected(ID)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    else if(sscanf(params, "u", ID)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /gethere [playerid/partofname].");
+    else if(!IsPlayerConnected(ID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
     if(GetPlayerState(ID)==PLAYER_STATE_DRIVER)
 	{
@@ -11144,9 +11142,9 @@ CMD:goto(playerid, params[])
     new
 	ID, Float:x, Float:y, Float:z;
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
-    else if(sscanf(params, "u", ID)) return SCM(playerid, COLOR_GREY, "[Usage:] /goto [partofname/playerid].");
-    else if(!IsPlayerConnected(ID)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    else if(sscanf(params, "u", ID)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /goto [partofname/playerid].");
+    else if(!IsPlayerConnected(ID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
     if(GetPlayerState(playerid)==PLAYER_STATE_DRIVER)
 	{
@@ -11172,8 +11170,8 @@ CMD:goto(playerid, params[])
 CMD:arevokeguns(playerid, params[])
 {
 	new id, str[128];
-	if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /arevokeguns [playerid/partofname].");
+	if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /arevokeguns [playerid/partofname].");
     RemoveWeapons(id);
    	format(str, sizeof(str), "AdmCmd: %s has revoked your weapons.", GetName(playerid)); //format the string we've defined to send the message, playername and adminname are used to receive the information about the names
 	SendClientMessage(id, COLOR_LIGHTRED, str);
@@ -11185,8 +11183,8 @@ CMD:arevokeguns(playerid, params[])
 CMD:arevokedrugs(playerid, params[])
 {
 	new id, str[128];
-	if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /arevokedrugs [playerid/partofname].");
+	if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /arevokedrugs [playerid/partofname].");
     RemoveDrugs(id);
    	format(str, sizeof(str), "AdmCmd: %s has revoked your drugs.", GetName(playerid)); //format the string we've defined to send the message, playername and adminname are used to receive the information about the names
 	SendClientMessage(id, COLOR_LIGHTRED, str);
@@ -11200,7 +11198,7 @@ CMD:aslap(playerid, params[])
 	new
 	PID, str[128];
 
-	if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
+	if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
 	if(sscanf(params, "u", PID)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /aslap [playerid]"); //tell sscanf if the parameters/the syntax is written wrong to return a message (PID and the reason used here)
 
 	if(!IsPlayerConnected(PID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected!");
@@ -11219,7 +11217,7 @@ CMD:sethours(playerid, params[])
 	new
 	PID, str[128], amount;
 
-	if( PlayerInfo[ playerid ][ pAdmin ] < 3 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
+	if( PlayerInfo[ playerid ][ pAdmin ] < 3 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
 	if(sscanf(params, "ui", PID, amount)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /sethours [playerid]"); //tell sscanf if the parameters/the syntax is written wrong to return a message (PID and the reason used here)
 
 	if(!IsPlayerConnected(PID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected!");
@@ -11237,7 +11235,7 @@ CMD:kick(playerid, params[])
 	new
 	PID, reason[64], str[128];
 
-	if( PlayerInfo[ playerid ][ pAdmin ] < 1 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
+	if( PlayerInfo[ playerid ][ pAdmin ] < 1 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
 	if(sscanf(params, "us[64]", PID, reason)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /kick [playerid] [reason]"); //tell sscanf if the parameters/the syntax is written wrong to return a message (PID and the reason used here)
 
 	if(!IsPlayerConnected(PID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected!");
@@ -11306,8 +11304,8 @@ CMD:adminchat(playerid, params[])
 {
 	new
 	string[144], text[144];
-	if( PlayerInfo[ playerid ][ pAdmin ] < 1 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
-	if (sscanf(params, "s[144]", text)) return SCM(playerid, COLOR_GREY, "[Usage:] /(a)dminchat [message]");
+	if( PlayerInfo[ playerid ][ pAdmin ] < 1 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
+	if (sscanf(params, "s[144]", text)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /(a)dminchat [message]");
 
 	format(string, sizeof(string), "[Admin Chat] %s: %s", GetName(playerid), text);
  	ABroadCast(COLOR_ADMIN, string, 1);
@@ -11318,8 +11316,8 @@ CMD:announcement(playerid, params[])
 {
 	new
 	string[144], text[144];
-	if( PlayerInfo[ playerid ][ pAdmin ] < 1 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
-	if (sscanf(params, "s[144]", text)) return SCM(playerid, COLOR_GREY, "[Usage:] /announcement [message]");
+	if( PlayerInfo[ playerid ][ pAdmin ] < 1 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
+	if (sscanf(params, "s[144]", text)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /announcement [message]");
 
 	format(string, sizeof(string), "[Administrator Announcement] %s: %s", GetName(playerid), text);
  	SendClientMessageToAll(COLOR_LIGHTRED, string);
@@ -11331,7 +11329,7 @@ COMMAND:clearchat( playerid, params[ ] )
 	new
 	astring[124];
 
-    if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
     {
         for( new i = 0; i <= 100; i ++ ) SendClientMessageToAll( COLOR_WHITE, "" );
        	format(astring, sizeof(astring), "AmdCmd: Administrator %s has cleared the chat.", GetName(playerid));
@@ -11345,7 +11343,7 @@ COMMAND:respawnvehicles(playerid, params[])
 	new
 	astring[124];
 
-    if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
     {
 		for(new i=0;i<MAX_VEHICLES;i++)
   		{
@@ -11365,7 +11363,7 @@ COMMAND:respawnvehiclesemergency(playerid, params[])
 	new
 	astring[124];
 
-    if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SCM( playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if( PlayerInfo[ playerid ][ pAdmin ] < 2 ) return SendClientMessage( playerid, COLOR_GREY, "You're not authorized to use this command.");
     {
 		for(new i=0;i<MAX_VEHICLES;i++)
   		{
@@ -11412,8 +11410,8 @@ CMD:report(playerid, params[])
     new
 	id, reason[144], string[124], name[MAX_PLAYERS], name2[MAX_PLAYERS];
 
-    if(sscanf(params, "us[144]", id, reason)) return SCM(playerid, COLOR_GREY, "[Usage:] /report [playerid/partofname] [reason].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(sscanf(params, "us[144]", id, reason)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /report [playerid/partofname] [reason].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
     GetPlayerName(playerid, name, sizeof(name));
     GetPlayerName(id, name2, sizeof(name2));
@@ -11433,7 +11431,7 @@ CMD:helpme(playerid, params[])
     new
 	id, reason[144], string[124], name[MAX_PLAYERS], name2[MAX_PLAYERS];
 
-    if(sscanf(params, "s[144]", reason)) return SCM(playerid, COLOR_GREY, "[Usage:] /helpme [message].");
+    if(sscanf(params, "s[144]", reason)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /helpme [message].");
 
     GetPlayerName(playerid, name, sizeof(name));
     GetPlayerName(id, name2, sizeof(name2));
@@ -11452,9 +11450,9 @@ CMD:acceptreport(playerid, params[])
     new
 	id, string[124], name[MAX_PLAYERS];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /acceptreport [playerid]");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /acceptreport [playerid]");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     else {
         if(PlayerNeedsHelp[id] == 1) {
             PlayerNeedsHelp[id] = 0;
@@ -11464,7 +11462,7 @@ CMD:acceptreport(playerid, params[])
             format(string, sizeof(string), "AdmCmd: %s has accepted your report. You will now receive help, be patient.", GetName(playerid));
             SendClientMessage(id, COLOR_LIGHTRED, string);
         }
-        else return SCM(playerid, COLOR_LIGHTRED, "That players has not made a report.");
+        else return SendClientMessage(playerid, COLOR_LIGHTRED, "That players has not made a report.");
     }
     return 1;
 }
@@ -11474,9 +11472,9 @@ CMD:accepthelpme(playerid, params[])
     new
 	id, string[124], name[MAX_PLAYERS];
 
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /accepthelpme [playerid]");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /accepthelpme [playerid]");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     else {
         if(PlayerNeedsHelp2[id] == 1) {
             PlayerNeedsHelp2[id] = 0;
@@ -11486,7 +11484,7 @@ CMD:accepthelpme(playerid, params[])
             format(string, sizeof(string), "AdmCmd: %s has accepted your question. You will now receive help, be patient.", GetName(playerid));
             SendClientMessage(id, COLOR_LIGHTRED, string);
         }
-        else return SCM(playerid, COLOR_LIGHTRED, "That players has not made a report.");
+        else return SendClientMessage(playerid, COLOR_LIGHTRED, "That players has not made a report.");
     }
     return 1;
 }
@@ -11496,9 +11494,9 @@ CMD:ignorehelpme(playerid, params[])
     new
 	id, string[124];
 
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /ignorehelpme [playerid].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /ignorehelpme [playerid].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     else {
         if(PlayerNeedsHelp2[id] == 1) {
             PlayerNeedsHelp2[id] = 0;
@@ -11508,7 +11506,7 @@ CMD:ignorehelpme(playerid, params[])
             format(string, sizeof(string), "*AdmCmd: %s has ignored your question for a reason, write a proper question next time.", GetName(playerid));
             SendClientMessage(id, COLOR_LIGHTRED, string);
         }
-        else return SCM(playerid, COLOR_LIGHTRED, "That players has not made a report.");
+        else return SendClientMessage(playerid, COLOR_LIGHTRED, "That players has not made a report.");
     }
     return 1;
 }
@@ -11519,9 +11517,9 @@ CMD:markfalse(playerid, params[])
     new
 	id, string[124];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "u", id)) return SCM(playerid, COLOR_GREY, "[Usage:] /markfalse [playerid].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "u", id)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /markfalse [playerid].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     else {
         if(PlayerNeedsHelp[id] == 1) {
             PlayerNeedsHelp[id] = 0;
@@ -11531,7 +11529,7 @@ CMD:markfalse(playerid, params[])
             format(string, sizeof(string), "*AdmCmd: %s has ignored your report for a reason, write a proper report next time.", GetName(playerid));
             SendClientMessage(id, COLOR_LIGHTRED, string);
         }
-        else return SCM(playerid, COLOR_LIGHTRED, "That players has not made a report.");
+        else return SendClientMessage(playerid, COLOR_LIGHTRED, "That players has not made a report.");
     }
     return 1;
 }
@@ -11541,9 +11539,9 @@ CMD:setvw(playerid, params[])
 	new
 	id, world, string[124];
 
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "ui", id, world)) return SCM(playerid, COLOR_GREY, "[Usage:] /setvw [playerid/partofname] [world id].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "ui", id, world)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /setvw [playerid/partofname] [world id].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
 	format(string, sizeof(string), "AmdCmd: %s has set your virtual world to %d.", GetName(playerid), world);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
@@ -11556,9 +11554,9 @@ CMD:setinterior(playerid, params[])
 	new
 	id, interior, string[124];
 
-    if(PlayerInfo[playerid][pAdmin] < 1) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "ui", id, interior)) return SCM(playerid, COLOR_GREY, "[Usage:] /setinterior [playerid/partofname] [interior id].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 1) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "ui", id, interior)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /setinterior [playerid/partofname] [interior id].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
 	format(string, sizeof(string), "AmdCmd: %s has set your interior id to %d.", GetName(playerid), interior);
 	SendClientMessage(playerid, COLOR_LIGHTRED, string);
@@ -11569,15 +11567,15 @@ CMD:setinterior(playerid, params[])
 CMD:achangenumber(playerid, params[])
 {
 	new id, number, string[128];
-    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    if(sscanf(params, "ui", id, number)) return SCM(playerid, COLOR_GREY, "[Usage:] /achangenumber [playerid/partofname] [number].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(sscanf(params, "ui", id, number)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /achangenumber [playerid/partofname] [number].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
     
     format(string, sizeof(string), "AdmCmd: %s has set %s's number to %d.", GetName(playerid), GetName(id), number);
     ABroadCast(COLOR_LIGHTRED, string, 1);
 
     format(string, sizeof(string), "AdmCmd: %s has set your number to %d.", GetName(playerid), number);
-    SCM(id, COLOR_WHITE, string);
+    SendClientMessage(id, COLOR_WHITE, string);
     
     PlayerInfo[id][pNumber] = number;
     return 1;
@@ -11588,17 +11586,17 @@ CMD:sethp(playerid, params[])
     new
 	id, hp, string[128];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    else if(sscanf(params, "ui", id, hp)) return SCM(playerid, COLOR_GREY, "[Usage:] /sethp [playerid/partofname] [hp].");
-    else if(hp > 99 || hp < 1) return SCM(playerid, COLOR_LIGHTRED, "Amount [1-99].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    else if(sscanf(params, "ui", id, hp)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /sethp [playerid/partofname] [hp].");
+    else if(hp > 99 || hp < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "Amount [1-99].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
     SetPlayerHealth(id, hp);
     format(string, sizeof(string), "AdmCmd: %s has set %s's HP to %d.", GetName(playerid), GetName(id), hp);
     ABroadCast(COLOR_LIGHTRED, string, 1);
     
     format(string, sizeof(string), "AdmCmd: %s has set your HP to %d.", GetName(playerid), hp);
-    SCM(id, COLOR_WHITE, string);
+    SendClientMessage(id, COLOR_WHITE, string);
     return 1;
 }
 
@@ -11607,16 +11605,16 @@ CMD:setarmour(playerid, params[])
     new
 	id, armour, string[128];
 
-    if(PlayerInfo[playerid][pAdmin] < 2) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    else if(sscanf(params, "ui", id, armour)) return SCM(playerid, COLOR_GREY, "[Usage:] /setarmour [playerid/partofname] [armour].");
-    else if(armour > 99 || armour < 1) return SCM(playerid, COLOR_LIGHTRED, "Amount [1-99].");
-    if(!IsPlayerConnected(id)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(PlayerInfo[playerid][pAdmin] < 2) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    else if(sscanf(params, "ui", id, armour)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /setarmour [playerid/partofname] [armour].");
+    else if(armour > 99 || armour < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "Amount [1-99].");
+    if(!IsPlayerConnected(id)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
     SetPlayerArmour(id, armour);
     format(string, sizeof(string), "AdmCmd: %s has set %s's armour to %d.", GetName(playerid), GetName(id), armour);
     ABroadCast(COLOR_LIGHTRED, string, 1);
     format(string, sizeof(string), "AdmCmd: %s has set your armour to.", GetName(playerid), armour);
-    SCM(id, COLOR_WHITE, string);
+    SendClientMessage(id, COLOR_WHITE, string);
     return 1;
 }
 
@@ -11625,10 +11623,10 @@ CMD:agivegun(playerid, params[])
     new
 	id, gunname[32], string[124], weapon, ammo;
 
-    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
-    else if(sscanf(params, "uii", id, weapon, ammo)) return SCM(playerid, COLOR_GREY, "[Usage:] /agivegun [playerid/partofname] [gunid] [ammo].");
-    else if(weapon > 47 || weapon < 1) return SCM(playerid, COLOR_LIGHTRED, "Weapon ID'S: [1-47].");
-    else if(ammo > 999 || ammo < 1) return SCM(playerid, COLOR_LIGHTRED, "Ammo [1-999].");
+    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    else if(sscanf(params, "uii", id, weapon, ammo)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /agivegun [playerid/partofname] [gunid] [ammo].");
+    else if(weapon > 47 || weapon < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "Weapon ID'S: [1-47].");
+    else if(ammo > 999 || ammo < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "Ammo [1-999].");
 
 	GivePlayerWeapon(id, weapon, ammo);
 	GetWeaponName(weapon, gunname, sizeof(gunname));
@@ -11636,7 +11634,7 @@ CMD:agivegun(playerid, params[])
     format(string, sizeof(string), "AdmCmd: %s has given %s %s.", GetName(playerid), GetName(id), gunname);
     ABroadCast(COLOR_LIGHTRED, string, 1);
     format(string, sizeof(string), "AdmCmd: %s has given you a %s.", GetName(playerid), gunname);
-    SCM(id, COLOR_WHITE, string);
+    SendClientMessage(id, COLOR_WHITE, string);
     
    	// Logging admin givegun
     new agivegunstring[256];
@@ -11660,7 +11658,7 @@ CMD:createbiz(playerid, params[])
 	price, level, id, int, world, string[256], Float:Xi, 
 	Float:Yi, Float:Zi, inti, Float:X, Float:Y, Float:Z, Float:A;
 	new biztext[144];
-    if(PlayerInfo[playerid][pAdmin] < 4) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 4) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(sscanf(params, "dddfff", price, level, inti, Xi, Yi, Zi)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /createbiz [price] [type] [interior] [X] [Y] [Z]");
 
     if(level < 0 || level > 25) return SendClientMessage(playerid, COLOR_LIGHTRED, "Type cannot go below 0, or above 21.");//
@@ -11767,8 +11765,8 @@ CMD:deletebiz(playerid, params[])
 {
     new
 	id = IsPlayerNearBizEnt(playerid);
- 	if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
- 	if(BusinessInfo[id][bOwned] == 1) return SCM(playerid, COLOR_LIGHTRED, "This business is owned.");//Checks if the biz is owned, if it is it won't allow it to be deleted.
+ 	if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
+ 	if(BusinessInfo[id][bOwned] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "This business is owned.");//Checks if the biz is owned, if it is it won't allow it to be deleted.
 
     BusinessInfo[id][bOwned] = 0;
     BusinessInfo[id][bPrice] = 0;
@@ -11805,7 +11803,7 @@ CMD:agivedrug(playerid, params[])
 	give[24], id, amount, string[128];
 
     if(sscanf(params, "is[24]d", id, give, amount)) return SendClientMessage(playerid, COLOR_GREY, "[SERVER] /agivedrug [playerid] (lsd, marijuana, cocaine, meth, ecstasy, heroin, crack) [amount]");
-    if(PlayerInfo[playerid][pAdmin] < 3) return SCM(playerid, COLOR_GREY, "You're not authorized to use this command.");
+    if(PlayerInfo[playerid][pAdmin] < 3) return SendClientMessage(playerid, COLOR_GREY, "You're not authorized to use this command.");
     if(!strcmp(give, "lsd", true))
     {
 	    if (id == INVALID_PLAYER_ID) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
@@ -11893,19 +11891,19 @@ CMD:licenses(playerid, params[])
 	PID, string[128], Float:X, Float:Y, Float:Z;
 	GetPlayerPos(PID, X, Y, Z);
 
-    if(sscanf(params, "us[144]", PID)) return SCM(playerid, COLOR_GREY, "[Usage:] /licenses [playerid/partofname]");
+    if(sscanf(params, "us[144]", PID)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /licenses [playerid/partofname]");
     if(IsPlayerInRangeOfPoint(playerid, 5.0, X, Y, Z))
-    if(!IsPlayerConnected(PID)) return SCM(playerid, COLOR_LIGHTRED, "That player is not connected.");
+    if(!IsPlayerConnected(PID)) return SendClientMessage(playerid, COLOR_LIGHTRED, "That player is not connected.");
 
 
 	format(string, sizeof(string), "________[%s]________", GetName(playerid));
-	SCM(PID, COLOR_WHITE, string);
+	SendClientMessage(PID, COLOR_WHITE, string);
 	format(string, sizeof(string), "Age: %d", PlayerInfo[playerid][pAge]);
-	SCM(PID, COLOR_WHITE, string);
+	SendClientMessage(PID, COLOR_WHITE, string);
 	format(string, sizeof(string), "Gender: %s", gendertext);
-	SCM(PID, COLOR_WHITE, string);
+	SendClientMessage(PID, COLOR_WHITE, string);
 	format(string, sizeof(string), "Drivers License: %s.", licensetext);
-	SCM(PID, COLOR_WHITE, string);
+	SendClientMessage(PID, COLOR_WHITE, string);
 	return 1;
 }
 
@@ -11913,10 +11911,10 @@ CMD:advertise(playerid, params[])
 {
 	new
 	string[144], text[144];
-	if(!IsPlayerInRangeOfPoint(playerid, 10.0, 1684.7454, -1343.1959, 17.4362)) return SCM(playerid, COLOR_LIGHTRED, "You're not at the advertisement center.");
-	if(AdvertiseAllowed[playerid] != 0) return SCM(playerid, COLOR_LIGHTRED, "You have to wait one minute before posting an advertisement again.");
-	if (sscanf(params, "s[144]", text)) return SCM(playerid, COLOR_GREY, "[Usage:] /(ad)vertise [message]");
-	if(GetPlayerMoney(playerid) < 99) return SCM(playerid, COLOR_LIGHTRED, "You don't have enough money. ($100)");
+	if(!IsPlayerInRangeOfPoint(playerid, 10.0, 1684.7454, -1343.1959, 17.4362)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not at the advertisement center.");
+	if(AdvertiseAllowed[playerid] != 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait one minute before posting an advertisement again.");
+	if (sscanf(params, "s[144]", text)) return SendClientMessage(playerid, COLOR_GREY, "[Usage:] /(ad)vertise [message]");
+	if(GetPlayerMoney(playerid) < 99) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have enough money. ($100)");
 	
 	if(PlayerInfo[playerid][pDonator] > 1)
 	{
@@ -11938,7 +11936,7 @@ CMD:acceptdeath(playerid, params[])
 {
 	if(isAlive[playerid] == false)
 	{
-	    SCM(playerid, COLOR_LIGHTRED, "You have been rushed to the hospital and are undergoing an operation.");
+	    SendClientMessage(playerid, COLOR_LIGHTRED, "You have been rushed to the hospital and are undergoing an operation.");
 	    SetPlayerPos(playerid, -211.3207, -1759.6207, 676.7153);
 	    SetPlayerInterior(playerid, 3);
 	    SetPlayerVirtualWorld(playerid, 0);
@@ -11986,13 +11984,13 @@ CMD:acceptdeath(playerid, params[])
 
 CMD:takedrivingtest(playerid, params[])
 {
-	if(PlayerInfo[playerid][pAge] < 16) return SCM(playerid, COLOR_LIGHTRED, "You're not old enough to take the test.");
-    if(!IsPlayerInRangeOfPoint(playerid, 10.0, 2045.0383, -1907.9384, 13.5469)) return SCM(playerid, COLOR_LIGHTRED, "You're not at the DMV center.");
-    if(TakingDriverLicense[playerid] == true) return SCM(playerid, COLOR_LIGHTRED, "You're already taking the test.");
-    if(PlayerInfo[playerid][pDriverLicense] == 1) return SCM(playerid, COLOR_LIGHTRED, "You already have a drivers license.");
+	if(PlayerInfo[playerid][pAge] < 16) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not old enough to take the test.");
+    if(!IsPlayerInRangeOfPoint(playerid, 10.0, 2045.0383, -1907.9384, 13.5469)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not at the DMV center.");
+    if(TakingDriverLicense[playerid] == true) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're already taking the test.");
+    if(PlayerInfo[playerid][pDriverLicense] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You already have a drivers license.");
 
     TakingDriverLicense[playerid] = true;
-	SCM(playerid, COLOR_WHITE, "Please enter one of the white DMV cars to start the test.");
+	SendClientMessage(playerid, COLOR_WHITE, "Please enter one of the white DMV cars to start the test.");
 	return 1;
 }
 
@@ -12001,7 +11999,7 @@ CMD:engine(playerid, params[])
 	new string[124];
 	new id = GetVehicleID(GetPlayerVehicleID(playerid));
  	new vehicleid = GetPlayerVehicleID(playerid);
- 	if(!IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LIGHTRED, "You are not in any vehicle.");
+ 	if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not in any vehicle.");
 	if(GetPlayerVehicleAccess(playerid, id) < 1)
 		return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have the keys for this vehicle!");
     GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
@@ -12030,7 +12028,7 @@ CMD:pbengine(playerid, params[])
 	new string[124];
 	new id = GetVehicleID(GetPlayerVehicleID(playerid));
  	new vehicleid = GetPlayerVehicleID(playerid);
- 	if(!IsPlayerInAnyVehicle(playerid)) return SCM(playerid, COLOR_LIGHTRED, "You are not in any vehicle.");
+ 	if(!IsPlayerInAnyVehicle(playerid)) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not in any vehicle.");
     GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
     if(GetPlayerState(playerid) == 2)
     {
@@ -12147,7 +12145,7 @@ public OnPlayerDeath(playerid, killerid, reason)
 
 public OnPlayerText(playerid, text[])
 {
-    if(gMuted[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You're muted.");
+    if(gMuted[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're muted.");
 	new string[128];
 	if(policecall[playerid] == 1)
 	{
@@ -12159,7 +12157,7 @@ public OnPlayerText(playerid, text[])
     	stopphone(playerid);
     	return 0;
 	}
-    if(PlayerLogged[playerid] == false) SCM(playerid, COLOR_LIGHTRED, "You're not logged in.");
+    if(PlayerLogged[playerid] == false) SendClientMessage(playerid, COLOR_LIGHTRED, "You're not logged in.");
     if (player[playerid][calling])
     {
         GetPlayerName(playerid, string, 16);
@@ -12695,7 +12693,7 @@ public OnPlayerDisconnect(playerid, reason)
 	           			if(IsPlayerInDynamicArea(i, GetPVarInt(playerid, "BBArea")))
 	           			{
 	              			StopAudioStreamForPlayer(i);
-	              			SCM(i, COLOR_LIGHTRED, " The boombox creator has disconnected from the server.");
+	              			SendClientMessage(i, COLOR_LIGHTRED, " The boombox creator has disconnected from the server.");
 		                }
 	           		}
 	        	}
@@ -12756,7 +12754,7 @@ public OnPlayerDisconnect(playerid, reason)
 	                if(IsPlayerInDynamicArea(i, GetPVarInt(playerid, "BBArea")))
 	                {
 	                    StopAudioStreamForPlayer(i);
-	                    SCM(i, COLOR_LIGHTBLUE, " The boombox creator has disconnected from the server.");
+	                    SendClientMessage(i, COLOR_LIGHTBLUE, " The boombox creator has disconnected from the server.");
 	                }
 	            }
 	        }
@@ -12878,7 +12876,7 @@ public OnPlayerSpawn(playerid)
 		    SetPlayerInterior(playerid, deadint[playerid]);
 		    SetPlayerVirtualWorld(playerid, deadvw[playerid]);
 			stopanimAllowed[playerid] = false;
-		    SCM(playerid, COLOR_LIGHTRED, "You're currently brutally wounded. If no-one helps you, you will die. /acceptdeath if you wish to give up.");
+		    SendClientMessage(playerid, COLOR_LIGHTRED, "You're currently brutally wounded. If no-one helps you, you will die. /acceptdeath if you wish to give up.");
 	     	TogglePlayerControllable(playerid, 0);
 	 	    SetTimerEx("LoadDeathAnim", 1000, false, "i", playerid);
     		SetPlayerSkin(playerid, oldskin[playerid]);
@@ -13257,9 +13255,9 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			    {
 					SetPlayerCheckpoint(playerid, 1824.1182, -1828.6512, 13.5151, 3.5);
 					DownRoute[playerid] = 1;
-				   	SCM(playerid, COLOR_WHITE, "* Drive through all of the checkpoints slowly to complete the route. Check your mini-map if you can't see the checkpoints.");
-				   	SCM(playerid, COLOR_WHITE, "* Do NOT leave your bus and always STOP at every bus-stops and let people enter and exit the bus.");
-				   	SCM(playerid, COLOR_WHITE, "* Abusing this job in any way, non-rping or driving non-rply will lead to a BAN.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Drive through all of the checkpoints slowly to complete the route. Check your mini-map if you can't see the checkpoints.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Do NOT leave your bus and always STOP at every bus-stops and let people enter and exit the bus.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Abusing this job in any way, non-rping or driving non-rply will lead to a BAN.");
 				   	ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Unity 69 Cents!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 				}
 				else
@@ -13270,7 +13268,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			else
 			{
 				RemovePlayerFromVehicle(playerid);
-    			SCM(playerid, COLOR_LIGHTRED, "You are not a bus driver.");
+    			SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a bus driver.");
             }
         }
     }
@@ -13284,9 +13282,9 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			    {
 					SetPlayerCheckpoint(playerid, 1824.0848, -1826.0269, 13.0723, 3.5);
 					SouthRoute[playerid] = 1;
-				   	SCM(playerid, COLOR_WHITE, "* Drive through all of the checkpoints slowly to complete the route. Check your mini-map if you can't see the checkpoints.");
-				   	SCM(playerid, COLOR_WHITE, "* Do NOT leave your bus and always STOP at every bus-stops and let people enter and exit the bus.");
-				   	SCM(playerid, COLOR_WHITE, "* Abusing this job in any way, non-rping or driving non-rply will lead to a BAN.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Drive through all of the checkpoints slowly to complete the route. Check your mini-map if you can't see the checkpoints.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Do NOT leave your bus and always STOP at every bus-stops and let people enter and exit the bus.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Abusing this job in any way, non-rping or driving non-rply will lead to a BAN.");
 				   	ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Unity 69 Cents!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 				}
 				else
@@ -13297,7 +13295,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			else
 			{
 				RemovePlayerFromVehicle(playerid);
-    			SCM(playerid, COLOR_LIGHTRED, "You are not a bus driver.");
+    			SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a bus driver.");
             }
         }
     }
@@ -13311,9 +13309,9 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			    {
 					SetPlayerCheckpoint(playerid, 1824.6315, -1826.8262, 13.0730, 3.5);
 					EastRoute[playerid] = 1;
-				   	SCM(playerid, COLOR_WHITE, "* Drive through all of the checkpoints slowly to complete the route. Check your mini-map if you can't see the checkpoints.");
-				   	SCM(playerid, COLOR_WHITE, "* Do NOT leave your bus and always STOP at every bus-stops and let people enter and exit the bus.");
-				   	SCM(playerid, COLOR_WHITE, "* Abusing this job in any way, non-rping or driving non-rply will lead to a BAN.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Drive through all of the checkpoints slowly to complete the route. Check your mini-map if you can't see the checkpoints.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Do NOT leave your bus and always STOP at every bus-stops and let people enter and exit the bus.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "* Abusing this job in any way, non-rping or driving non-rply will lead to a BAN.");
 
 					ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Unity Station 69 Cents!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 				}
@@ -13325,7 +13323,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 			else
 			{
 				RemovePlayerFromVehicle(playerid);
-    			SCM(playerid, COLOR_LIGHTRED, "You are not a bus driver.");
+    			SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a bus driver.");
     			LeftBus[playerid] = 0;
             }
         }
@@ -13346,16 +13344,16 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
  			    	        // Route 1
 	     					SetPlayerCheckpoint(playerid, 2073.5154, -1733.2930, 13.1422, 3.0);
 	       					PizzaCP1[playerid] = 1;
-		    			    SCM(playerid, COLOR_WHITE, "* Drive through all of the checkpoints to finish the route. Check your mini-map if you can't see the checkpoints.");
-		    			    SCM(playerid, COLOR_WHITE, "* If you leave the vehicle it will respawn.");
+		    			    SendClientMessage(playerid, COLOR_WHITE, "* Drive through all of the checkpoints to finish the route. Check your mini-map if you can't see the checkpoints.");
+		    			    SendClientMessage(playerid, COLOR_WHITE, "* If you leave the vehicle it will respawn.");
 						}
 						else if(PizzaRoute == 1)
 						{
 						    // Route 2
  							SetPlayerCheckpoint(playerid, 2178.6392, -1769.5964, 13.1410, 3.0);
 	       					PizzaCP2[playerid] = 1;
-		    			    SCM(playerid, COLOR_WHITE, "* Drive through all of the checkpoints to finish the route. Check your mini-map if you can't see the checkpoints.");
-		    			    SCM(playerid, COLOR_WHITE, "* If you leave the vehicle it will respawn.");
+		    			    SendClientMessage(playerid, COLOR_WHITE, "* Drive through all of the checkpoints to finish the route. Check your mini-map if you can't see the checkpoints.");
+		    			    SendClientMessage(playerid, COLOR_WHITE, "* If you leave the vehicle it will respawn.");
 						}
 					}
 					else
@@ -13366,7 +13364,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 				else
 				{
 					RemovePlayerFromVehicle(playerid);
-	    			SCM(playerid, COLOR_LIGHTRED, "You are not a pizzaboy.");
+	    			SendClientMessage(playerid, COLOR_LIGHTRED, "You are not a pizzaboy.");
 	    			LeftPizzaBoy[playerid] = 0;
             	}
             }
@@ -13386,8 +13384,8 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
         			    {
 	        				SetPlayerCheckpoint(playerid, 2045.7646, -1930.0442, 13.0410, 3.0);
 		        			DMVcp[playerid] = 1;
-		    			    SCM(playerid, COLOR_WHITE, "* Drive through all of the checkpoints slowly to pass the test. Check your mini-map if you can't see the checkpoints.");
-		    			    SCM(playerid, COLOR_WHITE, "* If you leave the vehicle it will respawn.");
+		    			    SendClientMessage(playerid, COLOR_WHITE, "* Drive through all of the checkpoints slowly to pass the test. Check your mini-map if you can't see the checkpoints.");
+		    			    SendClientMessage(playerid, COLOR_WHITE, "* If you leave the vehicle it will respawn.");
 						}
 						else
 						{
@@ -13397,13 +13395,13 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 					else
 					{
 					    RemovePlayerFromVehicle(playerid);
-					    SCM(playerid, COLOR_LIGHTRED, "You are not taking a driver-license test.");
+					    SendClientMessage(playerid, COLOR_LIGHTRED, "You are not taking a driver-license test.");
 					}
 				}
 				else
 				{
     				RemovePlayerFromVehicle(playerid);
-				    SCM(playerid, COLOR_LIGHTRED, "You already have a drivers license.");
+				    SendClientMessage(playerid, COLOR_LIGHTRED, "You already have a drivers license.");
 				}
             }
         }
@@ -13418,14 +13416,14 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 				{
 					SetPlayerCheckpoint(playerid, -1843.1804, -1647.9569, 21.4182, 3.0);
 					JunkCP[playerid] = 1;
-				   	SCM(playerid, COLOR_WHITE, "Drive through all of the checkpoints to complete your shift.");
-				   	SCM(playerid, COLOR_WHITE, "If you leave the vehicle the job will restart and the vehicle will respawn.");
-				   	SCM(playerid, COLOR_WHITE, "Try not to damage the vehicle.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "Drive through all of the checkpoints to complete your shift.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "If you leave the vehicle the job will restart and the vehicle will respawn.");
+				   	SendClientMessage(playerid, COLOR_WHITE, "Try not to damage the vehicle.");
 				}
 				else
 				{
     				RemovePlayerFromVehicle(playerid);
-				    SCM(playerid, COLOR_LIGHTRED, "You are not working.");
+				    SendClientMessage(playerid, COLOR_LIGHTRED, "You are not working.");
 				}
 			}
    		}
@@ -13452,13 +13450,13 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 					{
 						SetPlayerCheckpoint(playerid, -2219.23193, -2165.13379, 41.66151, 1.0);
 						LumberCP[playerid] = 1;
-					   	SCM(playerid, COLOR_WHITE, "Drive to the checkpoint.");
+					   	SendClientMessage(playerid, COLOR_WHITE, "Drive to the checkpoint.");
 					}
 				}
 				else
 				{
     				RemovePlayerFromVehicle(playerid);
-				    SCM(playerid, COLOR_LIGHTRED, "You are not working.");
+				    SendClientMessage(playerid, COLOR_LIGHTRED, "You are not working.");
 				}
 			}
    		}
@@ -13495,7 +13493,7 @@ public OnPlayerStateChange(playerid, newstate, oldstate)
 		{
 		    if(!IsBicycle(vehicleid))
 		    {
-		    	SCM(playerid, COLOR_LIGHTRED, "You do not have a drivers license, watch out for the police.");
+		    	SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a drivers license, watch out for the police.");
 		    	return 1;
 			}
 		}
@@ -13536,7 +13534,7 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 		if(IsPlayerInVehicle(playerid, DMVcar[i]))
 		{
 			dmvcar[playerid] = GetPlayerVehicleID(playerid);
-			SCM(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back in your DMV vehicle!");
+			SendClientMessage(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back in your DMV vehicle!");
    			DMVtimer1[playerid] = 60;
 			LeftDMVCar[playerid] = 1;
 		}
@@ -13546,7 +13544,7 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 		if(IsPlayerInVehicle(playerid, PizzaBoys[i]))
 		{
 			pizzaboy[playerid] = GetPlayerVehicleID(playerid);
-			SCM(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back on your PizzaBoy!");
+			SendClientMessage(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back on your PizzaBoy!");
    			PizzaTimer1[playerid] = 60;
 			LeftPizzaBoy[playerid] = 1;
 		}
@@ -13557,7 +13555,7 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 	    {
 	        if(GetPlayerVehicleSeat(playerid) == 0)
 	        {
-				SCM(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back in your bus!");
+				SendClientMessage(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back in your bus!");
 				BUSTimer1[playerid] = 60;
 				LeftBus[playerid] = 1;
 			}
@@ -13569,7 +13567,7 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 	    {
 	        if(GetPlayerVehicleSeat(playerid) == 0)
 	        {
-				SCM(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back in your bus!");
+				SendClientMessage(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back in your bus!");
 				BUSTimer1[playerid] = 60;
 				LeftBus[playerid] = 1;
 			}
@@ -13581,7 +13579,7 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 	    {
 	        if(GetPlayerVehicleSeat(playerid) == 0)
 	        {
-				SCM(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back in your bus!");
+				SendClientMessage(playerid, COLOR_LIGHTRED, "You have 60 seconds to get back in your bus!");
 				BUSTimer1[playerid] = 60;
 				LeftBus[playerid] = 1;
 			}
@@ -13594,7 +13592,7 @@ public OnPlayerExitVehicle(playerid, vehicleid)
 			new vehicle;
 			vehicle = GetPlayerVehicleID(playerid);
 			SetVehicleToRespawn(vehicle);
-			SCM(playerid, COLOR_WHITE, "You have left your job-vehicle and it has respawned.");
+			SendClientMessage(playerid, COLOR_WHITE, "You have left your job-vehicle and it has respawned.");
 			WorkingJunk[playerid] = false;
 			TogglePlayerControllable(playerid, 1);
 			JunkCP[playerid] = 0;
@@ -13906,7 +13904,7 @@ if(response)
 		{
 		    if(isnull(inputtext))
 		    {
-		        SCM(playerid, COLOR_LIGHTRED, "You didn't type in any URL.");
+		        SendClientMessage(playerid, COLOR_LIGHTRED, "You didn't type in any URL.");
 		        return 1;
 		    }
 		    if(strlen(inputtext))
@@ -13949,7 +13947,7 @@ if(response)
         	    case 0:
         	    {
 
-    				if (PlayerInfo[playerid][pBeer] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any beers.");
+    				if (PlayerInfo[playerid][pBeer] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any beers.");
 
 				    SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DRINK_BEER);
 				    IsDrinkingBeer[playerid] = 1;
@@ -13961,7 +13959,7 @@ if(response)
         	    }
         	    case 1:
         	    {
-    				if (PlayerInfo[playerid][pCigarettes] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any cigarettes.");
+    				if (PlayerInfo[playerid][pCigarettes] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any cigarettes.");
 
 				    SetPlayerSpecialAction(playerid, SPECIAL_ACTION_SMOKE_CIGGY);
 				    IsSmokingCigarette[playerid] = 1;
@@ -13982,7 +13980,7 @@ if(response)
         	    }
         	    case 4:
         	    {
-        	        if(PlayerInfo[playerid][pFishingRod] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have a fishing rod.");
+        	        if(PlayerInfo[playerid][pFishingRod] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a fishing rod.");
 					if(Equipped[playerid] == 0)
 					{
 					    RodObject = SetPlayerAttachedObject(playerid, 0, 18632, 6, 0.079376, 0.037070, 0.007706, 181.482910, 0.000000, 0.000000, 1.000000, 1.000000, 1.000000);
@@ -14078,11 +14076,11 @@ if(response)
         	{
           	  	case 0:
         	    {
-					if(GetPlayerMoney(playerid) < 14) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					if(PlayerInfo[playerid][pAge] < 21) return SCM(playerid, COLOR_LIGHTRED, "You're not old enough to buy beer.");
+					if(GetPlayerMoney(playerid) < 14) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(PlayerInfo[playerid][pAge] < 21) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not old enough to buy beer.");
 					GivePlayerMoney(playerid, -15);
 					PlayerInfo[playerid][pBeer] += 6;
-					SCM(playerid, COLOR_WHITE, "You have bought a six-pack of beers, /drink.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a six-pack of beers, /drink.");
 
 
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14097,10 +14095,10 @@ if(response)
         	    }
          	  	case 1:
         	    {
-					if(GetPlayerMoney(playerid) < 4) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You're not old enough to buy cigarettes.");
+					if(GetPlayerMoney(playerid) < 4) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not old enough to buy cigarettes.");
 					PlayerInfo[playerid][pCigarettes] += 20;
-					SCM(playerid, COLOR_WHITE, "You have bought a packet of cigarettes, /smoke.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a packet of cigarettes, /smoke.");
 					GivePlayerMoney(playerid, -5);
 					
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14115,8 +14113,8 @@ if(response)
         	    }
         	    case 2:
         	    {
-					if(GetPlayerMoney(playerid) < 0) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					SCM(playerid, COLOR_WHITE, "You have bought a dice, /dice.");
+					if(GetPlayerMoney(playerid) < 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a dice, /dice.");
 					GivePlayerMoney(playerid, -1);
 					Dice[playerid] = 1;
 					
@@ -14132,10 +14130,10 @@ if(response)
         	    }
         	    case 3:
         	    {
-        	        if(PlayerInfo[playerid][pPlayingHours] < 2) return SCM(playerid, COLOR_LIGHTRED, "You have to play two hours before you can buy a mask.");
-					if(GetPlayerMoney(playerid) < 49) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+        	        if(PlayerInfo[playerid][pPlayingHours] < 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to play two hours before you can buy a mask.");
+					if(GetPlayerMoney(playerid) < 49) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					Mask[playerid] = 1;
-					SCM(playerid, COLOR_WHITE, "You have bought a mask, /mask to put it on/off.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a mask, /mask to put it on/off.");
 					GivePlayerMoney(playerid, -50);
 					
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14150,9 +14148,9 @@ if(response)
         	    }
         	    case 4:
         	    {
-					if(GetPlayerMoney(playerid) < 49) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 49) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					PlayerInfo[playerid][dWater] = 5;
-					SCM(playerid, COLOR_WHITE, "You have bought a water bottle. /waterplant to make your marijuana-plant grow.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a water bottle. /waterplant to make your marijuana-plant grow.");
 					GivePlayerMoney(playerid, -50);
 					
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14167,9 +14165,9 @@ if(response)
         	    }
         	    case 5:
         	    {
-					if(GetPlayerMoney(playerid) < 19) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 19) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					toolkit[playerid] = 1;
-					SCM(playerid, COLOR_WHITE, "You have bought a toolkit. Now you can /v breakin next to cars to un-lock them.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a toolkit. Now you can /v breakin next to cars to un-lock them.");
 					GivePlayerMoney(playerid, -20);
 					
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14184,8 +14182,8 @@ if(response)
         	    }
         	    case 6:
         	    {
-					if(GetPlayerMoney(playerid) < 24) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					SCM(playerid, COLOR_WHITE, "You have bought a baseball bat.");
+					if(GetPlayerMoney(playerid) < 24) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a baseball bat.");
 					GivePlayerMoney(playerid, -25);
 					GivePlayerWeapon(playerid, 5, 1);
 
@@ -14207,16 +14205,16 @@ if(response)
         	{
           	  	case 0:
         	    {
-					if(GetPlayerMoney(playerid) < 14) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 14) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					PlayerInfo[playerid][pFishingRod] = 1;
-					SCM(playerid, COLOR_WHITE, "You have bought a simple fishing rod, /fish.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a simple fishing rod, /fish.");
 					GivePlayerMoney(playerid, -15);
         	    }
         	    case 1:
         	    {
-					if(GetPlayerMoney(playerid) < 49) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 49) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					PlayerInfo[playerid][pWorms] += 10;
-					SCM(playerid, COLOR_WHITE, "You have bought a box of worms.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a box of worms.");
 					GivePlayerMoney(playerid, -50);
         	    }
 			}
@@ -14227,9 +14225,9 @@ if(response)
         	{
           	  	case 0:
         	    {
-					if(GetPlayerMoney(playerid) < 99) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					if(PlayerInfo[playerid][pPhone] > 0) return SCM(playerid, COLOR_LIGHTRED, "You already have a cellphone.");
-					SCM(playerid, COLOR_WHITE, "You have bought a cellphone.");
+					if(GetPlayerMoney(playerid) < 99) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(PlayerInfo[playerid][pPhone] > 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You already have a cellphone.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a cellphone.");
 
 					new str[64];
 				    new randphone = 150000 + random(500000); //minimum 150000 - max 500000 - defining the number
@@ -14255,9 +14253,9 @@ if(response)
         	    }
          	  	case 1:
         	    {
-					if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					PlayerInfo[playerid][pBoombox] = 1;
-					SCM(playerid, COLOR_WHITE, "You have bought a boombox, /boombox.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have bought a boombox, /boombox.");
 					GivePlayerMoney(playerid, -2000);
 					
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14298,7 +14296,7 @@ if(response)
 						strcat(info, "\nVirtual "COL_GREEN"($2000)\nAccess "COL_GREEN"($2000)", sizeof(info));
 	        	        ShowPlayerDialog(playerid, DIALOG_RIMS, DIALOG_STYLE_LIST, "Rims", info, "Select", "Cancel");
 					}
-					else return SCM(playerid, COLOR_LIGHTRED, "You need to be in a car to change rims.");
+					else return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be in a car to change rims.");
         	    }
          	  	case 2:
         	    {
@@ -14314,9 +14312,9 @@ if(response)
         	{
          	  	case 0:
         	    {
-        	        if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
-					if(GetPlayerMoney(playerid) < 4) return SCM(playerid, COLOR_LIGHTRED, "You don't have enough money.");
-        	        SCM(playerid, COLOR_WHITE, "You have bought a Carlsberg.");
+        	        if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
+					if(GetPlayerMoney(playerid) < 4) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have enough money.");
+        	        SendClientMessage(playerid, COLOR_WHITE, "You have bought a Carlsberg.");
         	        SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DRINK_BEER);
         	        GivePlayerMoney(playerid, -5);
         	        
@@ -14332,10 +14330,10 @@ if(response)
         	    }
          	  	case 1:
         	    {
-    	        	if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
-					if(GetPlayerMoney(playerid) < 4) return SCM(playerid, COLOR_LIGHTRED, "You don't have enough money.");
+    	        	if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
+					if(GetPlayerMoney(playerid) < 4) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have enough money.");
 					GivePlayerMoney(playerid, -5);
-        	        SCM(playerid, COLOR_WHITE, "You have bought a Guinness.");
+        	        SendClientMessage(playerid, COLOR_WHITE, "You have bought a Guinness.");
         	        SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DRINK_BEER);
         	        
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14350,10 +14348,10 @@ if(response)
         	    }
          	  	case 2:
         	    {
-   	        		if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
-					if(GetPlayerMoney(playerid) < 6) return SCM(playerid, COLOR_LIGHTRED, "You don't have enough money.");
+   	        		if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
+					if(GetPlayerMoney(playerid) < 6) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have enough money.");
 					GivePlayerMoney(playerid, -7);
-        	        SCM(playerid, COLOR_WHITE, "You have bought a Martini.");
+        	        SendClientMessage(playerid, COLOR_WHITE, "You have bought a Martini.");
         	        SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DRINK_WINE);
         	        
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14368,10 +14366,10 @@ if(response)
         	    }
          	  	case 3:
         	    {
-   	        		if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
-					if(GetPlayerMoney(playerid) < 9) return SCM(playerid, COLOR_LIGHTRED, "You don't have enough money.");
+   	        		if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
+					if(GetPlayerMoney(playerid) < 9) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have enough money.");
 					GivePlayerMoney(playerid, -10);
-        	        SCM(playerid, COLOR_WHITE, "You have bought a Bloody Mary.");
+        	        SendClientMessage(playerid, COLOR_WHITE, "You have bought a Bloody Mary.");
         	        SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DRINK_WINE);
         	        
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14386,10 +14384,10 @@ if(response)
         	    }
          	  	case 4:
         	    {
-   	        		if(PlayerInfo[playerid][pAge] < 18) return SCM(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
-					if(GetPlayerMoney(playerid) < 14) return SCM(playerid, COLOR_LIGHTRED, "You don't have enough money.");
+   	        		if(PlayerInfo[playerid][pAge] < 18) return SendClientMessage(playerid, COLOR_LIGHTRED, "You are not eighteen years old.");
+					if(GetPlayerMoney(playerid) < 14) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have enough money.");
 					GivePlayerMoney(playerid, -15);
-        	        SCM(playerid, COLOR_WHITE, "You have bought a Sex On The Beach.");
+        	        SendClientMessage(playerid, COLOR_WHITE, "You have bought a Sex On The Beach.");
         	        SetPlayerSpecialAction(playerid, SPECIAL_ACTION_DRINK_WINE);
         	        
 					new id = GetPlayerVirtualWorld(playerid);
@@ -14412,7 +14410,7 @@ if(response)
                 new string[64];
 				format(string, sizeof(string), "%s", inputtext);
 				format(PlayerInfo[playerid][pForumName], 46, string);
-				SCM(playerid, COLOR_GREEN, "You have succesfully set your new forumname.");
+				SendClientMessage(playerid, COLOR_GREEN, "You have succesfully set your new forumname.");
 				PlayerInfo[playerid][pFname] = 1;
             }
 		}
@@ -14422,7 +14420,7 @@ if(response)
         	{
 		  		case 0:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14439,7 +14437,7 @@ if(response)
 	 	    	}
 	  			case 1:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14456,7 +14454,7 @@ if(response)
 	 	    	}
 	  			case 2:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14473,7 +14471,7 @@ if(response)
 	 	    	}
 	  			case 3:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14490,7 +14488,7 @@ if(response)
 	 	    	}
 	  			case 4:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14507,7 +14505,7 @@ if(response)
 	 	    	}
 	  			case 5:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14524,7 +14522,7 @@ if(response)
 	 	    	}
 	 			case 6:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14541,7 +14539,7 @@ if(response)
 	 	    	}
 	 			case 7:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14558,7 +14556,7 @@ if(response)
 	 	    	}
 	 			case 8:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14575,7 +14573,7 @@ if(response)
 	 	    	}
 	 			case 9:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14592,7 +14590,7 @@ if(response)
 	 	    	}
 	 			case 10:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14609,7 +14607,7 @@ if(response)
 	 	    	}
 	 			case 11:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 3999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 3999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14626,7 +14624,7 @@ if(response)
 	 	    	}
 	 			case 12:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14643,7 +14641,7 @@ if(response)
 	 	    	}
 	 			case 13:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14660,7 +14658,7 @@ if(response)
 	 	    	}
 	 			case 14:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14677,7 +14675,7 @@ if(response)
 	 	    	}
 	 			case 15:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14694,7 +14692,7 @@ if(response)
 	 	    	}
 	 			case 16:
 		    	{
-		    	    if(GetPlayerMoney(playerid) < 1999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+		    	    if(GetPlayerMoney(playerid) < 1999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 		   			new vehicleid;
 					if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 					{
@@ -14713,7 +14711,7 @@ if(response)
 		}
 		case DIALOG_COLOR1:
   		{
-  		    if(GetPlayerMoney(playerid) < 99) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+  		    if(GetPlayerMoney(playerid) < 99) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
        		new vehicleid;
 			if(GetPlayerState(playerid) == PLAYER_STATE_DRIVER)
 			{
@@ -14749,7 +14747,7 @@ if(response)
         	{
           	  	case 0:
         	    {
-        	        if(GetPlayerMoney(playerid) < 999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+        	        if(GetPlayerMoney(playerid) < 999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES "");
@@ -14795,8 +14793,8 @@ if(response)
         	    }
          	  	case 1:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 1) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (bike) is only available for donators.");
+    	        	if(GetPlayerMoney(playerid) < 999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (bike) is only available for donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -14842,7 +14840,7 @@ if(response)
         	    }
         	    case 2:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 1499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 1499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -14888,7 +14886,7 @@ if(response)
         	    }
         	    case 3:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 2999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 2999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -14934,7 +14932,7 @@ if(response)
         	    }
         	    case 4:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 2999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 2999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -14982,7 +14980,7 @@ if(response)
         	    }
         	    case 5:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 3499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 3499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15028,7 +15026,7 @@ if(response)
         	    }
         	    case 6:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 3699) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 3699) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15074,7 +15072,7 @@ if(response)
         	    }
         	    case 7:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 3999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 3999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15120,7 +15118,7 @@ if(response)
         	    }
         	    case 8:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15166,7 +15164,7 @@ if(response)
         	    }
         	    case 9:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15212,7 +15210,7 @@ if(response)
         	    }
         	    case 10:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4299) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4299) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15258,7 +15256,7 @@ if(response)
         	    }
         	    case 11:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4299) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4299) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15304,7 +15302,7 @@ if(response)
         	    }
         	    case 12:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4299) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4299) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15350,7 +15348,7 @@ if(response)
         	    }
         	    case 13:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4599) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4599) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15396,7 +15394,7 @@ if(response)
         	    }
         	    case 14:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15442,7 +15440,7 @@ if(response)
         	    }
         	    case 15:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15488,7 +15486,7 @@ if(response)
         	    }
         	    case 16:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15534,7 +15532,7 @@ if(response)
         	    }
         	    case 17:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 4999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 4999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15580,7 +15578,7 @@ if(response)
         	    }
         	    case 18:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 5199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 5199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15626,7 +15624,7 @@ if(response)
         	    }
         	    case 19:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 5499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 5499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15672,7 +15670,7 @@ if(response)
         	    }
         	    case 20:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 5499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 5499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15718,7 +15716,7 @@ if(response)
         	    }
         	    case 21:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 5599) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 5599) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15764,7 +15762,7 @@ if(response)
         	    }
         	    case 22:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 5799) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 5799) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15810,7 +15808,7 @@ if(response)
         	    }
         	    case 23:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 5999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 5999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15856,7 +15854,7 @@ if(response)
         	    }
         	    case 24:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 6199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 6199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15902,7 +15900,7 @@ if(response)
         	    }
         	    case 25:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 2999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 2999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15948,7 +15946,7 @@ if(response)
         	    }
         	    case 26:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 6799) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 6799) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -15994,7 +15992,7 @@ if(response)
         	    }
         	    case 27:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 6999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 6999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16040,7 +16038,7 @@ if(response)
         	    }
         	    case 28:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7099) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7099) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16086,7 +16084,7 @@ if(response)
         	    }
         	    case 29:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16132,7 +16130,7 @@ if(response)
         	    }
         	    case 30:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7099) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7099) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16178,7 +16176,7 @@ if(response)
         	    }
         	    case 31:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7099) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7099) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16224,7 +16222,7 @@ if(response)
         	    }
         	    case 32:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7099) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7099) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16270,7 +16268,7 @@ if(response)
         	    }
         	    case 33:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16316,7 +16314,7 @@ if(response)
         	    }
         	    case 34:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7299) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7299) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16362,7 +16360,7 @@ if(response)
         	    }
         	    case 35:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7299) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7299) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16408,7 +16406,7 @@ if(response)
         	    }
         	    case 36:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16454,7 +16452,7 @@ if(response)
         	    }
         	    case 37:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7399) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7399) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16500,7 +16498,7 @@ if(response)
         	    }
         	    case 38:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7399) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7399) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16546,7 +16544,7 @@ if(response)
         	    }
         	    case 39:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16592,7 +16590,7 @@ if(response)
         	    }
         	    case 40:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7799) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7799) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16638,7 +16636,7 @@ if(response)
         	    }
         	    case 41:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7799) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7799) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16684,7 +16682,7 @@ if(response)
         	    }
         	    case 42:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7899) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7899) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16730,7 +16728,7 @@ if(response)
         	    }
         	    case 43:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7899) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7899) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16776,7 +16774,7 @@ if(response)
         	    }
         	    case 44:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16822,7 +16820,7 @@ if(response)
         	    }
         	    case 45:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 7999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16868,7 +16866,7 @@ if(response)
         	    }
         	    case 46:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 8199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 8199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16914,7 +16912,7 @@ if(response)
         	    }
         	    case 47:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 8299) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 8299) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -16960,7 +16958,7 @@ if(response)
         	    }
         	    case 48:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 8399) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 8399) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17006,7 +17004,7 @@ if(response)
         	    }
         	    case 49:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 8399) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 8399) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17052,7 +17050,7 @@ if(response)
         	    }
         	    case 50:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 8499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 8499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17098,7 +17096,7 @@ if(response)
         	    }
         	    case 51:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 8999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 8999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17144,7 +17142,7 @@ if(response)
         	    }
         	    case 52:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9099) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9099) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17190,7 +17188,7 @@ if(response)
         	    }
         	    case 53:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17236,7 +17234,7 @@ if(response)
         	    }
         	    case 54:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17282,7 +17280,7 @@ if(response)
         	    }
         	    case 55:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9599) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9599) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17328,7 +17326,7 @@ if(response)
         	    }
         	    case 56:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9699) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9699) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17374,7 +17372,7 @@ if(response)
         	    }
         	    case 57:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17420,7 +17418,7 @@ if(response)
         	    }
         	    case 58:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17466,7 +17464,7 @@ if(response)
         	    }
         	    case 59:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17512,7 +17510,7 @@ if(response)
         	    }
         	    case 60:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17558,7 +17556,7 @@ if(response)
         	    }
         	    case 61:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17604,7 +17602,7 @@ if(response)
         	    }
         	    case 62:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 9999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 9999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17650,7 +17648,7 @@ if(response)
         	    }
         	    case 63:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 10499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 10499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17696,7 +17694,7 @@ if(response)
         	    }
         	    case 64:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 10999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 10999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17742,7 +17740,7 @@ if(response)
         	    }
         	    case 65:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 13999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 13999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17788,7 +17786,7 @@ if(response)
         	    }
         	    case 66:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 14499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 14499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17834,7 +17832,7 @@ if(response)
         	    }
         	    case 67:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 14999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 14999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17880,7 +17878,7 @@ if(response)
         	    }
          	   	case 68:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 14999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 14999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17926,7 +17924,7 @@ if(response)
         	    }
         	    case 69:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 15499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 15499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -17972,7 +17970,7 @@ if(response)
         	    }
         	    case 70:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 16499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 16499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18018,7 +18016,7 @@ if(response)
         	    }
         	    case 71:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 16999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 16999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18064,7 +18062,7 @@ if(response)
         	    }
         	    case 72:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 16999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 16999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18110,7 +18108,7 @@ if(response)
         	    }
         	    case 73:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 17999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 17999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18156,7 +18154,7 @@ if(response)
         	    }
         	    case 74:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 18999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 18999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18202,7 +18200,7 @@ if(response)
         	    }
         	    case 75:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 19499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 19499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18248,7 +18246,7 @@ if(response)
         	    }
         	    case 76:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 19999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 19999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18294,7 +18292,7 @@ if(response)
         	    }
          	   	case 77:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 20499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 20499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18340,7 +18338,7 @@ if(response)
         	    }
         	    case 78:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 20999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 20999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18386,7 +18384,7 @@ if(response)
         	    }
         	    case 79:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 25999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 25999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18432,7 +18430,7 @@ if(response)
         	    }
         	    case 80:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 29999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 29999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18478,7 +18476,7 @@ if(response)
         	    }
         	    case 81:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 31999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 31999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18524,7 +18522,7 @@ if(response)
         	    }
         	    case 82:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 31999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 31999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18570,7 +18568,7 @@ if(response)
         	    }
         	    case 83:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 37999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 37999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18618,7 +18616,7 @@ if(response)
         	    }
         	    case 84:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 41999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 41999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18664,7 +18662,7 @@ if(response)
         	    }
         	    case 85:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 45999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 45999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18710,7 +18708,7 @@ if(response)
         	    }
         	    case 86:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 31999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(GetPlayerMoney(playerid) < 31999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18756,8 +18754,8 @@ if(response)
         	    }
         	    case 87:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 6999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 2) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (sanchez) is only available for silver donators.");
+    	        	if(GetPlayerMoney(playerid) < 6999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (sanchez) is only available for silver donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18803,8 +18801,8 @@ if(response)
         	    }
         	    case 88:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 36999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 2) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (zr-350) is only available for silver donators.");
+    	        	if(GetPlayerMoney(playerid) < 36999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (zr-350) is only available for silver donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18850,8 +18848,8 @@ if(response)
         	    }
         	    case 89:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 14999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 3) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (FCR-900) is only available for gold donators.");
+    	        	if(GetPlayerMoney(playerid) < 14999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 3) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (FCR-900) is only available for gold donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18897,8 +18895,8 @@ if(response)
         	    }
         	    case 90:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 43999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 3) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (bullet) is only available for gold donators.");
+    	        	if(GetPlayerMoney(playerid) < 43999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 3) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (bullet) is only available for gold donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18944,8 +18942,8 @@ if(response)
         	    }
         	    case 91:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 43999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 3) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (banshee) is only available for gold donators.");
+    	        	if(GetPlayerMoney(playerid) < 43999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 3) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (banshee) is only available for gold donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -18991,8 +18989,8 @@ if(response)
         	    }
         	    case 92:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 1499) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 2) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (mountain bike) is only available for bronze donators.");
+    	        	if(GetPlayerMoney(playerid) < 1499) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 2) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (mountain bike) is only available for bronze donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -19038,8 +19036,8 @@ if(response)
         	    }
         	    case 93:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 6999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 1) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (quad) is only available for bronze donators.");
+    	        	if(GetPlayerMoney(playerid) < 6999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (quad) is only available for bronze donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -19085,8 +19083,8 @@ if(response)
         	    }
         	    case 94:
         	    {
-    	        	if(GetPlayerMoney(playerid) < 7399) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-    	        	if(PlayerInfo[playerid][pDonator] < 3) return SCM(playerid, COLOR_LIGHTRED, "This vehicle (hotknife) is only available for gold donators.");
+    	        	if(GetPlayerMoney(playerid) < 7399) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+    	        	if(PlayerInfo[playerid][pDonator] < 3) return SendClientMessage(playerid, COLOR_LIGHTRED, "This vehicle (hotknife) is only available for gold donators.");
 					if(GetPlayerVehicles(playerid) >= MAX_PLAYER_VEHICLES)
 					{
 						ShowErrorDialog(playerid, "You can't buy any more vehicles. Limit: " #MAX_PLAYER_VEHICLES );
@@ -19138,8 +19136,8 @@ if(response)
         	{
           	  	case 0:
         	    {
-					if(GetPlayerMoney(playerid) < 199) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					SCM(playerid, COLOR_WHITE, "Disabled.");
+					if(GetPlayerMoney(playerid) < 199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					SendClientMessage(playerid, COLOR_WHITE, "Disabled.");
 					
 					new id = GetPlayerVirtualWorld(playerid);
 				    BusinessInfo[id][bMoney] += 100;
@@ -19153,8 +19151,8 @@ if(response)
         	    }
          	  	case 1:
         	    {
-					if(GetPlayerMoney(playerid) < 999) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					SCM(playerid, COLOR_WHITE, "Congratulations on your new Country Rifle.");
+					if(GetPlayerMoney(playerid) < 999) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					SendClientMessage(playerid, COLOR_WHITE, "Congratulations on your new Country Rifle.");
 					GivePlayerMoney(playerid, -1000);
 					GivePlayerWeapon(playerid, 33, 30);
 					
@@ -19170,8 +19168,8 @@ if(response)
         	    }
          	  	case 2:
         	    {
-					if(GetPlayerMoney(playerid) < 1399) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					SCM(playerid, COLOR_WHITE, "Congratulations on your new Colt 45.");
+					if(GetPlayerMoney(playerid) < 1399) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					SendClientMessage(playerid, COLOR_WHITE, "Congratulations on your new Colt 45.");
 					GivePlayerMoney(playerid, -1400);
 					GivePlayerWeapon(playerid, 22, 50);
 					
@@ -19187,8 +19185,8 @@ if(response)
         	    }
         	    case 3:
         	    {
-					if(GetPlayerMoney(playerid) < 2399) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
-					SCM(playerid, COLOR_WHITE, "Congratulations on your new Remington Shotgun.");
+					if(GetPlayerMoney(playerid) < 2399) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					SendClientMessage(playerid, COLOR_WHITE, "Congratulations on your new Remington Shotgun.");
 					GivePlayerMoney(playerid, -2400);
 					GivePlayerWeapon(playerid, 25, 25);
 					
@@ -19210,7 +19208,7 @@ if(response)
         	{
           	  	case 0:
         	    {
-					if(GetPlayerMoney(playerid) < 99) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 99) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					PlayerInfo[playerid][pFightingStyle] = 1;
 					SetPlayerFightingStyle (playerid, FIGHT_STYLE_NORMAL);
 					GivePlayerMoney(playerid, -100);
@@ -19225,14 +19223,14 @@ if(response)
 					INI_WriteInt(File, "bMoney", BusinessInfo[id][bMoney]);
 					INI_Close(File);
 
-					SCM(playerid, COLOR_WHITE, "You have learned the normal fightingstyle.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have learned the normal fightingstyle.");
         	    }
          	  	case 1:
         	    {
-					if(GetPlayerMoney(playerid) < 99) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 99) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					PlayerInfo[playerid][pFightingStyle] = 2;
 					SetPlayerFightingStyle (playerid, FIGHT_STYLE_BOXING);
-					SCM(playerid, COLOR_WHITE, "You have learned boxing.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have learned boxing.");
 					GivePlayerMoney(playerid, -100);
 					
 					new id = GetPlayerVirtualWorld(playerid);
@@ -19247,10 +19245,10 @@ if(response)
         	    }
         	    case 2:
         	    {
-					if(GetPlayerMoney(playerid) < 99) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 99) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					PlayerInfo[playerid][pFightingStyle] = 3;
 					SetPlayerFightingStyle (playerid, FIGHT_STYLE_KNEEHEAD);
-					SCM(playerid, COLOR_WHITE, "You have learned the kneehead fightingstyle.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have learned the kneehead fightingstyle.");
 					GivePlayerMoney(playerid, -100);
 					
 					new id = GetPlayerVirtualWorld(playerid);
@@ -19265,10 +19263,10 @@ if(response)
         	    }
         	    case 3:
         	    {
-					if(GetPlayerMoney(playerid) < 100) return SCM(playerid, COLOR_LIGHTRED, "You do not have enough money.");
+					if(GetPlayerMoney(playerid) < 100) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have enough money.");
 					PlayerInfo[playerid][pFightingStyle] = 4;
 					SetPlayerFightingStyle (playerid, FIGHT_STYLE_KUNGFU);
-					SCM(playerid, COLOR_WHITE, "You have learned the kung-fu fightingstyle.");
+					SendClientMessage(playerid, COLOR_WHITE, "You have learned the kung-fu fightingstyle.");
 					GivePlayerMoney(playerid, -100);
 					
 					new id = GetPlayerVirtualWorld(playerid);
@@ -19338,7 +19336,7 @@ if(response)
         	{
           	  	case 0:
         	    {
-					if (PlayerInfo[playerid][dMarijuana] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any marijuana.");
+					if (PlayerInfo[playerid][dMarijuana] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any marijuana.");
 				    SetPlayerSpecialAction(playerid, SPECIAL_ACTION_SMOKE_CIGGY);
 				    IsSmokingJoint[playerid] = 1;
 
@@ -19356,9 +19354,9 @@ if(response)
 					    Float: fArmour
 					;
 					GetPlayerArmour( playerid, fArmour );
-    				if (PlayerInfo[playerid][dCocaine] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any cocaine.");
-    				if (fArmour > 35) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more cocaine.");
-    				if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more cocaine.");
+    				if (PlayerInfo[playerid][dCocaine] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any cocaine.");
+    				if (fArmour > 35) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more cocaine.");
+    				if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more cocaine.");
 
 					SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -19372,8 +19370,8 @@ if(response)
         	    }
         	    case 2:
         	    {
-    				if (PlayerInfo[playerid][dLSD] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any LSD.");
-    				if(IsLSDHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more LSD.");
+    				if (PlayerInfo[playerid][dLSD] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any LSD.");
+    				if(IsLSDHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more LSD.");
 
     				SetTimerEx("LSDEffect", 300000, 0, "i", playerid);
 
@@ -19392,9 +19390,9 @@ if(response)
 					    Float: fArmour
 					;
 					GetPlayerArmour( playerid, fArmour );
-    				if (PlayerInfo[playerid][dMeth] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any meth.");
-    				if (fArmour > 45) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more meth.");
-    				if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more meth.");
+    				if (PlayerInfo[playerid][dMeth] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any meth.");
+    				if (fArmour > 45) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more meth.");
+    				if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more meth.");
 
 					SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -19411,9 +19409,9 @@ if(response)
 					    Float: fArmour
 					;
 					GetPlayerArmour( playerid, fArmour );
-    				if (PlayerInfo[playerid][dEcstasy] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any ecstasy.");
-    				if (fArmour > 20) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more ecstasy.");
-    				if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more ecstasy.");
+    				if (PlayerInfo[playerid][dEcstasy] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any ecstasy.");
+    				if (fArmour > 20) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more ecstasy.");
+    				if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more ecstasy.");
 
 					SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -19430,9 +19428,9 @@ if(response)
 					    Float: fArmour
 					;
 					GetPlayerArmour( playerid, fArmour );
-    				if (PlayerInfo[playerid][dHeroin] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any heroin.");
-    				if (fArmour > 35) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more heroin.");
-    				if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more ecstasy.");
+    				if (PlayerInfo[playerid][dHeroin] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any heroin.");
+    				if (fArmour > 35) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more heroin.");
+    				if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more ecstasy.");
 
 					SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -19449,9 +19447,9 @@ if(response)
 					    Float: fArmour
 					;
 					GetPlayerArmour( playerid, fArmour );
-    				if (PlayerInfo[playerid][dCrack] < 1) return SCM(playerid, COLOR_LIGHTRED, "You do not have any crack.");
-    				if (fArmour > 30) return SCM(playerid, COLOR_LIGHTRED, "You can't do any more crack.");
-    				if(IsCocaineHigh[playerid] == 1) return SCM(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more crack.");
+    				if (PlayerInfo[playerid][dCrack] < 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have any crack.");
+    				if (fArmour > 30) return SendClientMessage(playerid, COLOR_LIGHTRED, "You can't do any more crack.");
+    				if(IsCocaineHigh[playerid] == 1) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have to wait a while before taking more crack.");
 
 					SetTimerEx("CocaineEffect", 300000, 0, "i", playerid);
 
@@ -19481,15 +19479,15 @@ if(response)
 				    BBCoord[0] += (2 * floatsin(-BBCoord[3], degrees));
 				   	BBCoord[1] += (2 * floatcos(-BBCoord[3], degrees));
 				   	BBCoord[2] -= 1.0;
-					if(PlayerInfo[playerid][pBoombox] == 0) return SCM(playerid, COLOR_LIGHTRED, "You do not have a boombox.");
-					if(GetPVarInt(playerid, "PlacedBB")) return SCM(playerid, COLOR_LIGHTRED, "You have already put down a boombox.");
+					if(PlayerInfo[playerid][pBoombox] == 0) return SendClientMessage(playerid, COLOR_LIGHTRED, "You do not have a boombox.");
+					if(GetPVarInt(playerid, "PlacedBB")) return SendClientMessage(playerid, COLOR_LIGHTRED, "You have already put down a boombox.");
 					foreach(new i : Player)
 					{
 				 		if(GetPVarType(i, "PlacedBB"))
 				   		{
 				  			if(IsPlayerInRangeOfPoint(playerid, 30.0, GetPVarFloat(i, "BBX"), GetPVarFloat(i, "BBY"), GetPVarFloat(i, "BBZ")))
 							{
-				   				SCM(playerid, COLOR_LIGHTRED, "You can't put a boombox here. Someone is already listening to music here.");
+				   				SendClientMessage(playerid, COLOR_LIGHTRED, "You can't put a boombox here. Someone is already listening to music here.");
 							    return 1;
 							}
 						}
@@ -19514,19 +19512,19 @@ if(response)
 						}
 						else
 						{
-   							return SCM(playerid, COLOR_LIGHTRED, "You're not near your boombox.");
+   							return SendClientMessage(playerid, COLOR_LIGHTRED, "You're not near your boombox.");
 						}
 		    			}
 					    else
 					    {
-					        SCM(playerid, COLOR_LIGHTRED, "You have not placed a boombox.");
+					        SendClientMessage(playerid, COLOR_LIGHTRED, "You have not placed a boombox.");
 						}
         	    }
         	    case 2:
         	    {
      				if(!GetPVarType(playerid, "PlacedBB"))
 				    {
-				        SCM(playerid, COLOR_LIGHTRED, "You have not placed a boombox.");
+				        SendClientMessage(playerid, COLOR_LIGHTRED, "You have not placed a boombox.");
 				    }
 					else if(IsPlayerInRangeOfPoint(playerid, 3.0, GetPVarFloat(playerid, "BBX"), GetPVarFloat(playerid, "BBY"), GetPVarFloat(playerid, "BBZ")))
 				    {
@@ -19542,49 +19540,49 @@ if(response)
         	{
         	    case 0:
         	    {
-					SCM(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with armour.");
+					SendClientMessage(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with armour.");
 					SetPlayerArmour(playerid, 99);
 					ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
         	    }
         	    case 1:
         	    {
-					SCM(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a nightstick.");
+					SendClientMessage(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a nightstick.");
 					GivePlayerWeapon(playerid, 3, 1);
 					ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
         	    }
         	    case 2:
         	    {
-					SCM(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with pepper-spray.");
+					SendClientMessage(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with pepper-spray.");
 					GivePlayerWeapon(playerid, 41, 1000);
 					ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
         	    }
         	    case 3:
         	    {
-					SCM(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a deagle.");
+					SendClientMessage(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a deagle.");
 					GivePlayerWeapon(playerid, 24, 100);
 					ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
         	    }
         	    case 4:
         	    {
-					SCM(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a shotgun.");
+					SendClientMessage(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a shotgun.");
 					GivePlayerWeapon(playerid, 25, 25);
 					ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
         	    }
          	   	case 5:
         	    {
-					SCM(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a MP5.");
+					SendClientMessage(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a MP5.");
 					GivePlayerWeapon(playerid, 29, 500);
 					ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
         	    }
         	   	case 6:
         	    {
-					SCM(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a M4.");
+					SendClientMessage(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a M4.");
 					GivePlayerWeapon(playerid, 31, 500);
 					ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
         	    }
         	   	case 7:
         	    {
-					SCM(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a tazer.");
+					SendClientMessage(playerid, COLOR_SJPD, "[SJPD:] You've equipped yourself with a tazer.");
 					GivePlayerWeapon(playerid, 23, 100);
 					ShowPlayerDialog(playerid, DIALOG_LOCKER, DIALOG_STYLE_LIST, "SJPD Locker", "Armour\nNightstick\nPepper-Spray\nDeagle\nShotgun\nMP5\nM4\nTazer\nUniform", "Choose", "Cancel");
         	    }
@@ -19761,7 +19759,7 @@ if(response)
                     GivePlayerMoney(playerid, PlayerInfo[playerid][pCash]);
                     LoadFightingStyle(playerid);
                    	FadeColorForPlayer(playerid, 0, 0, 0, 255, 0, 0, 0, 0, 15, 0);
-                    SCM(playerid, COLOR_WHITE, "You have successfully logged in.");
+                    SendClientMessage(playerid, COLOR_WHITE, "You have successfully logged in.");
                     TogglePlayerSpectating(playerid, false);
                     PlayerLogged[playerid] = true;
                     SetPlayerScore(playerid, PlayerInfo[playerid][pLevel]);
@@ -19804,7 +19802,7 @@ if(response)
 					*/
                    	if(PlayerInfo[playerid][pBanned] == 1)
 					{
-					    SCM(playerid, COLOR_LIGHTRED, "AdmCmd: You have been banned for logging into a banned account.");
+					    SendClientMessage(playerid, COLOR_LIGHTRED, "AdmCmd: You have been banned for logging into a banned account.");
     					SetTimerEx("UnsetBan", 500, 0, "i", playerid);
 					}
                 }
@@ -19929,7 +19927,7 @@ if(response)
 					GetVehicleZAngle(VehicleID[vehicleid], VehiclePos[vehicleid][3]);
 					VehicleInterior[vehicleid] = GetPlayerInterior(playerid);
 					VehicleWorld[vehicleid] = GetPlayerVirtualWorld(playerid);
-					if(GetPlayerMoney(playerid) < 199) return SCM(playerid, COLOR_LIGHTRED, "You don't have enough money. ($700)");
+					if(GetPlayerMoney(playerid) < 199) return SendClientMessage(playerid, COLOR_LIGHTRED, "You don't have enough money. ($700)");
 					GivePlayerMoney(playerid, -200);
 					SendClientMessage(playerid, COLOR_WHITE, "You have bought this parking spot for your vehicle.");
 					UpdateVehicle(vehicleid, 1);
@@ -20414,19 +20412,19 @@ public OnPlayerEnterCheckpoint(playerid)
 	}
 	if(RobstoreCP[playerid] == 1)
 	{
-	    SCM(playerid, -1, "Type /emptyregister to empty the cash register.");
+	    SendClientMessage(playerid, -1, "Type /emptyregister to empty the cash register.");
 	}
 	else if(RobstoreCP[playerid] == 2)
 	{
-	    SCM(playerid, -1, "Type /emptyregister to empty the cash register.");
+	    SendClientMessage(playerid, -1, "Type /emptyregister to empty the cash register.");
 	}
 	else if(RobstoreCP[playerid] == 3)
 	{
-	    SCM(playerid, -1, "Type /emptyregister to empty the cash register.");
+	    SendClientMessage(playerid, -1, "Type /emptyregister to empty the cash register.");
 	}
 	if(ShopCP[playerid] == 1)
 	{
-	    SCM(playerid, -1, "Type /place to place products on the shelf.");
+	    SendClientMessage(playerid, -1, "Type /place to place products on the shelf.");
 	}
 	if(BackupCP[playerid] == 1)
 	{
@@ -20596,15 +20594,15 @@ public OnPlayerEnterCheckpoint(playerid)
 				SetVehicleToRespawn(vehicle);
 				DisablePlayerCheckpoint(playerid);
 				new string[128];
-				SCM(playerid, -1, "___________________[PIZZA JOB COMPLETED]___________________");
+				SendClientMessage(playerid, -1, "___________________[PIZZA JOB COMPLETED]___________________");
 				format(string, sizeof(string), "Old bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-		 		SCM(playerid, COLOR_WHITE, string);
+		 		SendClientMessage(playerid, COLOR_WHITE, string);
 				new randcheck = 50 + random(100);
 				PlayerInfo[playerid][pBankAccount] += randcheck;
 				format(string, sizeof(string), "Job Paycheck: $%d", randcheck);
-				SCM(playerid, COLOR_WHITE, string);
+				SendClientMessage(playerid, COLOR_WHITE, string);
 				format(string, sizeof(string), "New bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-				SCM(playerid, COLOR_WHITE, string);
+				SendClientMessage(playerid, COLOR_WHITE, string);
 				format(string, sizeof(string), "~w~Paycheck! ~n~~g~$%d", randcheck);
 				GameTextForPlayer(playerid, string, 3000, 1);
 				PlayerPlaySound(playerid, 1085, 0.0, 0.0, 0.0);
@@ -20767,15 +20765,15 @@ public OnPlayerEnterCheckpoint(playerid)
 				SetVehicleToRespawn(vehicle);
 				DisablePlayerCheckpoint(playerid);
 				new string[128];
-				SCM(playerid, -1, "___________________[PIZZA JOB COMPLETED]___________________");
+				SendClientMessage(playerid, -1, "___________________[PIZZA JOB COMPLETED]___________________");
 				format(string, sizeof(string), "Old bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-		 		SCM(playerid, COLOR_WHITE, string);
+		 		SendClientMessage(playerid, COLOR_WHITE, string);
 				new randcheck = 50 + random(100);
 				PlayerInfo[playerid][pBankAccount] += randcheck;
 				format(string, sizeof(string), "Job Paycheck: $%d", randcheck);
-				SCM(playerid, COLOR_WHITE, string);
+				SendClientMessage(playerid, COLOR_WHITE, string);
 				format(string, sizeof(string), "New bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-				SCM(playerid, COLOR_WHITE, string);
+				SendClientMessage(playerid, COLOR_WHITE, string);
 				format(string, sizeof(string), "~w~Paycheck! ~n~~g~$%d", randcheck);
 				GameTextForPlayer(playerid, string, 3000, 1);
 				PlayerPlaySound(playerid, 1085, 0.0, 0.0, 0.0);
@@ -20793,7 +20791,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 2;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Idlewood Gas Station!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 2)
 	{
@@ -20804,7 +20802,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 3;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] El Corona Avenue!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 3)
 	{
@@ -20815,7 +20813,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 4;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Gilmore Park!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 4)
 	{
@@ -20826,7 +20824,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 5;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Grace Avenue!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 5)
 	{
@@ -20837,7 +20835,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 6;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Willowfield Mall!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 6)
 	{
@@ -20848,7 +20846,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 7;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Willowfield Courts!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 7)
 	{
@@ -20859,7 +20857,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 8;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] San Jose Forum!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 8)
 	{
@@ -20870,7 +20868,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 9;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Ganton Strip!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 9)
 	{
@@ -20881,7 +20879,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 10;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Ganton Strip!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 10)
 	{
@@ -20892,7 +20890,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 11;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Ganton Strip!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 11)
 	{
@@ -20903,7 +20901,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 12;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Ganton Binco!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 12)
 	{
@@ -20914,7 +20912,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 13;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Gibson Avenue!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 13)
 	{
@@ -20925,7 +20923,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 14;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Jefferson Residential Area!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 14)
 	{
@@ -20936,7 +20934,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 15;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Jefferson Motel!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 15)
 	{
@@ -20947,7 +20945,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 16;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Scoutt and Schutz Dealership!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 16)
 	{
@@ -20958,7 +20956,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 17;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Glen Park!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 17)
 	{
@@ -20969,7 +20967,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 18;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] The Bahamas Apartments!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 18)
 	{
@@ -20980,7 +20978,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 19;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] San Jose Skatepark!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 19)
 	{
@@ -20991,7 +20989,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 20;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] San Jose Correctional Facility!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 20)
 	{
@@ -21002,7 +21000,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 21;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] San Jose Police Department!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 21)
 	{
@@ -21013,7 +21011,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 22;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Verdant Bluffs, 5712!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 22)
 	{
@@ -21024,7 +21022,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 23;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Verdant Bluffs Restaurant!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 23)
 	{
@@ -21035,7 +21033,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 24;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Unity Station - END OF THE LINE!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 24)
 	{
@@ -21046,7 +21044,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			SouthRoute[playerid] = 25;
 			ProxDetector(20.0, playerid, "[South Suburban Route, NEXT:] Unity Station - END OF THE LINE!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(SouthRoute[playerid] == 25)
 	{
@@ -21060,19 +21058,19 @@ public OnPlayerEnterCheckpoint(playerid)
 			DisablePlayerCheckpoint(playerid);
 			PlayerPlaySound(playerid, 1085, 0.0, 0.0, 0.0);
 			new string[128];
-			SCM(playerid, -1, "___________________[SOUTH SUBURBAN ROUTE COMPLETED]___________________");
+			SendClientMessage(playerid, -1, "___________________[SOUTH SUBURBAN ROUTE COMPLETED]___________________");
 			format(string, sizeof(string), "Old bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-	 		SCM(playerid, COLOR_WHITE, string);
+	 		SendClientMessage(playerid, COLOR_WHITE, string);
 			new randcheck = 130 + random(200);
 			PlayerInfo[playerid][pBankAccount] += randcheck;
 			format(string, sizeof(string), "Job Paycheck: $%d", randcheck);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 			format(string, sizeof(string), "New bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 			format(string, sizeof(string), "~w~Paycheck! ~n~~g~$%d", randcheck);
 			GameTextForPlayer(playerid, string, 3000, 1);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	if(DownRoute[playerid] == 1)
 	{
@@ -21083,7 +21081,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 2;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Idlewood Gas Station!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 2)
 	{
@@ -21094,7 +21092,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 3;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Idlewood Intersection!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 3)
 	{
@@ -21105,7 +21103,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 4;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Ganton Binco!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 4)
 	{
@@ -21116,7 +21114,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 5;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Gibson Avenue!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 5)
 	{
@@ -21127,7 +21125,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 6;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Jefferson Residential Area!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 6)
 	{
@@ -21138,7 +21136,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 7;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Jefferson Motel!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 7)
 	{
@@ -21149,7 +21147,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 8;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Scoutt and Schutz Dealership!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 8)
 	{
@@ -21160,7 +21158,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 9;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Glen Park Bridge!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 9)
 	{
@@ -21171,7 +21169,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 10;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] San Jose Bank!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 10)
 	{
@@ -21182,7 +21180,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 11;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Downtown San Jose, 1493!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 11)
 	{
@@ -21193,7 +21191,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 12;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] All Saints Hospital!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 12)
 	{
@@ -21204,7 +21202,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 13;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Jim's Sticky Ring!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 13)
 	{
@@ -21215,7 +21213,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 14;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Downtown Market!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 14)
 	{
@@ -21226,7 +21224,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 15;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Downtown PROlaps!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 15)
 	{
@@ -21237,7 +21235,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 16;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Downtown Victim!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 16)
 	{
@@ -21248,7 +21246,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 17;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Rodeo Bus Stop!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 17)
 	{
@@ -21259,7 +21257,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 18;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Santa Maria Beach!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 18)
 	{
@@ -21270,7 +21268,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 19;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Santa Maria Beach!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 19)
 	{
@@ -21281,7 +21279,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 20;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Santa Maria Beach!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 20)
 	{
@@ -21292,7 +21290,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 21;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Verona Beach Residential Area!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 21)
 	{
@@ -21303,7 +21301,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 22;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Market Intersection!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 22)
 	{
@@ -21314,7 +21312,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 23;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] San Jose Mall!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 23)
 	{
@@ -21325,7 +21323,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 24;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Commerce Bus Stop!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 24)
 	{
@@ -21336,7 +21334,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 25;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Idlewood Highway!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 25)
 	{
@@ -21347,7 +21345,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 26;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] San Jose Correctional Facility!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 26)
 	{
@@ -21358,7 +21356,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 27;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] San Jose Police Department!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 27)
 	{
@@ -21369,7 +21367,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 28;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Verdant Bluffs Bus Stop!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 28)
 	{
@@ -21380,7 +21378,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 29;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Verdant Bluffs Restaurant!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 29)
 	{
@@ -21391,7 +21389,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 30;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Unity Station!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 30)
 	{
@@ -21402,7 +21400,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			DownRoute[playerid] = 31;
 			ProxDetector(20.0, playerid, "[Downtown Route, NEXT:] Unity Station - END OF THE LINE!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 31)
 	{
@@ -21412,7 +21410,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			PlayerPlaySound(playerid, 1085, 0.0, 0.0, 0.0);
 			DownRoute[playerid] = 32;
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(DownRoute[playerid] == 32)
 	{
@@ -21427,19 +21425,19 @@ public OnPlayerEnterCheckpoint(playerid)
 			PlayerPlaySound(playerid, 1085, 0.0, 0.0, 0.0);
 			DownRoute[playerid] = 0;
 			new string[128];
-			SCM(playerid, -1, "___________________[DOWNTOWN ROUTE COMPLETED]___________________");
+			SendClientMessage(playerid, -1, "___________________[DOWNTOWN ROUTE COMPLETED]___________________");
 			format(string, sizeof(string), "Old bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-	 		SCM(playerid, COLOR_WHITE, string);
+	 		SendClientMessage(playerid, COLOR_WHITE, string);
 			new randcheck = 300 + random(500);
 			PlayerInfo[playerid][pBankAccount] += randcheck;
 			format(string, sizeof(string), "Job Paycheck: $%d", randcheck);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 			format(string, sizeof(string), "New bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-			SCM(playerid, COLOR_WHITE, string);
+			SendClientMessage(playerid, COLOR_WHITE, string);
 			format(string, sizeof(string), "~w~Paycheck! ~n~~g~$%d", randcheck);
 			GameTextForPlayer(playerid, string, 3000, 1);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	if(EastRoute[playerid] == 1)
 	{
@@ -21450,7 +21448,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 2;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Idlewood Gas Station!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 2)
 	{
@@ -21461,7 +21459,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 3;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Idlewood Intersection!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 3)
 	{
@@ -21472,7 +21470,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 4;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Ganton Strip!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-        } else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+        } else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 4)
 	{
@@ -21483,7 +21481,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 5;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Ganton Strip!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 5)
 	{
@@ -21494,7 +21492,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 6;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] East San Jose Clucklin' Bell!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 6)
 	{
@@ -21505,7 +21503,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 7;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] East San Jose Pig Pen!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 7)
 	{
@@ -21516,7 +21514,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 8;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] East San Jose Underpass!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 8)
 	{
@@ -21527,7 +21525,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 9;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Las Colinas, 3341!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-        } else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+        } else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 9)
 	{
@@ -21538,7 +21536,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 10;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Las Colinas 24/7!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-        } else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+        } else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 10)
 	{
@@ -21549,7 +21547,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 11;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Glen Park bridge!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 11)
 	{
@@ -21560,7 +21558,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 12;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] San Jose Correctional Facility!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 12)
 	{
@@ -21571,7 +21569,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 13;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Unity Station - END OF THE LINE!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-		} else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+		} else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 13)
 	{
@@ -21582,7 +21580,7 @@ public OnPlayerEnterCheckpoint(playerid)
 			EastRoute[playerid] = 14;
 			ProxDetector(20.0, playerid, "[East Suburban Route, NEXT:] Unity Station - END OF THE LINE!", COLOR_FADE1, COLOR_FADE2, COLOR_FADE3, COLOR_FADE4, COLOR_FADE5);
 			return 1;
-        } else return SCM(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
+        } else return SendClientMessage(playerid, COLOR_LIGHTRED, "You must be in your bus to complete the route.");
 	}
 	else if(EastRoute[playerid] == 14)
 	{
@@ -21593,15 +21591,15 @@ public OnPlayerEnterCheckpoint(playerid)
 		PlayerPlaySound(playerid, 1085, 0.0, 0.0, 0.0);
 		EastRoute[playerid] = 0;
 		new string[128];
-		SCM(playerid, -1, "___________________[EAST SUBURBAN ROUTE COMPLETED]___________________");
+		SendClientMessage(playerid, -1, "___________________[EAST SUBURBAN ROUTE COMPLETED]___________________");
 		format(string, sizeof(string), "Old bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
- 		SCM(playerid, COLOR_WHITE, string);
+ 		SendClientMessage(playerid, COLOR_WHITE, string);
 		new randcheck = 100 + random(200);
 		PlayerInfo[playerid][pBankAccount] += randcheck;
 		format(string, sizeof(string), "Job Paycheck: $%d", randcheck);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 		format(string, sizeof(string), "New bank balance: $%d", PlayerInfo[playerid][pBankAccount]);
-		SCM(playerid, COLOR_WHITE, string);
+		SendClientMessage(playerid, COLOR_WHITE, string);
 		format(string, sizeof(string), "~w~Paycheck! ~n~~g~$%d", randcheck);
 		GameTextForPlayer(playerid, string, 3000, 1);
 		return 1;
@@ -21791,7 +21789,7 @@ public OnPlayerEnterCheckpoint(playerid)
 		DMVcp[playerid] = 0;
 		TakingDriverLicense[playerid] = false;
 		GivePlayerMoney(playerid, -100);
-		SCM(playerid, COLOR_GREEN, "Congratulations, you have passed the test and you now have a drivers license! ($100)");
+		SendClientMessage(playerid, COLOR_GREEN, "Congratulations, you have passed the test and you now have a drivers license! ($100)");
 	}
 	if(getcp[playerid] == 1)
 	{
@@ -21889,13 +21887,13 @@ public OnPlayerEnterCheckpoint(playerid)
 		}
 		else
 		{
-			SCM(playerid, COLOR_LIGHTRED, "You need to be inside of your job-vehicle to complete the job.");
-			SCM(playerid, COLOR_LIGHTRED, "/stopworking if you are bugged.");
+			SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be inside of your job-vehicle to complete the job.");
+			SendClientMessage(playerid, COLOR_LIGHTRED, "/stopworking if you are bugged.");
 		}
 	}
 	if(LumberCP[playerid] == 1)
 	{
-	    SCM(playerid, COLOR_WHITE, "Chop down the tree. (/chop)");
+	    SendClientMessage(playerid, COLOR_WHITE, "Chop down the tree. (/chop)");
 	}
 	else if(LumberCP[playerid] == 6)
 	{
@@ -21914,7 +21912,7 @@ public OnPlayerEnterCheckpoint(playerid)
 		}
 		else
 		{
-			SCM(playerid, COLOR_LIGHTRED, "You need to be inside of your job-vehicle to complete the job.");
+			SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be inside of your job-vehicle to complete the job.");
 		}
 	}
  	return 1;
@@ -22158,23 +22156,23 @@ stock SendNearbyMessage(playerid, Float:radius, string[], col1, col2, col3, col4
 				cz = (z - iz);
 				if(((cx < radius/16) && (cx > -radius/16)) && ((cy < radius/16) && (cy > -radius/16)) && ((cz < radius/16) && (cz > -radius/16)))
 				{
-				    SCM(i, col1, string);
+				    SendClientMessage(i, col1, string);
 				}
 				else if(((cx < radius/8) && (cx > -radius/8)) && ((cy < radius/8) && (cy > -radius/8)) && ((cz < radius/8) && (cz > -radius/8)))
 				{
-				    SCM(i, col2, string);
+				    SendClientMessage(i, col2, string);
 				}
 				else if(((cx < radius/4) && (cx > -radius/4)) && ((cy < radius/4) && (cy > -radius/4)) && ((cz < radius/4) && (cz > -radius/4)))
 				{
-				    SCM(i, col3, string);
+				    SendClientMessage(i, col3, string);
 				}
 				else if(((cx < radius/2) && (cx > -radius/2)) && ((cy < radius/2) && (cy > -radius/2)) && ((cz < radius/2) && (cz > -radius/2)))
 				{
-				    SCM(i, col4, string);
+				    SendClientMessage(i, col4, string);
 				}
 				else if(((cx < radius) && (cx > -radius)) && ((cy < radius) && (cy > -radius)) && ((cz < radius) && (cz > -radius)))
 				{
-				    SCM(i, col5, string);
+				    SendClientMessage(i, col5, string);
 				}
 			}
 	    }
@@ -22749,7 +22747,7 @@ public StartIntro(playerid)
 	FadeColorForPlayer(playerid, 0, 0, 0, 255, 0, 0, 0, 0, 15, 0);
     InterpolateCameraPos(playerid, 724.8024, -2001.6941, -12.0839, 722.7170, -1603.7065, 64.4452, 25000, CAMERA_MOVE);
     InterpolateCameraLookAt(playerid, 722.7170, -1603.7065, 64.4452, 724.8024, -2001.6941, -12.0839, 25000, CAMERA_MOVE);
-	for(new i = 0; i < 50; i++) SCM(playerid, COLOR_WHITE, " ");
+	for(new i = 0; i < 50; i++) SendClientMessage(playerid, COLOR_WHITE, " ");
    	TextDrawShowForPlayer(playerid, Textdraw0);
    	TextDrawShowForPlayer(playerid, Textdraw1);
    	TextDrawShowForPlayer(playerid, Textdraw2);
@@ -22849,13 +22847,13 @@ public TutorialDone(playerid)
     SetPlayerSkin(playerid, PlayerInfo[playerid][pSkin]);
    	TogglePlayerControllable(playerid, 1);
 	FadeColorForPlayer(playerid, 0, 0, 0, 0, 0, 0, 0, 255, 15, 0);
-	SCM(playerid, COLOR_WHITE, "Thank you for choosing San Jose Roleplay, we hope you enjoy your stay.");
+	SendClientMessage(playerid, COLOR_WHITE, "Thank you for choosing San Jose Roleplay, we hope you enjoy your stay.");
 	PlayerInfo[playerid][pTutorialDone] = 1;
 	TextDrawHideForPlayer(playerid, Textdraw0);
 	TextDrawHideForPlayer(playerid, Textdraw1);
 	PlayerInfo[playerid][pTutorialDone] = 1;
-	SCM(playerid, COLOR_YELLOW, "TIP: You have not set your forumname yet. /forumname to set it.");
-	SCM(playerid, COLOR_YELLOW, "TIP: To find locations as a new player we suggest you look at the /map!");
+	SendClientMessage(playerid, COLOR_YELLOW, "TIP: You have not set your forumname yet. /forumname to set it.");
+	SendClientMessage(playerid, COLOR_YELLOW, "TIP: To find locations as a new player we suggest you look at the /map!");
 	return 1;
 }
 
@@ -22868,7 +22866,7 @@ public LoadDeathAnim(playerid)
 public OperationDone(playerid)
 {
 	FadeColorForPlayer(playerid, 0, 0, 0, 255, 0, 0, 0, 0, 15, 0);
-	SCM(playerid, COLOR_WHITE, "You have been treated at the hospital. The hospital bill is $50.");
+	SendClientMessage(playerid, COLOR_WHITE, "You have been treated at the hospital. The hospital bill is $50.");
 	SetPlayerPos(playerid, 2034.1787, -1401.6705, 17.2949);
 	GivePlayerMoney(playerid, -50);
 	SetPlayerHealth(playerid, 90.0);
@@ -24167,7 +24165,7 @@ public timerchop(playerid)
 			LumberCP[playerid] = 6;
 			TreeChopped[playerid] = 5;
 			SetTimerEx("tree5respawn", 60000, 1, "i", playerid);
-			SCM(playerid, -1, "Drop off the wood at the lumbermill.");
+			SendClientMessage(playerid, -1, "Drop off the wood at the lumbermill.");
 	 		RemovePlayerWeapon(playerid, 9);
 	 		Chopping[playerid] = false;
 		}
@@ -24566,7 +24564,7 @@ public timer2(playerid)
     else
     {
  		new vehicleid = GetPlayerVehicleID(playerid);
-		if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SCM(playerid, COLOR_LIGHTRED, "You need to be inside a vehicle.");
+		if(GetPlayerState(playerid) != PLAYER_STATE_DRIVER) return SendClientMessage(playerid, COLOR_LIGHTRED, "You need to be inside a vehicle.");
 		GetVehicleParamsEx(vehicleid, engine, lights, alarm, doors, bonnet, boot, objective);
 		PlayerActionMessage(playerid, 20.0, "succesfully hotwires the vehicle.");
 		SetVehicleParamsEx(vehicleid, 1, 1, 0, doors, bonnet, boot, objective);
@@ -24727,20 +24725,20 @@ public paytime(playerid)
   			if(PlayerInfo[i][pWelfare] == 1)
 			{
 				new string[128];
-				SCM(i, -1, "___________________[PAYDAY INFORMATION]___________________");
+				SendClientMessage(i, -1, "___________________[PAYDAY INFORMATION]___________________");
 	  			format(string, sizeof(string), "Old bank balance: $%d", PlayerInfo[i][pBankAccount]);
-	        	SCM(i, COLOR_WHITE, string);
+	        	SendClientMessage(i, COLOR_WHITE, string);
 	        	new taxes = 0 + random(10);
 	        	new welfare = 50 + random(100);
 	  			format(string, sizeof(string), "Government Taxes: $%d", taxes);
-	        	SCM(i, COLOR_WHITE, string);
+	        	SendClientMessage(i, COLOR_WHITE, string);
 	  			format(string, sizeof(string), "Welfare bonus: $%d", welfare);
-	        	SCM(i, COLOR_WHITE, string);
+	        	SendClientMessage(i, COLOR_WHITE, string);
 				new randcheck = 50 + random(150);
 				PlayerInfo[i][pBankAccount] += randcheck;
 				PlayerInfo[i][pBankAccount] -= taxes;
 	  			format(string, sizeof(string), "New bank balance: $%d", PlayerInfo[i][pBankAccount]);
-	        	SCM(i, COLOR_WHITE, string);
+	        	SendClientMessage(i, COLOR_WHITE, string);
 
 				format(string, sizeof(string), "~w~PayDay! ~n~~g~$%d", randcheck);
 				GameTextForPlayer(i, string, 3000, 1);
@@ -24749,17 +24747,17 @@ public paytime(playerid)
 			else
 			{
 				new string[128];
-				SCM(i, -1, "___________________[PAYDAY INFORMATION]___________________");
+				SendClientMessage(i, -1, "___________________[PAYDAY INFORMATION]___________________");
 	  			format(string, sizeof(string), "Old bank balance: $%d", PlayerInfo[i][pBankAccount]);
-	        	SCM(i, COLOR_WHITE, string);
+	        	SendClientMessage(i, COLOR_WHITE, string);
 	        	new taxes = 0 + random(10);
 	  			format(string, sizeof(string), "Government Taxes: $%d", taxes);
-	        	SCM(i, COLOR_WHITE, string);
+	        	SendClientMessage(i, COLOR_WHITE, string);
 				new randcheck = 100 + random(250);
 				PlayerInfo[i][pBankAccount] += randcheck;
 				PlayerInfo[i][pBankAccount] -= taxes;
 	  			format(string, sizeof(string), "New bank balance: $%d", PlayerInfo[i][pBankAccount]);
-	        	SCM(i, COLOR_WHITE, string);
+	        	SendClientMessage(i, COLOR_WHITE, string);
 
 				format(string, sizeof(string), "~w~PayDay! ~n~~g~$%d", randcheck);
 				GameTextForPlayer(i, string, 3000, 1);
@@ -24791,7 +24789,7 @@ public login_dialog(playerid)
 	SetPlayerCameraPos(playerid, 1813.1046, -1449.2799, 107.7444);
 	SetPlayerCameraLookAt(playerid, 1649.3676, -1306.5536, 132.4665);
 
-	for( new i = 0; i <= 100; i ++ ) SCM(playerid, -1, "" );
+	for( new i = 0; i <= 100; i ++ ) SendClientMessage(playerid, -1, "" );
  	if(fexist(UserPath(playerid)))
     {
         INI_ParseFile(UserPath(playerid), "LoadUser_%s", .bExtra = true, .extra = playerid);
